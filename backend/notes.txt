@@ -1,0 +1,20 @@
+Schemas:
+- Tournament
+    - Matches 
+- Match
+    - home team
+    - away team
+    - scoreboard
+- Team
+    - name
+    - captain (User)
+    - players
+- User
+    - name
+    - email
+    - password
+- Scoreboard
+    - home team runs
+    - home team wickets conceded
+    - away team runs
+    - away team wickets
