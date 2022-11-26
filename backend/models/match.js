@@ -24,5 +24,6 @@ const matchSchema = new Schema({
         type: Scorecard,
         required: true,
     },
-    
 });
+
+module.exports = Match = mongoose.model("Match", matchSchema);

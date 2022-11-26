@@ -3,20 +3,19 @@ const mongoose = require("mongoose");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const requireLogin = require("../middleware/requireLogin.js");
 const { SECRET_KEY } = require("../keys.js");
+const { randBetween } = require("../utility.js");
 
 const User = mongoose.model("User");
 
-router.get("/protected", requireLogin, (req, res) => {
-    res.send("Hello, user!");
-});
-
-router.post("/signup", (req, res) => {
-    const { name, email, password } = req.body;
+/*
+    REGISTRATION functionality
+*/
+router.post("/registration", (req, res) => {
+    const { name, email, password, hand, position } = req.body;
     if (!name || !email || !password) {
         return res.status(422).json({
-            error: "Missing parameter",
+            error: "Missing required parameter",
         });
     }
 
@@ -30,27 +29,26 @@ router.post("/signup", (req, res) => {
 
             bcrypt.hash(password, 5).then((hashedPassword) => {
                 const user = new User({
+                    id: randBetween(100000, 200000),
                     name: name,
                     email: email,
                     password: hashedPassword,
+                    hand: hand ? hand : "",
+                    position: position ? position : "",
                 });
 
                 user.save()
-                    .then((user) => {
-                        res.json({ message: "User saved successfully" });
-                        console.log(User.schema.tree.name);
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                    });
+                    .then((user) => res.json(user))
+                    .catch((err) => console.log(err));
             });
         })
-        .catch((err) => {
-            console.log(err);
-        });
+        .catch((err) => console.log(err));
 });
 
-router.post("/signin", (req, res) => {
+/*
+    LOGIN functionality
+*/
+router.post("/login", (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -71,6 +69,17 @@ router.post("/signin", (req, res) => {
                 if (doMatch) {
                     const token = jwt.sign({ _id: savedUser._id }, SECRET_KEY);
                     res.json({ token: token });
+                    const payload = {
+                        id: savedUser._id,
+                        name: savedUser.name,
+                    };
+
+                    jwt.sign(payload, SECRET_KEY, (err, token) => {
+                        res.json({
+                            success: true,
+                            token: "Bearer " + token,
+                        });
+                    });
                 } else {
                     return res.status(422).json({
                         error: "Invalid email or password",
