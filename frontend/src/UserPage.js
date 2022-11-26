@@ -56,24 +56,30 @@ class UserPage extends React.Component {
                     <Container fluid className="bg text pb-5">
                         <Container className="pt-5">
                             <Row>
-                                <Col className="col-border ms-3">
-                                    <Image src={Team} className="align-middle d-inline-block" width="100" height="100" /> 
-                                    <h3 className="p-3 pb-2 pt-0">Teams</h3>
-                                    <ListGroup className="p-3 text-center">
-                                        <ListGroup.Item action>Team 1</ListGroup.Item>
-                                        <ListGroup.Item action>Team 2</ListGroup.Item>
-                                        <ListGroup.Item action>Team 3</ListGroup.Item>
-                                    </ListGroup>
+                                <Col className="ms-3">
+                                    <Container className="col-border">
+                                        <Image src={Team} className="align-middle d-inline-block" width="100" height="100" /> 
+                                        <h3 className="p-3 pb-2 pt-0">Teams</h3>
+                                        <ListGroup className="p-3 text-center">
+                                            <ListGroup.Item action>Team 1</ListGroup.Item>
+                                            <ListGroup.Item action>Team 2</ListGroup.Item>
+                                            <ListGroup.Item action>Team 3</ListGroup.Item>
+                                        </ListGroup>
+                                    </Container>
+                                    <Container />
                                 </Col>
 
-                                <Col className="col-border ms-3">
-                                    <Image src={Tournament} className="align-middle d-inline-block pt-1" width="80" height="80" /> 
-                                    <h3 className="p-3 pb-2">Tournaments</h3>
-                                    <ListGroup className="p-3 text-center">
-                                        <ListGroup.Item action>Tournament 1</ListGroup.Item>
-                                        <ListGroup.Item action>Tournament 2</ListGroup.Item>
-                                        <ListGroup.Item action>Tournament 3</ListGroup.Item>
-                                    </ListGroup>
+                                <Col className="ms-3">
+                                    <Container className="col-border">
+                                        <Image src={Tournament} className="align-middle d-inline-block pt-1" width="80" height="80" /> 
+                                        <h3 className="p-3 pb-2">Tournaments</h3>
+                                        <ListGroup className="p-3 text-center">
+                                            <ListGroup.Item action>Tournament 1</ListGroup.Item>
+                                            <ListGroup.Item action>Tournament 2</ListGroup.Item>
+                                            <ListGroup.Item action>Tournament 3</ListGroup.Item>
+                                        </ListGroup>
+                                    </Container>
+                                    <Container />
                                 </Col>
                             </Row>
                         </Container>
