@@ -4,18 +4,18 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../keys.js");
+const { randBetween } = require("../utility.js");
 
 const User = mongoose.model("User");
 
 /*
     REGISTRATION functionality
 */
-
 router.post("/registration", (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, hand, position } = req.body;
     if (!name || !email || !password) {
         return res.status(422).json({
-            error: "Missing parameter",
+            error: "Missing required parameter",
         });
     }
 
@@ -29,9 +29,12 @@ router.post("/registration", (req, res) => {
 
             bcrypt.hash(password, 5).then((hashedPassword) => {
                 const user = new User({
+                    id: randBetween(100000, 200000),
                     name: name,
                     email: email,
                     password: hashedPassword,
+                    hand: hand ? hand : "",
+                    position: position ? position : "",
                 });
 
                 user.save()
@@ -45,7 +48,6 @@ router.post("/registration", (req, res) => {
 /*
     LOGIN functionality
 */
-
 router.post("/login", (req, res) => {
     const { email, password } = req.body;
 
