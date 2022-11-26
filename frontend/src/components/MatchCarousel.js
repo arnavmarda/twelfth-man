@@ -34,7 +34,7 @@ export const MatchCarousel = () => (
     <Styles>
         <Container fluid className="carousel-container">
             <Container fluid className="carousel h-100"></Container>
-            <Carousel fluid variant="dark" interval={3000} indicators={false} className="w-100 h-100 position-relative top-50">
+            <Carousel fluid variant="dark" interval={3000} controls={false} indicators={false} className="w-100 h-100 position-relative top-50">
                 <Carousel.Item>
                     <MatchScoreRow></MatchScoreRow>
                 </Carousel.Item>

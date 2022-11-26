@@ -26,7 +26,7 @@ const Styles = styled.div`
 
 export const NavigationBar = () => (
     <Styles className="sticky-top">
-        <Navbar variant='dark' sticky="top" controls={false}>
+        <Navbar variant='dark' sticky="top">
             <Container>
                         <Navbar.Brand>
                             <img 
@@ -46,12 +46,7 @@ export const NavigationBar = () => (
                             />
                             <Button type='submit'>Search</Button>
                         </Form>
-                        <Form className='d-flex'>
-                            <Button type='button' variant='outline-success' href='#login'>Login</Button>
-                            <Button type='button' variant='outline-success' href='#sign-up'>Sign Up</Button>
-                        </Form>
             </Container>
         </Navbar>
     </Styles>
-    
 )

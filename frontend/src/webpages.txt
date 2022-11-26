@@ -1,17 +1,18 @@
 List of webpages to make:
 
-1. Home Page
-2. User registration (sign up page)
+1. Home Page - (Navbar, Jumbotron, Live Scores, Features, Footer) - **DONE**
+2. User registration (sign up page) 
 3. User registration (login page)
-4. User profile dock
+4. User profile dock - (Navbar, Jumbotron, Tournament and Team Lists, Footer) - **DONE**
 5. Create team 
 6. Create tournament 
-7. Tournament page
+7. Tournament page - (Navbar, Jumbotron, Teams, Standings, Bracket, Footer) - **DONE**
 8. Scoring page
-9. Past scoresheet page
+9. Match Page
+10. Team Page
 
 
-Arnav: 1, 7, 8, 9, 4
+Arnav: 1, 7, 8, 9, 4, 10
 
 
 Ezequiel: 2, 3, 5, 6
