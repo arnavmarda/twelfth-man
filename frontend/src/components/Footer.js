@@ -20,7 +20,7 @@ const Styles = styled.div`
     }
 
     .text {
-        color: #FFB81C;
+        color: #FFB81C !important;
         vertical-align: middle;
         text-align: left;
         left: 40%

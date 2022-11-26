@@ -11,6 +11,19 @@ const Styles = styled.div`
         z-index: -2;
         height: 400px;
         opacity: 0.9;
+        color: white;
+    }
+
+    .overlay {
+        background-color: #000;
+        opacity: 0.3;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+        height: 475px;
     }
 `;
 
@@ -19,6 +32,7 @@ export const Jumbotron = () => (
     <Styles>
         <NavigationBar />
         <div className="p-5 mb-0 rounded-1 jumbo">
+            <div className='overlay' />
             <div className="container-fluid py-5">
                 <h1 className='display-5 fw-bold'>Twelfth Man</h1>
                 <p className='col-md-10 fs-4'>

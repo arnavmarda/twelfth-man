@@ -115,7 +115,7 @@ const Styles = styled.div`
 `;
 
 
-class HomePage extends Component {
+class Home extends Component {
     render() {
         return (  
             <Styles>
@@ -150,4 +150,4 @@ class HomePage extends Component {
     }
 }
 
-export default HomePage;
+export default Home;
