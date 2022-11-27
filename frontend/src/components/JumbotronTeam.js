@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import bgpicture from '../assets/team-jumbo.jpg';
+import bgpicture from '../assets/team.jpg';
 import { NavigationBar } from './NavbarTournament';
 
 const Styles = styled.div`

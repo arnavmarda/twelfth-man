@@ -1,0 +1,56 @@
+nav {
+   display: flex;
+   align-items: center;
+   background-color: #005587;
+   height: 75px;
+   color:#FFD100;
+   font-family: Georgira;
+   font-size: 25px;
+   padding-left: 80px;
+   padding-right: 20px;
+}
+
+.NavigationImage{
+   width:90px;
+   height:85px;
+}
+
+.NavigationText{
+   color:#FFD100;
+   font-family: Georgira;
+   font-size: 20px;
+   padding-top: 15px;
+   text-decoration:none
+}
+
+/* Button Inspired from https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjr8PW3pM37AhVIK0QIHQz0AHYQFnoECAsQAQ&url=https%3A%2F%2Fgetcssscan.com%2Fcss-buttons-examples&usg=AOvVaw1GMN0MjrmmHUSa7j8UbWpS*/
+.Button2{
+   margin-left: auto;
+  background: linear-gradient(to bottom right, #80a9c2, #76DAFF);
+  border: 0;
+  border-radius: 12px;
+  color: #FFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Georgira;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.Button2:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(255, 255, 255, 0.5), .125rem .125rem 1rem rgba(255, 255, 255, 0.5);
+}
+
+.Button2:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(255, 255, 255, 0.5), .125rem .125rem 1rem rgba(255, 255, 255, 0.5);
+}
