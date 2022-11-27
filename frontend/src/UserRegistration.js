@@ -6,6 +6,7 @@ import Register from "./components/Registration";
 import { Footer } from "./components/Footer";
 import { Container, Stack } from 'react-bootstrap';
 import { FaCopyright } from 'react-icons/fa';
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 
 const UserRegistration = () =>{     
@@ -52,6 +53,20 @@ const UserRegistration = () =>{
             errorMessage:"Passwords must match",
             pattern: values.password,
             required:true,
+        },
+        {
+            id:5,
+            name:"hand",
+            type:"text",
+            placeholder:"Preferred hand",
+            required:false,
+        },
+        {
+            id:6,
+            name:"position",
+            type:"text",
+            placeholder:"Preferred position",
+            required:false,
         }
     ]
 
@@ -59,14 +74,12 @@ const UserRegistration = () =>{
     const handleUp = (e) =>{
         e.preventDefault();
         const data = new FormData(e.target)
-        console.log(Object.fromEntries(data.entries()))
     }
 
     const onChange = (e)=>{
         setValues({...values, [e.target.name]: e.target.value});
-
     }
-    console.log(values);
+
     return (
         <div className="general" id="page">
             <NavbarSignup />
@@ -83,6 +96,11 @@ const UserRegistration = () =>{
                     )}
                     <div className="RegistrationTitle">
                         <button className="RegistrationButton">Create Account</button>
+                    </div>
+                    <div>
+                        <Link to="/" className="NavigationTitle">
+                            <p className="LoginRedirect"> Already a user? Login here</p>
+                        </Link>
                     </div>
                 </form>
             </container>
