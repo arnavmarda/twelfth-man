@@ -11,10 +11,7 @@ const teamSchema = new Schema({
         type: User,
         required: true,
     },
-    roster: {
-        type: [User],
-        required: true,
-    },
+    roster: [User],
 });
 
 module.exports = Team = mongoose.model("Team", teamSchema);
