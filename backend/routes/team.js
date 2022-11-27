@@ -11,10 +11,23 @@ const User = mongoose.model("User");
 const Team = mongoose.model("Team");
 
 /*
+    Fetch a team
+*/
+router.get("/team/:id", (req, res) => {
+    Team.findOne({ _id: req.params.id })
+        .then((team) => res.status(200).json(team))
+        .catch((err) => {
+            return res.status(400).json({
+                error: "Couldn't find team with given ID",
+            });
+        });
+});
+
+/*
     Create a team
 */
 router.post(
-    "/createTeam",
+    "/team/create",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
         const { name, captain, roster } = req.body;
@@ -38,7 +51,8 @@ router.post(
                     roster: roster ? roster : Array(11),
                 });
 
-                team.save()
+                newTeam
+                    .save()
                     .then((team) => res.json(team))
                     .catch((err) => console.log(err));
             })
@@ -46,8 +60,11 @@ router.post(
     }
 );
 
+/*
+    Update a team
+*/
 router.patch(
-    "/updateTeam/:id",
+    "/team/update/:id",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
         const { name, captain, roster } = req.body;
@@ -64,8 +81,11 @@ router.patch(
     }
 );
 
+/*
+    Delete a team
+*/
 router.delete(
-    "/deleteTeam/:id",
+    "/team/delete/:id",
     passport.authenticate("jwt", { session: false }),
     (req, res) => {
         Team.findOneAndDelete({ _id: req.params.id })
