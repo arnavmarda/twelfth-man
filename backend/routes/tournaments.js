@@ -26,24 +26,27 @@ router.get("/tournament/:id", (req, res) => {
     Create a Tournament
 */
 
+
+
 router.post("/tournament/create", requireLogin, (req, res) => {
     const { name, teams } = req.body;
-    if (!name) {
+    if (!name || !teams) {
         return res.status(422).json({
             error: "Missing required parameter",
         });
     }
 
-    // if (!name || !captain) {
-    //     return res.status(422).json({
-    //         error: "Missing required parameter",
-    //     });
-    // }
 
-    const newTournament = new Tournament({
-        name: name,
-        teams: teams ? teams : Array(16),
-    });
+    Tournament.findOne({ name: name })
+        .then((savedTeam) => {
+            if (savedTeam) {
+                return res.status(422).json({
+                    error: "Tournament with this name already exists",
+                });
+            }
+
+
+
     
     for (oneTeam in teams){
         Team.findOne({ name: oneTeam }).then((foundTeam) => {
@@ -55,45 +58,36 @@ router.post("/tournament/create", requireLogin, (req, res) => {
         });
     }
 
+    const newTournament = new Tournament({
+        name: name,
+        teams: teams,
+    });
+
     newTournament
         .save()
         .then((tournament) => res.json(tournament))
         .catch((err) => console.log(err));
 
-    
 
 
-    // User.findOne({ name: captain }).then((player) => {
-    //     if (player) {
-    //         Team.findOne({ name: name })
-    //             .then((savedTeam) => {
-    //                 if (savedTeam) {
-    //                     return res.status(422).json({
-    //                         error: "Team with this name already exists",
-    //                     });
-    //                 }
+    });
 
-    //                 const newTeam = new Team({
-    //                     name: name,
-    //                     captain: captain,
-    //                     roster: roster ? roster : Array(11),
-    //                 });
-
-    //                 newTeam
-    //                     .save()
-    //                     .then((team) => res.json(team))
-    //                     .catch((err) => console.log(err));
-    //             })
-    //             .catch((err) => console.log(err));
-    //     } else {
-    //         return res.status(400).json({
-    //             error: "No player found with that name. Please register before trying again.",
-    //         })
-    //     }
-    // })
-    // .catch((err) => console.log(err));
 });
 
+/*
+    Delete a tournament
+*/
+router.delete("/tournament/delete/:id", requireLogin, (req, res) => {
+    Tournament.findOneAndDelete({ _id: req.params.id })
+        .then((response) => res.status(200).json(response))
+        .catch((err) => {
+            return res.status(400).json({
+                error: "Error deleting team",
+            });
+        });
+});
+
+module.exports = router;
 
 
 
