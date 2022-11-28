@@ -6,6 +6,8 @@ import { FaCopyright } from 'react-icons/fa';
 // eslint-disable-next-line 
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 import { RegistrationNavbar } from "./components/RegistrationNavbar";
+import { FooterLogin } from "./components/FooterLogin";
+
 
 const UserRegistration = () =>{     
     const [values, setValues] = useState({
@@ -107,11 +109,7 @@ const UserRegistration = () =>{
                     </div>
                 </form>
             </container>
-            <Container fluid className="footer-copyright">
-                <p className="copyright">
-                    <FaCopyright size={20} color={"white"} /> Copyright 2022 Twelfth Man. All rights reserved.
-                </p> 
-             </Container>
+            <FooterLogin />
         </div>
     )
 }

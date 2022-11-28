@@ -16,7 +16,7 @@ export const RegistrationNavbar = () => (
                         alt="Logo"
                     />
                     <Link to="/" id="nav--homeLink">
-                        Twelfth-Man
+                        Twelfth Man
                     </Link>
                 </container>
                 

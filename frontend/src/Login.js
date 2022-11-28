@@ -1,10 +1,9 @@
 import React, { useState, Component } from 'react';
 import { Layout } from './components/Layout';
 import { RegistrationNavbar } from './components/RegistrationNavbar';
+import { FooterLogin } from './components/FooterLogin';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 import Register from "./components/Registration";
-import { FaCopyright } from 'react-icons/fa';
-import { Container} from 'react-bootstrap';
 
 const LoginPage = () =>{
 
@@ -70,16 +69,13 @@ const LoginPage = () =>{
                                 </Link>
                             </div>
                         </form>
-                        <Container fluid className="footer-copyright">
-                            <p className="copyright">
-                                <FaCopyright size={20} color={"white"} /> Copyright 2022 Twelfth Man. All rights reserved.
-                            </p> 
-                        </Container>
+                        <FooterLogin />
                 </container>
                 </Layout>
             </styles>
         </div>
     )
 }
+
 
 export default LoginPage;
