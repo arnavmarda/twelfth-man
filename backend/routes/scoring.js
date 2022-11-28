@@ -58,10 +58,16 @@ function dotBall(OverUpdate)
 
 //Creating miscellaneous runs scoring methods 
 //No balls, wides, leg byes: 
-function wideBall(OverUpdate)
+function wideBall(OverUpdate, RunScored)
 {
-    let wideRun = 'E';
-    OverUpdate.concat(' ', wideRun)
+    let wideRun = 'wide';
+    //if after the wide is taken, there is a run taken we need to update that too. 
+    //So, what we can do is have a second input how many runs taken and add one. 
+    let intRuns = parseInt(RunsScored); 
+    let value = intRuns + 1; //Wides give +1 runs and cost 0 balls
+    let strRuns = value.toString(); 
+    let AppendVal = wideRun.concat(strRuns);
+    OverUpdate.concat(' ', AppendVal);
     return OverUpdate;
 }
 
@@ -69,17 +75,17 @@ function wideBall(OverUpdate)
 //How a no ball works is whatever scored on that ball + 1
 //and the next ball the batsman can't get out. 
 
-function noBall(OverUpdate, RunScoredOnThatBall)
+function noBall(OverUpdate, RunScored)
 {
     let NoBallRun = 'N'; 
     //N represents No Ball
 
     //We need to now check to see what the batsman scored and then increment the score by 1
     //So if he scored 1 on the no ball I would update the string with 2 to account for the noball 1
-    let RunsTaken = parseInt(RunScoredOnThatBall); 
+    let RunsTaken = parseInt(RunsScored); 
     let NewVal = RunsTaken + 1; 
     let NoBallVal = NewVal.toString(); 
-    let AppendValue = NoBallRun.concat(NoBallVal)
+    let AppendValue = NoBallRun.concat(NoBallVal);
     OverUpdate.concat(' ', AppendValue);
     return OverUpdate;
 }
@@ -121,6 +127,10 @@ function legBye(OverUpdate, RunsScored)
     }
     return OverUpdate;
 }
+
+//Ok now that I have the general functions I will implement them based on click
+//When the user clicks a button the respective function will be called 
+//This will update three things: total Runs, Total extras, total balls
 
 
 let x = 1;
