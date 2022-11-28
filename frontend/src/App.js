@@ -7,6 +7,7 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ScoringPage from "./ScoringPage";
+import { NotFound } from "./NotFound";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/team" element={<TeamPage />} />
           <Route path="/scoring" element={<ScoringPage />} />
           <Route path="/match" element={<MatchPage />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </Router>
     </React.Fragment>
