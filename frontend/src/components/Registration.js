@@ -12,7 +12,7 @@ const Register = (props) => {
 
     return(
        <div className="Registration">
-            <input {...inputProps} className="fieldBoxes"
+            <input {...inputProps} id="fieldBoxes"
                 onChange={onChange} 
                 onBlur={handleFocus} 
                 onFocus={()=>inputProps.name==="passwordVerification" && setFocused(true)}

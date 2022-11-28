@@ -1,13 +1,11 @@
 //import needed libraries:
 import React, {useState } from "react";
-
-import NavbarSignup from "./components/NavbarSignup"
 import Register from "./components/Registration";
-import { Footer } from "./components/Footer";
-import { Container, Stack } from 'react-bootstrap';
+import { Container} from 'react-bootstrap';
 import { FaCopyright } from 'react-icons/fa';
+// eslint-disable-next-line 
 import {BrowserRouter as Router, Link} from 'react-router-dom';
-
+import { RegistrationNavbar } from "./components/RegistrationNavbar";
 
 const UserRegistration = () =>{     
     const [values, setValues] = useState({
@@ -54,35 +52,22 @@ const UserRegistration = () =>{
             pattern: values.password,
             required:true,
         },
-        {
-            id:5,
-            name:"hand",
-            type:"text",
-            placeholder:"Preferred hand",
-            required:false,
-        },
-        {
-            id:6,
-            name:"position",
-            type:"text",
-            placeholder:"Preferred position",
-            required:false,
-        }
     ]
-
 
     const handleUp = (e) =>{
         e.preventDefault();
+        // eslint-disable-next-line 
         const data = new FormData(e.target)
     }
 
     const onChange = (e)=>{
         setValues({...values, [e.target.name]: e.target.value});
+        console.log("Hi");
     }
 
     return (
         <div className="general" id="page">
-            <NavbarSignup />
+            <RegistrationNavbar />
             <container className="Signup">
                 <form className="SignupForm" onSubmit={handleUp}>
                 <h3 className="RegistrationTitle"> Create Your Account </h3>
@@ -94,11 +79,29 @@ const UserRegistration = () =>{
                         onChange={onChange}
                         />
                     )}
+                    <div className="optionalInputs">
+                        <p className="INPUT">Preferred Hand:</p>
+                            <select required="false">
+                                <option>None</option>
+                                <option>Left</option>
+                                <option> Right</option>
+                            </select>
+                    </div>
+                    <div className="optionalInputs">
+                        <p className="INPUT">Preferred Position:</p>
+                            <select required="false">
+                                <option>None</option>
+                                <option>Batter</option>
+                                <option>Bowler</option>
+                                <option>Keeper</option>
+                                <option>All-rounder</option>
+                            </select>
+                    </div>
                     <div className="RegistrationTitle">
-                        <button className="RegistrationButton">Create Account</button>
+                        <button type="submit" className="RegistrationButton">Create Account</button>
                     </div>
                     <div>
-                        <Link to="/" className="NavigationTitle">
+                        <Link to="/login" className="NavigationTitle">
                             <p className="LoginRedirect"> Already a user? Login here</p>
                         </Link>
                     </div>

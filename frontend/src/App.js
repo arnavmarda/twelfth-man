@@ -3,6 +3,7 @@ import UserPage from "./UserPage";
 import TournamentPage from "./TournamentPage";
 import TeamPage from "./TeamPage";
 import UserRegistration from "./UserRegistration";
+import LoginPage from "./Login";
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -18,6 +19,7 @@ function App() {
           <Route path="/tournament" element={<TournamentPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/registration" element={<UserRegistration />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </Router>
     </React.Fragment>
