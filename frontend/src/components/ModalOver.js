@@ -9,7 +9,7 @@ const Styled = styled.div`
 
 export const ModalOver = (props) => {
 
-    const [isShown, setIsShown] = useState(props.toShow);
+    const [isShown, setIsShown] = useState(true);
 
     const showModal = () => {
         setIsShown(true);
