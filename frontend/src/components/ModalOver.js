@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import { Modal } from 'react-bootstrap';
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 
-const Styled = styled.div`
-`;
 
 export const ModalOver = (props) => {
 
     const [isShown, setIsShown] = useState(true);
-
-    const showModal = () => {
-        setIsShown(true);
-    }
 
     const closeModal = () => {
         setIsShown(false);
