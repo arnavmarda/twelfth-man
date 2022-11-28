@@ -177,18 +177,33 @@ class ScoringPage extends React.Component {
         this.state = {
             currentBall: "",
             callOverEnd: false,
+            callWicket: false,
         };
 
         this.handleEndOver = this.handleEndOver.bind(this);
+        this.updateExtras = this.updateExtras.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.updateBall = this.updateBall.bind(this);
     }
 
     handleEndOver(event) {
-        this.setState({callOverEnd: true})
+        this.setState({callOverEnd: true});
+    }
+
+    updateBall(value) {
+        this.setState({currentBall: value});
+    }
+
+    updateExtras(value) {
+        this.setState({currentBall: this.state.currentBall + value});
     }
 
     handleSave(event) {
-        
+        const currentBall = this.state.currentBall;
+        console.log(currentBall);
+        if(currentBall.includes("W")){
+            this.setState({callWicket: true});
+        }
     }
 
     render() {
@@ -271,7 +286,7 @@ class ScoringPage extends React.Component {
                                         <Table className="mb-0 mt-3">
                                             <tbody className="tbody">
                                                 <tr>
-                                                    <ToggleButtonGroup type="radio" name="runs" id="runs" defaultValue={"0"}>
+                                                    <ToggleButtonGroup type="radio" name="runs" id="runs" defaultValue={""} onChange={this.updateBall}>
                                                         <ToggleButton value={"0"} id="tbg-radio-1" className="rounded-circle dot" name="runs">.</ToggleButton>
                                                         <ToggleButton value={"1"} id="tbg-radio-2" className="rounded-circle one" name="runs">1</ToggleButton>
                                                         <ToggleButton value={"2"} id="tbg-radio-3" className="rounded-circle one" name="runs">2</ToggleButton>
@@ -287,8 +302,8 @@ class ScoringPage extends React.Component {
                                         <Table className="mt-0 mb-0">
                                             <tbody className="tbody">
                                                 <tr>
-                                                    <ToggleButtonGroup type="radio" name="extras" id="extras" defaultValue={null}>
-                                                        <ToggleButton value={null} id="extras-radio-4" className="rounded-circle extras" name="extras">N/A</ToggleButton>
+                                                    <ToggleButtonGroup type="radio" name="extras" id="extras" defaultValue={""} onChange={this.updateExtras}>
+                                                        <ToggleButton value={""} id="extras-radio-4" className="rounded-circle extras" name="extras">N/A</ToggleButton>
                                                         <ToggleButton value={"Wd"} id="extras-radio-3" className="rounded-circle extras" name="extras">Wd</ToggleButton>
                                                         <ToggleButton value={"B"} id="extras-radio-2" className="rounded-circle extras" name="extras">B</ToggleButton>
                                                         <ToggleButton value={"NB"} id="extras-radio-1" className="rounded-circle extras" name="extras">NB</ToggleButton>
@@ -299,7 +314,8 @@ class ScoringPage extends React.Component {
                                         <Table className="mt-0 mb-3">
                                             <tbody className="tbody">
                                                 <tr>
-                                                    <Button type="submit" className="submit-buttons" variant="primary">Save</Button>
+                                                    <Button type="submit" className="submit-buttons" variant="primary" onClick={this.handleSave}>Save</Button>
+                                                    {this.state.callWicket ? <ModalWicket /> : <input type="hidden"></input>}
                                                     <Button type="submit" className="submit-buttons" onClick={this.handleEndOver} variant="primary">End Over</Button>
                                                     {this.state.callOverEnd ? <ModalOver /> : <input type="hidden"></input>}
                                                     <Button type="submit" className="submit-buttons" variant="primary">End Innings</Button>
