@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
+    id: Number,
     name: {
         type: String,
         required: true,
@@ -14,6 +15,8 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+    hand: String,
+    position: String,
 });
 
 module.exports = User = mongoose.model("User", userSchema);
