@@ -73,8 +73,14 @@ function noBall(OverUpdate, RunScoredOnThatBall)
 {
     let NoBallRun = 'N'; 
     //N represents No Ball
+
     //We need to now check to see what the batsman scored and then increment the score by 1
     //So if he scored 1 on the no ball I would update the string with 2 to account for the noball 1
+    let RunsTaken = parseInt(RunScoredOnThatBall); 
+    let NewVal = RunsTaken + 1; 
+    let NoBallVal = NewVal.toString(); 
+    let AppendValue = NoBallRun.concat(NoBallVal)
+    OverUpdate.concat(' ', AppendValue);
     return OverUpdate;
 }
 
