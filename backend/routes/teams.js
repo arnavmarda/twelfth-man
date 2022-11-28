@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const requireLogin = require("../middleware/requireLogin.js");
-const User = require("../models/User.js");
 
 const User = mongoose.model("User");
 const Team = mongoose.model("Team");
@@ -43,7 +42,7 @@ router.post("/team/create", requireLogin, (req, res) => {
 
                     const newTeam = new Team({
                         name: name,
-                        captain: player,
+                        captain: captain,
                         roster: roster ? roster : Array(11),
                     });
 
