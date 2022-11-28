@@ -5,6 +5,10 @@ const Match = mongoose.model("Match");
 const Schema = mongoose.Schema;
 
 const tournamentSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+    },
     teams: [String]
 });
 
