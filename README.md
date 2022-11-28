@@ -37,21 +37,6 @@ npm start
 
 The webpage should now be open in your default browser
 
-## Usage
-
-```python
-import foobar
-
-# returns 'words'
-foobar.pluralize('word')
-
-# returns 'geese'
-foobar.pluralize('goose')
-
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
-
 ## Project Contributors
 
 The project has been created by Arnav Marda, Angad Kapoor, Anirudh Rao, Ezequiel Hererra and Tanmay Desai.
