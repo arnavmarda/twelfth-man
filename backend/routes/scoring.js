@@ -1,6 +1,3 @@
-//Initial String to test functions:
-let Score = '';
-
 //Creating all baseline functions
 //Scores dot-6 runs 
 //one of these functions will be called based on the click in the front end
@@ -132,6 +129,23 @@ function legBye(OverUpdate, RunsScored)
 //When the user clicks a button the respective function will be called 
 //This will update three things: total Runs, Total extras, total balls
 
+function UpdateScorecard(MatchLength)
+{
+    //The MatchLength parameter provides the overs the match is going to be 
+    //This can be whatever the teams choose. 
+    //The total balls can be calculated 
+    TotalBallsLeft = MatchLength * 6; 
+    //We need the front end part done for this; however: 
+    //I can write the DOM property for the event in javascript and have the frontend
+    //format their code to the likeness of my code. 
+    
+    //First what we do is get the element ID
+        //We can do this using the getElementById function: 
+
+    //We need each function call to be matched to the button clicked. 
+    //This will all be done in the html file using onclick. 
+
+}
 
 let x = 1;
 console.log(x);
