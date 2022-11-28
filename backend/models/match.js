@@ -1,29 +1,33 @@
 const mongoose = require("mongoose");
-const User = mongoose.model("User");
-const Team = mongoose.model("Team");
-const Scorecard = mongoose.model("Scorecard")
 const Schema = mongoose.Schema;
 
 const matchSchema = new Schema({
     home: {
-        type: Team,
+        type: String,
         required: true,
     },
-
-    homeScorecard: {
-        type: Scorecard,
-        required: true,
-    },
-
     away: {
-        type: Team,
+        type: String,
         required: true,
     },
-
-    awayScorecard: {
-        type: Scorecard,
-        required: true,
+    homeRuns: {
+        type: Number,
+        default: 0,
     },
+    awayRuns: {
+        type: Number,
+        default: 0,
+    },
+    homeWicketsLost: {
+        type: Number,
+        default: 0,
+    },
+    awayWicketsLost: {
+        type: Number,
+        default: 0,
+    },
+    homeBowling: [String],
+    awayBowling: [String],
 });
 
 module.exports = Match = mongoose.model("Match", matchSchema);
