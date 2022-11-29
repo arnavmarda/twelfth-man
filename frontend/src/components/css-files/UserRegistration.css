@@ -132,7 +132,7 @@ input:invalid[focused="true"] ~ span{
    background-image: url("../../../src/assets/sign-login.jpeg");
    background-repeat: no-repeat;
    background-size: cover;
-   height: 102vh;
+   height: 105vh;
    margin-top: 0 !important;
 }
 

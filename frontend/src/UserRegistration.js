@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Link} from 'react-router-dom';
 import { NavigationBar } from "./components/NavbarTournament";
 import { FooterLogin } from "./components/FooterLogin";
 import './components/css-files/UserRegistration.css'
+import { DropdownRadio } from './components/DropdownRadio';
 
 
 const UserRegistration = () =>{     
@@ -54,14 +55,6 @@ const UserRegistration = () =>{
             pattern: values.password,
             required:true,
         },
-        {
-            id:5,
-            name:"Handiness",
-            type:"select",
-            placeholder:"Enter hand",
-            errorMessage:"Passwords must match",
-            required:true,
-        },
     ]
 
     const handleUp = (e) =>{
@@ -70,16 +63,29 @@ const UserRegistration = () =>{
         console.log(values);
     }
 
-    const handleChangeHand = (handedness) => {
-        setValues({...values, handedness: handedness});
-    }
-
     const onChange = (e)=>{
         setValues({...values, [e.target.name]: e.target.value});
     }
+    
+    const handleHands = (hands) => {
+        setValues({...values, hands: hands});
+    }
 
-    const {handedness} = values.handedness;
-    console.log(handedness)
+    const hands = [
+        {value: "Left", label: "Left"},
+        {value: "Right", label: "Right"},
+    ];
+
+    const handlePosition = (position) => {
+        setValues({...values, position: position});
+    }
+
+    const position = [
+        {value: "Batter", label: "Batter"},
+        {value: "Bowler", label: "Bowler"},
+        {value: "Keeper", label: "Keeper"},
+        {value: "All-rounder", label: "All-rounder"}
+    ];
 
     return (
         <div className="general" id="page">
@@ -95,24 +101,8 @@ const UserRegistration = () =>{
                         onChange={onChange}
                         />
                     )}
-                    <div className="optionalInputs">
-                        <p className="INPUT">Preferred Hand:</p>
-                            <select value={values.handedness} onChange={handleChangeHand}>
-                                <option value="">None</option>
-                                <option value="Left">Left</option>
-                                <option value="Right"> Right</option>
-                            </select>
-                    </div>
-                    <div className="optionalInputs">
-                        <p className="INPUT">Preferred Position:</p>
-                            <select required="true">
-                                <option>None</option>
-                                <option>Batter</option>
-                                <option>Bowler</option>
-                                <option>Keeper</option>
-                                <option>All-rounder</option>
-                            </select>
-                    </div>
+                    <DropdownRadio handleChange={handleHands} options={hands} selectedOptions={values.hands} placeholder={"Select your preferred hand"} />
+                    <DropdownRadio handleChange={handlePosition} options={position} selectedOptions={values.position} placeholder={"Select your preferred position"} />
                     <div className="RegistrationTitle">
                         <button type="submit" form="form1" className="RegistrationButton">Create Account</button>
                     </div>
