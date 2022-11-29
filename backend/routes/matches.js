@@ -2,9 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const requireLogin = require("../middleware/requireLogin.js");
+const scoring = require("./scoring");
+
 
 const Team = mongoose.model("Team");
 const Match = mongoose.model("Match");
+
 
 /*
     Fetch a match
@@ -73,5 +76,120 @@ router.delete("/match/delete/:id", requireLogin, (req, res) => {
             });
         });
 });
+
+
+
+
+/*
+    MATCH: main methods
+*/
+
+function parseRuns(inputRuns){
+    initialStr = " ";
+    switch(inputRuns) {
+        case 0:
+            scoring.dotBall(initialStr);
+            break;
+        case 1:
+            scoring.takeSingle(initialStr);
+            break;
+        case 2:
+            scoring.takeDouble(initialStr);
+            break;
+        case 3:
+            scoring.takeTriple(initialStr);
+            break;
+        case 4:
+            
+            scoring.Boundary(initialStr);
+            break;
+        case 5:
+        
+            scoring.takeFive(initialStr);
+            break;
+        case 6:
+            
+            scoring.Sixer(initialStr);
+            break;
+        
+        default:
+          // code block
+      }
+}
+
+// update runs
+router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
+    const { runsToAdd, teamToUpdate } = req.body;
+    teamToUpdate = teamToUpdate.toLowerCase();
+    if (teamToUpdate === "home") {
+        parseRuns(runsToAdd);
+        Match.findOneAndUpdate(
+            { _id: req.params.id },
+            { homeRuns: { $inc: runsToAdd } },
+            
+        )
+            .then((response) => res.status(200).json(response))
+            .catch((err) => {
+                return res.status(400).json({
+                    error: "Error updating runs for home team",
+                });
+            });
+    } else if (teamToUpdate === "away") {
+        parseRuns(runsToAdd);
+        Match.findOneAndUpdate(
+            { _id: req.params.id },
+            { awayRuns: { $inc: runsToAdd } }
+        )
+            .then((response) => res.status(200).json(response))
+            .catch((err) => {
+                return res.status(400).json({
+                    error: "Error updating runs for away team",
+                });
+            });
+    } else {
+        return res.status(400).json({
+            error: "Invalid team (home / away) entered",
+        });
+    }
+});
+
+// update wickets
+router.patch("/match/:id/updateWickets", requireLogin, (req, res) => {
+    const { wicketsToAdd, teamToUpdate } = req.body;
+    teamToUpdate = teamToUpdate.toLowerCase();
+    if (teamToUpdate === "home") {
+        Match.findOneAndUpdate(
+            { _id: req.params.id },
+            { homeWicketsLost: { $inc: wicketsToAdd } }
+        )
+            .then((response) => res.status(200).json(response))
+            .catch((err) => {
+                return res.status(400).json({
+                    error: "Error updating wickets lost by home team",
+                });
+            });
+    } else if (teamToUpdate === "away") {
+        Match.findOneAndUpdate(
+            { _id: req.params.id },
+            { awayWicketsLost: { $inc: wicketsToAdd } }
+        )
+            .then((response) => res.status(200).json(response))
+            .catch((err) => {
+                return res.status(400).json({
+                    error: "Error updating wickets lost by away team",
+                });
+            });
+    } else {
+        return res.status(400).json({
+            error: "Invalid team (home / away) entered",
+        });
+    }
+});
+
+// update bowling figures
+
+
+
+
 
 module.exports = router;
