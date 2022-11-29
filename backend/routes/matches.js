@@ -115,13 +115,13 @@ function parseRuns(inputRuns) {
 
 // update runs
 router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
-    const { runsToAdd, teamToUpdate, batsmanToUpdate } = req.body;
+    const { runsToAdd, teamToUpdate, batsmanToUpdate, homeVsAwayMap } = req.body;
     teamToUpdate = teamToUpdate.toLowerCase();
     if (teamToUpdate === "home") {
         parseRuns(runsToAdd);
         Match.findOneAndUpdate(
             { _id: req.params.id },
-            { homeRuns: { $inc: runsToAdd } },
+            { homeRuns: { $inc: runsToAdd } }
 
         )
             .then((response) => res.status(200).json(response))
