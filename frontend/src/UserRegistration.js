@@ -7,7 +7,7 @@ import { NavigationBar } from "./components/NavbarTournament";
 import { FooterLogin } from "./components/FooterLogin";
 import './components/css-files/UserRegistration.css';
 import { useNavigate } from "react-router-dom";
-
+import { DropdownRadio } from './components/DropdownRadio';
 
 
 const UserRegistration = () =>{     
@@ -16,6 +16,7 @@ const UserRegistration = () =>{
         email: "",
         password: "",
         passwordVerification: "",
+        handedness: "Right",
     });
 
     var navigate = useNavigate();
@@ -25,8 +26,8 @@ const UserRegistration = () =>{
             id:1,
             name:"username",
             type:"text",
-            placeholder:"Username",
-            errorMessage:"Username must only contain alphumeric characters and must be between 5-29 characters long.",
+            placeholder:"Name",
+            errorMessage:"Username must only contain alphumeric characters and must be between 6-29 characters long.",
             pattern: "^[A-Za-z][A-Za-z0-9_]{5,29}$",
             required:true,
         },
@@ -62,20 +63,38 @@ const UserRegistration = () =>{
     const handleUp = (e) =>{
         e.preventDefault();
         // eslint-disable-next-line 
-        const data = new FormData(e.target);
-        navigate('/user');
+        const data = new FormData(e.target)
     }
 
     const onChange = (e)=>{
         setValues({...values, [e.target.name]: e.target.value});
-        console.log("Hi");
     }
+    
+    const handleHands = (hands) => {
+        setValues({...values, hands: hands});
+    }
+
+    const hands = [
+        {value: "Left", label: "Left"},
+        {value: "Right", label: "Right"},
+    ];
+
+    const handlePosition = (position) => {
+        setValues({...values, position: position});
+    }
+
+    const position = [
+        {value: "Batter", label: "Batter"},
+        {value: "Bowler", label: "Bowler"},
+        {value: "Keeper", label: "Keeper"},
+        {value: "All-rounder", label: "All-rounder"}
+    ];
 
     return (
         <div className="general" id="page">
             <NavigationBar />
             <container className="Signup">
-                <form className="SignupForm" onSubmit={handleUp}>
+                <form id="form1" className="SignupForm" onSubmit={handleUp}>
                 <h3 className="RegistrationTitle"> Create Your Account </h3>
                     {inputs.map((input) =>
                         <Register 
@@ -85,26 +104,10 @@ const UserRegistration = () =>{
                         onChange={onChange}
                         />
                     )}
-                    <div className="optionalInputs">
-                        <p className="INPUT">Preferred Hand:</p>
-                            <select required="true">
-                                <option>None</option>
-                                <option>Left</option>
-                                <option> Right</option>
-                            </select>
-                    </div>
-                    <div className="optionalInputs">
-                        <p className="INPUT">Preferred Position:</p>
-                            <select required="true">
-                                <option>None</option>
-                                <option>Batter</option>
-                                <option>Bowler</option>
-                                <option>Keeper</option>
-                                <option>All-rounder</option>
-                            </select>
-                    </div>
+                    <DropdownRadio handleChange={handleHands} options={hands} selectedOptions={values.hands} placeholder={"Select your preferred hand"} />
+                    <DropdownRadio handleChange={handlePosition} options={position} selectedOptions={values.position} placeholder={"Select your preferred position"} />
                     <div className="RegistrationTitle">
-                        <button type="submit" className="RegistrationButton">Create Account</button>
+                        <button type="submit" form="form1" className="RegistrationButton">Create Account</button>
                     </div>
                     <div>
                         <Link to="/login" className="NavigationTitle">

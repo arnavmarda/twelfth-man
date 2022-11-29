@@ -48,7 +48,7 @@ const LoginPage = () => {
                 <NavigationBar />
                 <container className="Signup">
                         <form className="SignupForm" onSubmit={handleUp}>
-                            <h3 id="RegistrationTitle"> Sign in </h3>
+                            <h3 id="RegistrationTitle"> Login </h3>
                                 {inputs.map((input) =>
                                     <Register 
                                     key={input.id} 
