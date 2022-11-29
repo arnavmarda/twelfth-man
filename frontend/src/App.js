@@ -5,6 +5,8 @@ import TeamPage from "./TeamPage";
 import UserRegistration from "./UserRegistration";
 import LoginPage from "./Login";
 import MatchPage from "./MatchPage";
+import ScoringPage from "./ScoringPage";
+import NotFound from "./NotFound";
 import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TeamCreation from "./TeamCreation";
