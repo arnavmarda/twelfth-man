@@ -150,6 +150,31 @@ function wicketBall(OverUpdate, type)
         default: 
             break; 
     }    
+    let bowler = ''; 
+    let wicketKeeper = ''; 
+    let fielder = ''; 
+    if (type == 'bowled')
+    {
+        bowler = prompt('Bowler Name is: ');
+    }
+    elif (type == 'stumped')
+    {
+        wicketKeeper = prompt('Keeper name is: '); 
+    }
+    elif (type == 'caught')
+    {
+        bowler = prompt('Bowler Name is: ');
+        fielder = prompt('Fielder name is: ');
+    }
+    elif (type == 'runout')
+    {
+        fielder = prompt('Fielder name is: '); 
+    }
+    elif (type == 'lbw')
+    {
+        bowler = prompt('Bowler Name is: ');
+    }
+    return OverUpdate, bowler, fielder, wicketKeeper; 
 }
 //Ok now that I have the general functions I will implement them based on click
 //When the user clicks a button the respective function will be called 
