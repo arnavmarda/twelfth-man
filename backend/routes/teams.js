@@ -64,7 +64,7 @@ router.post("/team/create", requireLogin, (req, res) => {
                         const newTeam = new Team({
                             name: name,
                             captain: captain,
-                            roster: Array(11),
+                            roster: roster,
                         });
 
                         newTeam
