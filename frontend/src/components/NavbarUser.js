@@ -51,7 +51,7 @@ export const NavigationBar = () => (
                     <Button type='submit'>Search</Button>
                 </Form>
                 <Form className='d-flex'>
-                    <Button type='button' variant='outline-success' href='#create-team'>Create Team</Button>
+                    <Link to="/TeamCreation"><Button type='button' variant='outline-success' href='#create-team'>Create Team</Button></Link>
                     <Button type='button' variant='outline-success' href='#create-tournament'>Create Tournament</Button>
                 </Form>
             </Container>

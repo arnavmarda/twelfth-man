@@ -1,9 +1,8 @@
-import React, { useState, Component } from 'react';
-import { Container } from 'react-bootstrap';
+import React, { useState } from 'react';
 import { Layout } from './components/Layout';
 import { NavigationBar } from './components/NavbarTournament';
 import { FooterLogin } from './components/FooterLogin';
-import {BrowserRouter as Router, Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Register from "./components/Registration";
 
 const LoginPage = () => {

@@ -55,8 +55,8 @@ export const NavigationBar = () => (
                     <Button type='submit'>Search</Button>
                 </Form>
                 <Form className='d-flex'>
-                    <Button type='button' variant='outline-success' href='login'>Login</Button>
-                    <Button type='button' variant='outline-success' href='sign-up'>Sign Up</Button>
+                    <Link to="/login"><Button type='button' variant='outline-success' href='login'>Login</Button></Link>
+                    <Link to="/registration"><Button type='button' variant='outline-success' href='sign-up'>Sign Up</Button></Link>
                 </Form>
             </Container>
         </Navbar>
