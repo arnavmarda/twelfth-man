@@ -7,7 +7,7 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ScoringPage from "./ScoringPage";
-import { NotFound } from "./NotFound";
+import NotFound  from "./NotFound";
 
 
 function App() {
