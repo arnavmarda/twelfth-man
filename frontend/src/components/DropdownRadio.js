@@ -1,17 +1,17 @@
 import React from "react";
 import CreatableSelect from 'react-select/creatable'; 
   
-export const DropdownRadio = ({roster, captain, handleChange}) => {
+export const DropdownRadio = ({options, selectedOption, handleChange, placeholder}) => {
     return (
         <CreatableSelect 
         isMulti={false} 
-        value={captain}
-        options={roster} 
+        value={selectedOption}
+        options={options} 
         noOptionsMessage={() => null} 
         isValidNewOption={() => false} 
         isSearchable={true} 
         onChange={handleChange}
-        placeholder={"Choose the team captain..."} 
+        placeholder={placeholder} 
         className="p-5 pt-3 pb-3"/>
     );
 }
