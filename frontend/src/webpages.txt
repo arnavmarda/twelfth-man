@@ -7,7 +7,7 @@ List of webpages to make:
 5. Create team 
 6. Create tournament 
 7. Tournament page - (Navbar, Jumbotron, Teams, Standings, Bracket, Footer) - **DONE**
-8. Scoring page - (Navbar, Match Details, Info and Scoring, Footer) 
+8. Scoring page - (Navbar, Match Details, Info and Scoring, Footer) - **DONE**
 9. Match Page - (Navbar, Match Summary, Scoresheet, Footer) - **DONE**
 10. Team Page - (Navbar, Jumbotron, Roster, Tournaments, Footer) - **DONE**
 
