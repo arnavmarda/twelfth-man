@@ -1,12 +1,11 @@
 //import needed libraries:
 import React, {useState } from "react";
 import Register from "./components/Registration";
-import { Container} from 'react-bootstrap';
-import { FaCopyright } from 'react-icons/fa';
 // eslint-disable-next-line 
 import {BrowserRouter as Router, Link} from 'react-router-dom';
-import { RegistrationNavbar } from "./components/RegistrationNavbar";
+import { NavigationBar } from "./components/NavbarTournament";
 import { FooterLogin } from "./components/FooterLogin";
+import './components/css-files/UserRegistration.css'
 
 
 const UserRegistration = () =>{     
@@ -23,7 +22,7 @@ const UserRegistration = () =>{
             name:"username",
             type:"text",
             placeholder:"Username",
-            errorMessage:"Invalid username",
+            errorMessage:"Username must only contain alphumeric characters and must be between 5-29 characters long.",
             pattern: "^[A-Za-z][A-Za-z0-9_]{5,29}$",
             required:true,
         },
@@ -41,7 +40,7 @@ const UserRegistration = () =>{
             name:"password",
             type:"password",
             placeholder:"Password",
-            errorMessage:"Need: 8-15 characters, one capitol, one special character",
+            errorMessage:"Needs: 8-15 characters, one capital, and one special character",
             pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\da-zA-Z]).{8,15}$",
             required:true,
         },
@@ -69,7 +68,7 @@ const UserRegistration = () =>{
 
     return (
         <div className="general" id="page">
-            <RegistrationNavbar />
+            <NavigationBar />
             <container className="Signup">
                 <form className="SignupForm" onSubmit={handleUp}>
                 <h3 className="RegistrationTitle"> Create Your Account </h3>
@@ -83,7 +82,7 @@ const UserRegistration = () =>{
                     )}
                     <div className="optionalInputs">
                         <p className="INPUT">Preferred Hand:</p>
-                            <select required="false">
+                            <select required="true">
                                 <option>None</option>
                                 <option>Left</option>
                                 <option> Right</option>
@@ -91,7 +90,7 @@ const UserRegistration = () =>{
                     </div>
                     <div className="optionalInputs">
                         <p className="INPUT">Preferred Position:</p>
-                            <select required="false">
+                            <select required="true">
                                 <option>None</option>
                                 <option>Batter</option>
                                 <option>Bowler</option>
@@ -108,8 +107,8 @@ const UserRegistration = () =>{
                         </Link>
                     </div>
                 </form>
+                <FooterLogin />
             </container>
-            <FooterLogin />
         </div>
     )
 }

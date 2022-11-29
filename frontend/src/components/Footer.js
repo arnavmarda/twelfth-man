@@ -34,6 +34,7 @@ const Styles = styled.div`
         background-size: cover;
         height: 50px;
         text-align: center;
+        position: relative;
     }
 
     .copyright {

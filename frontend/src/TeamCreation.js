@@ -1,7 +1,7 @@
 import React, { useState, Component } from 'react';
 import { Layout } from './components/Layout';
-import { RegistrationNavbar } from './components/RegistrationNavbar';
-import { FooterLogin } from './components/FooterLogin';
+import { NavigationBar } from './components/NavbarTournament';
+import { Footer } from './components/Footer';
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 import Register from "./components/Registration";
 
@@ -44,7 +44,7 @@ const TeamCreation = () =>{
             <styles>
                 <Layout>
                     <div>
-                        <RegistrationNavbar /> 
+                        <NavigationBar /> 
                     </div>
                     <container className="Signup">
                         <form className="SignupForm" onSubmit={handleUp}>
@@ -61,8 +61,8 @@ const TeamCreation = () =>{
                                 <button type="submit" id="RegistrationButton">Create Team</button>
                             </div>
                         </form>
-                    <FooterLogin />
                 </container>
+                <Footer />
                 </Layout>
             </styles>
         </div>

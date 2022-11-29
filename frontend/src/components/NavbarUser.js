@@ -1,4 +1,4 @@
-import { Container, Navbar, Form, Button } from "react-bootstrap";
+import { Container, Navbar, Form, Button, Nav } from "react-bootstrap";
 import React from 'react';
 import styled from 'styled-components';
 import Logo from "../assets/logo.jpg"; 
@@ -6,10 +6,11 @@ import { Link } from "react-router-dom";
 
 const Styles = styled.div`
 
-    .navbar-brand {
+    .nav-link {
         color: #FFD100;
         font-family: Georgia;
         padding-left: 25px;
+        text-decoration: none;
     }
 
     .navbar {
@@ -29,8 +30,8 @@ export const NavigationBar = () => (
     <Styles className="sticky-top">
         <Navbar className="starter" variant='dark' sticky="top">
             <Container>
-                <Link to="/"> 
-                    <Navbar.Brand>
+                <Nav.Link>
+                    <Link to="/"> 
                         <img 
                         src={Logo}
                         width="90"
@@ -38,9 +39,9 @@ export const NavigationBar = () => (
                         className="d-inline-block align-middle"
                         alt=""
                         />
-                        Twelfth Man
-                    </Navbar.Brand>
-                </Link>
+                    </Link>
+                    Twelfth Man
+                </Nav.Link>
                 <Form className="d-flex w-50">
                     <Form.Control
                     type="search"
