@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import stadium from '../assets/stadium.jpg';
 import { NavigationBar } from './Navbar';
 
+
 const Styles = styled.div`
 
     .jumbo {

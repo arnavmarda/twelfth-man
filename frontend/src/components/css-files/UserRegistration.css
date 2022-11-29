@@ -1,0 +1,189 @@
+.starter{
+   display: flex;
+   align-items: center;
+   background-color: #005587;
+   height: 75px;
+   color:#FFD100;
+   font-family: Georgira;
+   font-size: 25px;
+   padding-left: 80px;
+   padding-right: 20px;
+}
+
+.NavigationImage{
+   width:90px;
+   height:85px;
+}
+
+.NavigationText{
+   color:#FFD100;
+   font-family: Georgira;
+   font-size: 20px;
+   padding-top: 15 px;
+   text-decoration:none;
+}
+
+/* Button Inspired from https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjr8PW3pM37AhVIK0QIHQz0AHYQFnoECAsQAQ&url=https%3A%2F%2Fgetcssscan.com%2Fcss-buttons-examples&usg=AOvVaw1GMN0MjrmmHUSa7j8UbWpS*/
+.Button2{
+  background: linear-gradient(to bottom right, #80a9c2, #76DAFF);
+  border: 0;
+  border-radius: 12px;
+  color: #FFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Georgira;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.Button2:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(255, 255, 255, 0.5), .125rem .125rem 1rem rgba(255, 255, 255, 0.5);
+}
+
+.Button2:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem rgba(255, 255, 255, 0.5), .125rem .125rem 1rem rgba(255, 255, 255, 0.5);
+}
+
+.RegistrationTitle {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   padding-top: 25px;
+   padding-bottom: 1px;
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.Registration {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   flex-direction: column;
+   padding-top: 28px;
+}
+
+.booty{
+   top: 50%;
+  left: 50%;
+}
+
+/* Button Inspired from https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjr8PW3pM37AhVIK0QIHQz0AHYQFnoECAsQAQ&url=https%3A%2F%2Fgetcssscan.com%2Fcss-buttons-examples&usg=AOvVaw1GMN0MjrmmHUSa7j8UbWpS*/
+.RegistrationButton{
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  font-size: 16px;
+  padding: 0.7em 1.4em 0.7em 1.1em;
+  color: white;
+  background: linear-gradient(0deg, rgba(20,167,62,1) 0%, rgba(102,247,113,1) 100%);
+  border: none;
+  box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
+  letter-spacing: 0.05em;
+  border-radius: 20em;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    
+}
+
+span{
+   font-size: 12px;
+   justify-content: flex-start;
+   text-align: left;
+   display: none;
+   color: red;
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;  
+}
+
+input:invalid[focused="true"] ~ span{
+   display: block;
+}
+
+.footer-copyright {
+   background-color: #000000;
+   background-size: cover;
+   flex-direction: column;
+   bottom:0px;
+   position:fixed;
+   text-align: center;
+}
+
+.copyright {
+   color: white;
+   position: relative;
+   font-family: Georgia;
+   font-size: 15px;
+   bottom: 0;
+}
+
+.general{
+   background-image: url("../../../src/assets/sign-login.jpeg");
+   background-repeat: no-repeat;
+   background-size: cover;
+   height: 102vh;
+}
+
+.Signup
+{
+   background-color: #FFD100;
+}
+
+.SignupForm
+{
+   background-position: center;
+   background-color: white;
+   margin: 0px 525px;
+   margin-top: 52px;
+   border-radius: 15px;
+   box-shadow: 0px 0px 5px #fff;
+}
+
+.fieldBoxes{
+   border-radius: 6px;
+   padding: 6px 14px;
+   font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+   color: #3D3D3D;
+   background-color: white;
+   box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1);
+   border: none; 
+}
+
+.LoginRedirect{
+   text-align: center;
+   padding-top: 10px;
+   padding-bottom: 8px;
+   color: black;
+   text-decoration:none;
+   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+
+.optionalInputs{
+   margin-top: 10px;
+   display: flex;
+   flex-direction: row;
+   padding-left: 85px;
+   padding-top: 9px;
+   padding-bottom: 1px;
+   font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+}
+
+.select{
+   padding-left: 10px;
+}
+
+.INPUT{
+   padding-right: 15px;
+   font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+}

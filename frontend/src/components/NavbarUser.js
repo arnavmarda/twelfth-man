@@ -27,7 +27,7 @@ const Styles = styled.div`
 
 export const NavigationBar = () => (
     <Styles className="sticky-top">
-        <Navbar variant='dark' sticky="top">
+        <Navbar className="starter" variant='dark' sticky="top">
             <Container>
                 <Link to="/"> 
                     <Navbar.Brand>
@@ -56,5 +56,4 @@ export const NavigationBar = () => (
             </Container>
         </Navbar>
     </Styles>
-    
 )
