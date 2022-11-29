@@ -180,13 +180,47 @@ function wicketBall(OverUpdate, type)
 //When the user clicks a button the respective function will be called 
 //This will update three things: total Runs, Total extras, total balls
 
-function UpdateScorecard(MatchLength)
+function UpdateScorecard(MatchLength, id)
 {
     //The MatchLength parameter provides the overs the match is going to be 
     //This can be whatever the teams choose. 
     //The total balls can be calculated 
+    scoreCur = '';
+    var ballUpdate = document.getElementById(id);
     TotalBallsLeft = MatchLength * 6; 
 
+    switch(id)
+    {
+        case '1': 
+            document.getElementById('1').onclick = function() {takeSingle(scoreCur)};
+            TotalBallsLeft = TotalBallsLeft - 1; 
+            break;
+        case '2': 
+            document.getElementById('2').onclick = function() {takeDouble(scoreCur)};
+            TotalBallsLeft = TotalBallsLeft - 1; 
+            break;
+        case '3': 
+            document.getElementById('3').onclick = function() {takeTriple(scoreCur)};
+            TotalBallsLeft = TotalBallsLeft - 1; 
+            break;
+        case '4': 
+            document.getElementById('4').onclick = function() {Boundary(scoreCur)};
+            TotalBallsLeft = TotalBallsLeft - 1; 
+            break;
+        case '5': 
+            document.getElementById('5').onclick = function() {takeFive(scoreCur)};
+            TotalBallsLeft = TotalBallsLeft - 1; 
+            break;
+        case '6': 
+            document.getElementById('6').onclick = function() {Sixer(scoreCur)};
+            TotalBallsLeft = TotalBallsLeft - 1; 
+            break;
+        case '0': 
+            document.getElementById('0').onclick = function() {dotBall(scoreCur)};
+            TotalBallsLeft = TotalBallsLeft - 1; 
+            break;
+    }
+    
     //We need the front end part done for this; however: 
     //I can write the DOM property for the event in javascript and have the frontend
     //format their code to the likeness of my code. 
