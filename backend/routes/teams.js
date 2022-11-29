@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const requireLogin = require("../middleware/requireLogin.js");
+const { route } = require("./tournaments.js");
 
 const User = mongoose.model("User");
 const Team = mongoose.model("Team");
@@ -17,6 +18,25 @@ router.get("/team/:id", (req, res) => {
                 error: "Couldn't find team with given ID",
             });
         });
+});
+
+/* 
+    Get all teams
+*/
+router.get("/teamList", requireLogin, (req, res) => {
+    Team.find({}, (err, teams) => {
+        let teamsMap = {};
+
+        teams.forEach((team) => {
+            teamsMap[team.name] = {
+                _id: team._id,
+                captain: team.captain,
+                roster: team.roster,
+            };
+        });
+
+        res.status(200).json(teamsMap);
+    }).catch((err) => console.log(err));
 });
 
 /*
