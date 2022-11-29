@@ -14,10 +14,20 @@ const matchSchema = new Schema({
         type: Number,
         default: 0,
     },
+
+    homeBatsmen: {
+        type: Map,
+    },
+
     awayRuns: {
         type: Number,
         default: 0,
     },
+
+    awayBatsmen: {
+        type: Map,
+    },
+
     homeWicketsLost: {
         type: Number,
         default: 0,
