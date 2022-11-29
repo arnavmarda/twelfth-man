@@ -73,6 +73,8 @@
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;    
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 #RegistrationTitle{
@@ -89,4 +91,14 @@
     background-color: white;
     box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.1);
     border: none; 
+ }
+
+ .TeamCreation{
+    background-image: url("../../../src/assets/cricket-team-creation.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 102vh;
+    background-position: 0px 330px;
+    background-repeat: repeat-x;
+    background-color: #77b0e3;
  }
