@@ -11,7 +11,7 @@ import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TeamCreation from "./TeamCreation";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-
+import TournamentCreation from "./TournamentCreation.js";
 
 function App() {
   return (
@@ -25,6 +25,7 @@ function App() {
           <Route path="/registration" element={<UserRegistration />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/TeamCreation" element={<TeamCreation />} />
+          <Route path="/TournamentCreation" element={<TournamentCreation />} />
           <Route path="/scoring" element={<ScoringPage />} />
           <Route path="/match" element={<MatchPage />} />
           <Route path='*' element={<NotFound />} />

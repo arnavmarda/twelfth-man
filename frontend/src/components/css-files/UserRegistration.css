@@ -189,3 +189,7 @@ input:invalid[focused="true"] ~ span{
    padding-right: 15px;
    font-family: -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
 }
+
+#tournamentSubmit{
+   margin-bottom: 15px;
+}
