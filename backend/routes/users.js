@@ -93,3 +93,39 @@ router.post("/login", (req, res) => {
 });
 
 module.exports = router;
+
+function isNameTaken(userGiven)
+{ 
+    Name.count({ userGiven }).then((count) => 
+    { 
+        if (count != 0)
+        { 
+          return true; 
+        } 
+        return false; 
+    }); 
+} 
+
+function isPasswordTaken(passGiven)
+{ 
+    Password.count({ passGiven }).then((count) => 
+    { 
+        if (count != 0)
+        { 
+          return true; 
+        } 
+        return false; 
+    }); 
+} 
+
+function isEmailTaken(passGiven)
+{ 
+    Email.count({ passGiven }).then((count) => 
+    { 
+        if (count != 0)
+        { 
+          return true; 
+        } 
+        return false; 
+    }); 
+} 
