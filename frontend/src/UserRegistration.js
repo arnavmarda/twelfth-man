@@ -63,7 +63,7 @@ const UserRegistration = () =>{
     const handleUp = (e) =>{
         e.preventDefault();
         // eslint-disable-next-line 
-        const data = new FormData(e.target)
+        navigate("/user");
     }
 
     const onChange = (e)=>{
