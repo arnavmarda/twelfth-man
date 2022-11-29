@@ -14,6 +14,7 @@ const UserRegistration = () =>{
         email: "",
         password: "",
         passwordVerification: "",
+        handedness: "Right",
     });
     
     const inputs = [
@@ -21,8 +22,8 @@ const UserRegistration = () =>{
             id:1,
             name:"username",
             type:"text",
-            placeholder:"Username",
-            errorMessage:"Username must only contain alphumeric characters and must be between 5-29 characters long.",
+            placeholder:"Name",
+            errorMessage:"Username must only contain alphumeric characters and must be between 6-29 characters long.",
             pattern: "^[A-Za-z][A-Za-z0-9_]{5,29}$",
             required:true,
         },
@@ -53,24 +54,38 @@ const UserRegistration = () =>{
             pattern: values.password,
             required:true,
         },
+        {
+            id:5,
+            name:"Handiness",
+            type:"select",
+            placeholder:"Enter hand",
+            errorMessage:"Passwords must match",
+            required:true,
+        },
     ]
 
     const handleUp = (e) =>{
         e.preventDefault();
         // eslint-disable-next-line 
-        const data = new FormData(e.target)
+        console.log(values);
+    }
+
+    const handleChangeHand = (handedness) => {
+        setValues({...values, handedness: handedness});
     }
 
     const onChange = (e)=>{
         setValues({...values, [e.target.name]: e.target.value});
-        console.log("Hi");
     }
+
+    const {handedness} = values.handedness;
+    console.log(handedness)
 
     return (
         <div className="general" id="page">
             <NavigationBar />
             <container className="Signup">
-                <form className="SignupForm" onSubmit={handleUp}>
+                <form id="form1" className="SignupForm" onSubmit={handleUp}>
                 <h3 className="RegistrationTitle"> Create Your Account </h3>
                     {inputs.map((input) =>
                         <Register 
@@ -82,10 +97,10 @@ const UserRegistration = () =>{
                     )}
                     <div className="optionalInputs">
                         <p className="INPUT">Preferred Hand:</p>
-                            <select required="true">
-                                <option>None</option>
-                                <option>Left</option>
-                                <option> Right</option>
+                            <select value={values.handedness} onChange={handleChangeHand}>
+                                <option value="">None</option>
+                                <option value="Left">Left</option>
+                                <option value="Right"> Right</option>
                             </select>
                     </div>
                     <div className="optionalInputs">
@@ -99,7 +114,7 @@ const UserRegistration = () =>{
                             </select>
                     </div>
                     <div className="RegistrationTitle">
-                        <button type="submit" className="RegistrationButton">Create Account</button>
+                        <button type="submit" form="form1" className="RegistrationButton">Create Account</button>
                     </div>
                     <div>
                         <Link to="/login" className="NavigationTitle">
