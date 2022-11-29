@@ -68,7 +68,6 @@ function wideBall(OverUpdate, RunScored)
     return OverUpdate;
 }
 
-//Needed to create a 7Runs function incase of a noball 6
 //How a no ball works is whatever scored on that ball + 1
 //and the next ball the batsman can't get out. 
 
@@ -125,6 +124,11 @@ function legBye(OverUpdate, RunsScored)
     return OverUpdate;
 }
 
+//We need a wicket function which will update the scorecard with the type of wicket
+function wicketBall(OverUpdate, type)
+{
+
+}
 //Ok now that I have the general functions I will implement them based on click
 //When the user clicks a button the respective function will be called 
 //This will update three things: total Runs, Total extras, total balls
@@ -135,6 +139,7 @@ function UpdateScorecard(MatchLength)
     //This can be whatever the teams choose. 
     //The total balls can be calculated 
     TotalBallsLeft = MatchLength * 6; 
+
     //We need the front end part done for this; however: 
     //I can write the DOM property for the event in javascript and have the frontend
     //format their code to the likeness of my code. 
