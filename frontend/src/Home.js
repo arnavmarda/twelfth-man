@@ -123,7 +123,6 @@ class Home extends Component {
                     <Jumbotron />
                     <MatchCarousel />
                     <Container fluid className='features'>
-                        {/* <div fluid className='features-overlay'></div> */}
                             <Row>
                                 <Col className='features-component'>
                                     <p className='blinking-live-icon'></p>    
