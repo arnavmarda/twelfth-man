@@ -128,6 +128,28 @@ function legBye(OverUpdate, RunsScored)
 function wicketBall(OverUpdate, type)
 {
 
+    //Based on the type of wicket it will update 
+    //So I will switch through the type of wicket and take in the important information from user input. 
+    switch(type)
+    {
+        case 'bowled': 
+            OverUpdate.concat(' ', 'W-B'); 
+            break; 
+        case 'stumped': 
+            OverUpdate.concat(' ', 'W-S'); 
+            break; 
+        case 'caught': 
+            OverUpdate.concat(' ', 'W-C'); 
+            break; 
+        case 'runout': 
+            OverUpdate.concat(' ', 'W-R'); 
+            break; 
+        case 'lbw': 
+            OverUpdate.concat(' ', 'W-LBW'); 
+            break; 
+        default: 
+            break; 
+    }    
 }
 //Ok now that I have the general functions I will implement them based on click
 //When the user clicks a button the respective function will be called 
