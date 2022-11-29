@@ -1,7 +1,7 @@
 import React from "react";
 import CreatableSelect from 'react-select/creatable'; 
   
-export const DropdownRadio = ({options, selectedOption, handleChange, placeholder}) => {
+export const DropdownSearch = ({options, selectedOption, handleChange, placeholder}) => {
     return (
         <CreatableSelect 
         isMulti={false} 
@@ -13,7 +13,8 @@ export const DropdownRadio = ({options, selectedOption, handleChange, placeholde
         autoSize={false} 
         onChange={handleChange}
         placeholder={placeholder} 
-        className="p-5 pt-3 pb-3 w-100"/>
+        components={{ DropdownIndicator:() => null, IndicatorSeparator:() => null }}
+        className="p-5 pt-3 pb-3 w-100 h-75"/>
     );
 }
 

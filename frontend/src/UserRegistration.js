@@ -5,7 +5,9 @@ import Register from "./components/Registration";
 import {BrowserRouter as Router, Link} from 'react-router-dom';
 import { NavigationBar } from "./components/NavbarTournament";
 import { FooterLogin } from "./components/FooterLogin";
-import './components/css-files/UserRegistration.css'
+import './components/css-files/UserRegistration.css';
+import { useNavigate } from "react-router-dom";
+
 
 
 const UserRegistration = () =>{     
@@ -15,6 +17,8 @@ const UserRegistration = () =>{
         password: "",
         passwordVerification: "",
     });
+
+    var navigate = useNavigate();
     
     const inputs = [
         {
@@ -58,7 +62,8 @@ const UserRegistration = () =>{
     const handleUp = (e) =>{
         e.preventDefault();
         // eslint-disable-next-line 
-        const data = new FormData(e.target)
+        const data = new FormData(e.target);
+        navigate('/user');
     }
 
     const onChange = (e)=>{

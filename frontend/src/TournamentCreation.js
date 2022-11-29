@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavigationBar } from './components/NavbarTournament';
 import { FooterLogin } from './components/FooterLogin';
-import {Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import Register from "./components/Registration";
 import { DropdownChecklist } from "./components/DropdownChecklist";
 import { DropdownRadio } from './components/DropdownRadio';
@@ -14,6 +14,8 @@ const LoginPage = () => {
         noOfTeams: "",
         teams: [],
     });
+
+    var navigate = useNavigate();
     
     const inputs = [
         {
@@ -25,14 +27,11 @@ const LoginPage = () => {
         },
     ]
 
-    var number = ""
-
     const handleUp = (e) =>{
         e.preventDefault();
-        // eslint-disable-next-line 
-        // setValues({...values, noOfTeams: document.getElementById("noOfTeams").value});
 
         console.log(values)
+        navigate('/tournament');
     }
     const onChange = (e)=>{
         setValues({...values, [e.target.name]: e.target.value});
@@ -74,15 +73,6 @@ const LoginPage = () => {
                         onChange={onChange}
                         />
                     )}
-                    {/* <div className="optionalInputs">
-                        <p className="INPUT">Tounament Size:</p>
-                            <select required="true" id="noOfTeams">
-                                <option value="2">2</option>
-                                <option value="4">4</option>
-                                <option value="8">8</option>
-                                <option value="16">16</option>
-                            </select>
-                    </div> */}
                     <DropdownRadio handleChange={handleNoOfTeams} options={noOfTeams} selectedOptions={values.noOfTeams} placeholder={"Choose the number of teams..."} />
                     <DropdownChecklist handleChange={handleTeams} options={teams} selectedOptions={values.teams} placeholder={"Choose teams to add..."} />
                     <div className="RegistrationTitle">
