@@ -92,4 +92,25 @@ router.post("/login", (req, res) => {
     });
 });
 
+/*
+    Get list of all users
+*/
+router.get("/userList", requireLogin, (req, res) => {
+    User.find({}, (err, users) => {
+        let usersMap = {};
+
+        users.forEach((user) => {
+            usersMap[user.name] = {
+                _id: user._id,
+                registrationID: user.id,
+                email: user.email,
+                hand: user.hand ? user.hand : "",
+                position: user.position ? user.position : "",
+            };
+        });
+
+        res.status(200).json(usersMap);
+    }).catch((err) => console.log(err));
+});
+
 module.exports = router;
