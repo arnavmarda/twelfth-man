@@ -19,7 +19,6 @@ const TeamCreation = () => {
 
     const handleSelectCaptain = (captain) => {
         setValues({...values, captain: captain});
-        console.log(values.captain);
     }
     
     const players = [
@@ -45,7 +44,6 @@ const TeamCreation = () => {
         e.preventDefault();
         // eslint-disable-next-line 
         const data = new FormData(e.target)
-        console.log(JSON.stringify(values));
     }
 
     const onChange = (e)=>{
@@ -70,8 +68,8 @@ const TeamCreation = () => {
                                 onChange={onChange}
                                 />
                             )}
-                            <DropdownChecklist handleChange={handleSelectedPlayers} options={players} roster={values.roster} placeholder={"Choose players to add..."}/>
-                            <DropdownRadio roster={players} captain={values.roster} handleChange={handleSelectCaptain} />
+                            <DropdownChecklist handleChange={handleSelectedPlayers} options={players} selectedOptions={values.roster} placeholder={"Choose players to add..."}/>
+                            <DropdownRadio options={players} selectedOption={values.roster} handleChange={handleSelectCaptain} placeholder={"Choose a captain..."}/>
                             <div className="RegistrationTitle">
                                 <button type="submit" id="RegistrationButton">Create Team</button>
                             </div>
