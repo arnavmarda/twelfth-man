@@ -21,13 +21,9 @@ router.get("/tournament/:id", (req, res) => {
         });
 });
 
-
 /*
     Create a Tournament
 */
-
-
-
 router.post("/tournament/create", requireLogin, (req, res) => {
     const { name, teams } = req.body;
     if (!name || !teams) {
@@ -36,42 +32,33 @@ router.post("/tournament/create", requireLogin, (req, res) => {
         });
     }
 
+    Tournament.findOne({ name: name }).then((savedTeam) => {
+        if (savedTeam) {
+            return res.status(422).json({
+                error: "Tournament with this name already exists",
+            });
+        }
 
-    Tournament.findOne({ name: name })
-        .then((savedTeam) => {
-            if (savedTeam) {
-                return res.status(422).json({
-                    error: "Tournament with this name already exists",
-                });
-            }
+        for (oneTeam in teams) {
+            Team.findOne({ name: oneTeam }).then((foundTeam) => {
+                if (!foundTeam) {
+                    return res.status(400)({
+                        error: "No team found with name " + foundTeam,
+                    });
+                }
+            });
+        }
 
-
-
-    
-    for (oneTeam in teams){
-        Team.findOne({ name: oneTeam }).then((foundTeam) => {
-            if(!foundTeam){
-                return res.status(400)({
-                    error: "No team found with name " + foundTeam,
-                });
-            }
+        const newTournament = new Tournament({
+            name: name,
+            teams: teams,
         });
-    }
 
-    const newTournament = new Tournament({
-        name: name,
-        teams: teams,
+        newTournament
+            .save()
+            .then((tournament) => res.json(tournament))
+            .catch((err) => console.log(err));
     });
-
-    newTournament
-        .save()
-        .then((tournament) => res.json(tournament))
-        .catch((err) => console.log(err));
-
-
-
-    });
-
 });
 
 /*
@@ -88,15 +75,3 @@ router.delete("/tournament/delete/:id", requireLogin, (req, res) => {
 });
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-

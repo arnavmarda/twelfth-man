@@ -4,10 +4,8 @@ const router = express.Router();
 const requireLogin = require("../middleware/requireLogin.js");
 const scoring = require("./scoring");
 
-
 const Team = mongoose.model("Team");
 const Match = mongoose.model("Match");
-
 
 /*
     Fetch a match
@@ -77,16 +75,13 @@ router.delete("/match/delete/:id", requireLogin, (req, res) => {
         });
 });
 
-
-
-
 /*
     MATCH: main methods
 */
 
-function parseRuns(inputRuns){
+function parseRuns(inputRuns) {
     initialStr = " ";
-    switch(inputRuns) {
+    switch (inputRuns) {
         case 0:
             scoring.dotBall(initialStr);
             break;
@@ -100,21 +95,18 @@ function parseRuns(inputRuns){
             scoring.takeTriple(initialStr);
             break;
         case 4:
-            
             scoring.Boundary(initialStr);
             break;
         case 5:
-        
             scoring.takeFive(initialStr);
             break;
         case 6:
-            
             scoring.Sixer(initialStr);
             break;
-        
+
         default:
-          // code block
-      }
+        // code block
+    }
 }
 
 // update runs
@@ -125,8 +117,7 @@ router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
         parseRuns(runsToAdd);
         Match.findOneAndUpdate(
             { _id: req.params.id },
-            { homeRuns: { $inc: runsToAdd } },
-            
+            { homeRuns: { $inc: runsToAdd } }
         )
             .then((response) => res.status(200).json(response))
             .catch((err) => {
@@ -187,9 +178,5 @@ router.patch("/match/:id/updateWickets", requireLogin, (req, res) => {
 });
 
 // update bowling figures
-
-
-
-
 
 module.exports = router;
