@@ -65,7 +65,13 @@ const UserRegistration = () =>{
         e.preventDefault();
         fetch("http://localhost:9000/register", {
             method: "POST",
-            body: JSON.stringify({values}),
+            body: JSON.stringify({
+                name: values.name,
+                email: values.email,
+                password: values.password,
+                hand: values.hand.value,
+                position: values.position.value
+            }),
         })
         .then((res) => res.json())
         .then((values) => console.log("Success: ", values))
