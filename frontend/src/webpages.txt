@@ -1,3 +1,12 @@
 1. GET list of teams and render unique team pages in App.js. TODO - Need to add id for teams to render routes without spaces.
 2. GET tournamentList, teamRoster(todo), upcomingGames(todo) and upload dynamic data to user.
 3. Added create match page with all functionality. TODO - Add backend check to see if home == away.
+
+
+
+for backend:
+- get ALL users, teams, matches and tournaments (one function)
+- GET tournamentList, teamRoster(todo), upcomingGames(todo) and upload dynamic data to user.
+- use the auto generate fixtures from a list of teams library
+- isMatchDone parameter
+
