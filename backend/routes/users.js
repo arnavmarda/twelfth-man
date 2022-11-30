@@ -13,7 +13,12 @@ const User = mongoose.model("User");
     REGISTRATION functionality
 */
 router.post("/register", (req, res) => {
-    const { name, email, password, hand, position } = req.body;
+    // const { name, email, password, hand, position } = req.body;
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    const hand = req.body.hand;
+    const position = req.body.position;
     if (!name || !email || !password) {
         return res.status(422).json({
             error: "Missing required parameter",
