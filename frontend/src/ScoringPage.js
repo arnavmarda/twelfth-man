@@ -141,11 +141,28 @@ const Styles = styled.div`
         padding: 5px 8px;
         text-align: center;
         text-decoration: none;
-        // top: 50%;
         position: relative;
         height: 16px;
         width: auto;
         margin: 0;
+        vertical-align: middle;
+    }
+
+    .blinking-live-icon-2 {
+        background-color: #1c87c9;
+        -webkit-border-radius: 50%;
+        border-radius: 50%;
+        border: none;
+        color: #eeeeee;
+        display: inline-block;
+        padding: 5px 5px;
+        text-align: center;
+        text-decoration: none;
+        position: relative;
+        height: 10px;
+        width: auto;
+        margin: 0;
+        margin-right: 10px;
         vertical-align: middle;
     }
 
@@ -162,6 +179,10 @@ const Styles = styled.div`
     }
 
     .blinking-live-icon {
+        animation: glowing 1000ms infinite;
+    }
+
+    .blinking-live-icon-2 {
         animation: glowing 1000ms infinite;
     }
 
@@ -235,6 +256,7 @@ class ScoringPage extends React.Component {
                                         <Table striped hover className="mt-3">
                                             <thead className="thead">
                                                 <tr>
+                                                    <th width="100">On Strike</th>
                                                     <th>Batsman</th>
                                                     <th>R</th>
                                                     <th>B</th>
@@ -243,6 +265,7 @@ class ScoringPage extends React.Component {
                                             </thead>
                                             <tbody className="tbody">
                                                 <tr>
+                                                        <th><p className="blinking-live-icon-2 me-3" /></th>
                                                         <th>Player 1</th>
                                                         <th>23</th>
                                                         <th>20</th>
@@ -251,6 +274,7 @@ class ScoringPage extends React.Component {
                                             </tbody>
                                             <tbody className="tbody">
                                                 <tr>
+                                                        <th></th>
                                                         <th>Player 1</th>
                                                         <th>23</th>
                                                         <th>20</th>
