@@ -84,7 +84,7 @@ router.post("/login", (req, res) => {
                         res.json({
                             token: token,
                             name: savedUser.name,
-                            registrationID: savedUser.registrationID,
+                            registrationID: savedUser._id,
                             hand: savedUser.hand,
                             position: savedUser.position,
                         });

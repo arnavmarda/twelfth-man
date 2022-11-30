@@ -1,5 +1,5 @@
 import { Container, Navbar, Form, Button, Nav } from "react-bootstrap";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Logo from "../assets/logo.jpg"; 
 import { Link } from "react-router-dom";
@@ -31,7 +31,11 @@ const Styles = styled.div`
 `;
 
 
-export const NavigationBar = ({isLoggedIn}) => {
+export const NavigationBar = () => {
+
+    var [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("jwt") !== null ? true : false);
+
+    useEffect(() => {setIsLoggedIn(localStorage.getItem("jwt") !== null ? true : false)});
 
     var navigate = useNavigate();
 
@@ -50,6 +54,7 @@ export const NavigationBar = ({isLoggedIn}) => {
         localStorage.removeItem("player-id");
         localStorage.removeItem("name");
         localStorage.removeItem("position");
+        navigate("/");
     }
 
     const searchList = [
