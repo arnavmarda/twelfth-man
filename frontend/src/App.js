@@ -26,7 +26,8 @@ function App() {
     })
     .then((res) => res.json())
     .then((data) => {
-      setPlayerIds(data.usersList.map((user) => user.id));
+      let idsArray = data.map((user) => user.id);
+      setPlayerIds(idsArray);
     })
     .catch((err) => console.log(err))
   });
@@ -45,7 +46,7 @@ function App() {
           <Route path="/createtournament" element={<TournamentCreation />} />
           <Route path="/scoring" element={<ScoringPage />} />
           <Route path="/match" element={<MatchPage />} />
-          <Route path='*' element={<NotFound />} />
+          {/* <Route path='*' element={<NotFound />} /> */}
         </Routes>
       </Router>
     </React.Fragment>
