@@ -120,7 +120,6 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoggedIn: localStorage.getItem("jwt") ? true : false,
         }
     }
 
@@ -128,7 +127,7 @@ class Home extends Component {
         return (  
             <Styles>
                 <Layout>
-                    <Jumbotron isLoggedIn={this.state.isLoggedIn}/>
+                    <Jumbotron />
                     <MatchCarousel />
                     <Container fluid className='features'>
                             <Row>
