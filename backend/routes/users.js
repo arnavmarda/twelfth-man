@@ -128,30 +128,63 @@ router.get("/userList", (req, res) => {
 */
 
 router.get("/userTeamList", requireLogin, (req, res) => {
-    const{ name } = req.body;
-    User.findOne({ name: name })
+    const { name } = req.body;
+    User.findOne({ name: name }).then((foundUser) => {
+        if (!foundUser) {
+            return res.status(422).json({
+                error: "No user with this name",
+            });
+        }
+
+        Team.find({}, (err, teams) => {
+            const teamArray = [];
+
+            teams.forEach((team) => {
+                if (team.roster.includes(foundUser.name)) {
+                    teamArray.push(team.name);
+                }
+            });
+
+            res.status(200).json(teamArray);
+        }).catch((err) => console.log(err));
+    });
+});
+
+/*
+    Get user's profile
+*/
+router.get("/getUser", (req, res) => {
+    const { id } = req.body;
+    User.findOne({ id: id })
         .then((foundUser) => {
             if (!foundUser) {
                 return res.status(422).json({
-                    error: "No user with this name",
+                    error: "No user with given ID",
                 });
             }
 
+            let teamArray = [];
+
             Team.find({}, (err, teams) => {
-                const teamArray = []; 
-        
                 teams.forEach((team) => {
-                    if(team.roster.includes(foundUser.name)){
+                    if (team.roster.includes(foundUser.name)) {
                         teamArray.push(team.name);
                     }
                 });
-        
-                res.status(200).json(teamArray);
             }).catch((err) => console.log(err));
 
+            const userInfo = {
+                id: foundUser.id,
+                name: foundUser.name,
+                email: foundUser.email,
+                hand: foundUser.hand,
+                position: foundUser.position,
+                teamList: teamArray,
+            };
 
+            res.status(200).json(userInfo);
         })
-
+        .catch((err) => console.log(err));
 });
 
 module.exports = router;
