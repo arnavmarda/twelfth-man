@@ -26,7 +26,7 @@ npm start
 
 ```bash
 cd ..
-cd frontend
+cd backend
 ```
 
 4. Start the backend:
