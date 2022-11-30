@@ -65,6 +65,9 @@ const UserRegistration = () =>{
         e.preventDefault();
         fetch("http://localhost:9000/register", {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
             body: JSON.stringify({
                 name: values.name,
                 email: values.email,
