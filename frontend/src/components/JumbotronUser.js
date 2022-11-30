@@ -58,19 +58,19 @@ const Styles = styled.div`
 `;
 
 
-export const Jumbotron = () => (
+export const Jumbotron = ({name, hand, position, playerId}) => (
     <Styles>
         <NavigationBar />
         <div className="p-5 mb-0 rounded-1 jumbo">
             <div className='overlay'></div>
             <div className="container-fluid py-5">
                 <FaUserAlt size={200} color={"white"} className="user-icon"/>
-                <p className="player-name">Arnav Marda</p>
+                <p className="player-name">{name}</p>
                 <p className='player-info'>
-                    Player ID: 123456 <br />
-                    Position: All-Rounder <br />
-                    Bowling Handedness: Right <br />
-                    Batting Handedness: Right <br />
+                    Player ID: {playerId} <br />
+                    Position: {position}<br />
+                    Bowling Handedness: {hand}<br />
+                    Batting Handedness: {hand}<br />
                 </p>
             </div>
         </div>

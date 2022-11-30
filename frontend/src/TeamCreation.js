@@ -5,8 +5,10 @@ import { FooterLogin } from './components/FooterLogin';
 import Register from "./components/Registration";
 import { DropdownChecklist } from './components/DropdownChecklist';
 import { DropdownRadio } from './components/DropdownRadio';
+import { useNavigate } from 'react-router-dom';
 
 const TeamCreation = () => {
+    const navigate = useNavigate();
     const [values, setValues] = useState({
         name: "",
         roster: [],
