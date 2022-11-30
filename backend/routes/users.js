@@ -11,7 +11,7 @@ const User = mongoose.model("User");
 /*
     REGISTRATION functionality
 */
-router.post("/registration", (req, res) => {
+router.post("/register", (req, res) => {
     const { name, email, password, hand, position } = req.body;
     if (!name || !email || !password) {
         return res.status(422).json({
