@@ -43,8 +43,9 @@ router.get("/teamList", (req, res) => {
 /*
     Create a team
 */
-router.post("/team/create", requireLogin, (req, res) => {
+router.post("/team/create", (req, res) => {
     const { name, captain, roster } = req.body;
+    console.log("Req body: ", req.body);
     if (!name || !captain) {
         return res.status(422).json({
             error: "Missing required parameter",
@@ -86,7 +87,7 @@ router.post("/team/create", requireLogin, (req, res) => {
 /*
     Delete a team
 */
-router.delete("/team/delete/:id", requireLogin, (req, res) => {
+router.delete("/team/delete/:id", (req, res) => {
     Team.findOneAndDelete({ _id: req.params.id })
         .then((response) => res.status(200).json(response))
         .catch((err) => {
@@ -96,43 +97,31 @@ router.delete("/team/delete/:id", requireLogin, (req, res) => {
         });
 });
 
-
-
 /*
     Get a list of a team's tournaments
 */
 
+router.get("/teamTournamentList", (req, res) => {
+    const { name } = req.body;
+    Team.findOne({ name: name }).then((foundTeam) => {
+        if (!foundTeam) {
+            return res.status(422).json({
+                error: "No team with this name",
+            });
+        }
 
-router.get("/teamTournamentList", requireLogin, (req, res) => {
-    const{ name } = req.body;
-    Team.findOne({ name: name })
-        .then((foundTeam) => {
-            if (!foundTeam) {
-                return res.status(422).json({
-                    error: "No team with this name",
-                });
-            }
+        Tournament.find({}, (err, tournaments) => {
+            const tournamentArray = [];
 
-            Tournament.find({}, (err, tournaments) => {
-                const tournamentArray = []; 
-        
-                tournaments.forEach((tournament) => {
-                    if(tournament.teams.includes(foundTeam.name)){
-                        tournamentArray.push(team.name);
-                    }
-                });
-        
-                res.status(200).json(tournamentArray);
-            }).catch((err) => console.log(err));
+            tournaments.forEach((tournament) => {
+                if (tournament.teams.includes(foundTeam.name)) {
+                    tournamentArray.push(team.name);
+                }
+            });
 
-
-        })
-
+            res.status(200).json(tournamentArray);
+        }).catch((err) => console.log(err));
+    });
 });
-
-
-
-
-
 
 module.exports = router;
