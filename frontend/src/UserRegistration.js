@@ -12,7 +12,7 @@ import { DropdownRadio } from './components/DropdownRadio';
 
 const UserRegistration = () =>{     
     const [values, setValues] = useState({
-        username: "",
+        name: "",
         email: "",
         password: "",
         passwordVerification: "",
@@ -24,11 +24,11 @@ const UserRegistration = () =>{
     const inputs = [
         {
             id:1,
-            name:"username",
+            name:"name",
             type:"text",
-            placeholder:"Name",
-            errorMessage:"Username must only contain alphumeric characters and must be between 6-29 characters long.",
-            pattern: "^[A-Za-z][A-Za-z0-9_]{5,29}$",
+            placeholder:"First and Last Name",
+            // errorMessage:"Username must only contain alphumeric characters and must be between 6-29 characters long.",
+            // pattern: "^[A-Za-z][A-Za-z0-9_]{5,29}$",
             required:true,
         },
         {
@@ -63,7 +63,15 @@ const UserRegistration = () =>{
     const handleUp = (e) =>{
         e.preventDefault();
         // eslint-disable-next-line 
-        navigate("/user");
+        fetch("https://localhost:9000/register", {
+            method: "POST",
+            body: JSON.stringify({values}),
+        })
+        .then((res) => res.json())
+        .then((values) => console.log("Success: ", values))
+        .catch((err) => console.log("Error: ",err))
+
+        navigate("/");
     }
 
     const onChange = (e)=>{
