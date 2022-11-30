@@ -1,5 +1,5 @@
 import { Container, Navbar, Form, Button, Nav } from "react-bootstrap";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Logo from "../assets/logo.jpg"; 
 import { Link } from "react-router-dom";
@@ -36,6 +36,7 @@ export const NavigationBar = () => {
         setSearchValue(searchValue);
     }
 
+
     const searchList = [
         {values: "team", label: "Team 1"},
         {values: "team", label: "Team 2"},
@@ -59,16 +60,16 @@ export const NavigationBar = () => {
             <Navbar className="starter" variant='dark' sticky="top">
                 <Container>
                     <Nav.Link>
-                        <Link to="/"> 
+                        <Link to="/">
                             <img 
-                            src={Logo}
-                            width="90"
-                            height="85"
-                            className="d-inline-block align-middle"
-                            alt=""
-                            />
+                                src={Logo}
+                                width="90"
+                                height="85"
+                                className="d-inline-block align-middle"
+                                alt=""
+                                />
                         </Link>
-                        Twelfth Man
+                            Twelfth Man
                     </Nav.Link>
                     <Form className="d-flex w-50">
                         <DropdownSearch options={searchList} handleChange={handleSearch} selectedOption={searchValue} placeholder={"Search for a team or tournament"} />
@@ -76,6 +77,7 @@ export const NavigationBar = () => {
                     <Form className='d-flex'>
                         <Link to="/TeamCreation"><Button type='button' variant='outline-success' href='#create-team'>Create Team</Button></Link>
                         <Button type='button' variant='outline-success' href='#create-tournament'>Create Tournament</Button>
+                        <Button type='button' variant='outline-success' href='#create-tournament'>Home</Button>
                     </Form>
                 </Container>
             </Navbar>

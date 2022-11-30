@@ -103,7 +103,7 @@ export const NavigationBar = () => {
                     ) : (
                         <Form className='d-flex'>
                             <Button type='button' onClick={logOut} variant='outline-success' href='login'>Logout</Button>
-                            <Link to="/user"><Button type='button' variant='outline-success' href='sign-up'>User Page</Button></Link>
+                            <Link to={`/user-${localStorage.getItem("player-id")}`}><Button type='button' variant='outline-success' href='sign-up'>User Page</Button></Link>
                         </Form>
                     )}
                     

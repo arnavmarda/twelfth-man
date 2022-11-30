@@ -27,10 +27,10 @@ function App() {
     .then((res) => res.json())
     .then((data) => {
       let idsArray = data.map((user) => user.id);
-      setPlayerIds(idsArray);
+      setPlayerIds(idsArray); 
     })
     .catch((err) => console.log(err))
-  });
+  }, []);
 
   return (
     <React.Fragment>

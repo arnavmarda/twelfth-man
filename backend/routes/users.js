@@ -153,7 +153,41 @@ router.get("/userTeamList", requireLogin, (req, res) => {
 /*
     Get user's profile
 */
-router.get("/getUser", (req, res) => {
+// router.get("/getUser", (req, res) => {
+//     const { id } = req.body;
+//     User.findOne({ id: id })
+//         .then((foundUser) => {
+//             if (!foundUser) {
+//                 return res.status(422).json({
+//                     error: "No user with given ID",
+//                 });
+//             }
+
+//             let teamArray = [];
+
+//             Team.find({}, (err, teams) => {
+//                 teams.forEach((team) => {
+//                     if (team.roster.includes(foundUser.name)) {
+//                         teamArray.push(team.name);
+//                     }
+//                 });
+//             }).catch((err) => console.log(err));
+
+//             const userInfo = {
+//                 id: foundUser.id,
+//                 name: foundUser.name,
+//                 email: foundUser.email,
+//                 hand: foundUser.hand,
+//                 position: foundUser.position,
+//                 teamList: teamArray,
+//             };
+
+//             res.status(200).json(userInfo);
+//         })
+//         .catch((err) => console.log(err));
+// });
+
+router.post("/getUser", (req, res) => {
     const { id } = req.body;
     User.findOne({ id: id })
         .then((foundUser) => {
@@ -182,7 +216,7 @@ router.get("/getUser", (req, res) => {
                 teamList: teamArray,
             };
 
-            res.status(200).json(userInfo);
+            res.json(userInfo);
         })
         .catch((err) => console.log(err));
 });

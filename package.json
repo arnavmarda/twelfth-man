@@ -1,0 +1,58 @@
+{
+  "name": "twelfth-man",
+  "version": "1.0.0",
+  "description": "Twelfth Man is a web application that aims to act as a scoring mechanism for cricket games.",
+  "main": "index.js",
+  "dependencies": {
+    "ansi-regex": "^5.0.1",
+    "ansi-styles": "^4.3.0",
+    "chalk": "^4.1.2",
+    "cliui": "^8.0.1",
+    "clsx": "^1.2.1",
+    "color-convert": "^2.0.1",
+    "color-name": "^1.1.4",
+    "commander": "^2.9.0",
+    "concurrently": "^7.6.0",
+    "date-fns": "^2.29.3",
+    "emoji-regex": "^8.0.0",
+    "escalade": "^3.1.1",
+    "get-caller-file": "^2.0.5",
+    "graceful-readlink": "^1.0.1",
+    "has-flag": "^4.0.0",
+    "is-fullwidth-code-point": "^3.0.0",
+    "js-tokens": "^4.0.0",
+    "lodash": "^4.17.21",
+    "loose-envify": "^1.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-toastify": "^9.1.1",
+    "require-directory": "^2.1.1",
+    "rxjs": "^7.5.7",
+    "scheduler": "^0.23.0",
+    "shell-quote": "^1.7.4",
+    "spawn-command": "^0.0.2-1",
+    "string-width": "^4.2.3",
+    "strip-ansi": "^6.0.1",
+    "supports-color": "^8.1.1",
+    "tree-kill": "^1.2.2",
+    "tslib": "^2.4.1",
+    "wrap-ansi": "^7.0.0",
+    "y18n": "^5.0.8",
+    "yargs": "^17.6.2",
+    "yargs-parser": "^21.1.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"nodemon backend/app\" \"cd frontend && npm start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnavmarda/twelfth-man.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arnavmarda/twelfth-man/issues"
+  },
+  "homepage": "https://github.com/arnavmarda/twelfth-man#readme"
+}

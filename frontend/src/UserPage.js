@@ -54,9 +54,9 @@ const UserPage = ({player}) => {
     const [position, setPosition] = useState("");
     const [teamList, setTeamList] = useState([]);
 
-    useEffect = () => {
+    useEffect(() => {
         fetch("http://localhost:9000/getUser", {
-            method: "GET",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -72,7 +72,7 @@ const UserPage = ({player}) => {
             setTeamList(data.teamList);
         })
         .catch((err) => console.log(err));
-    }
+    }, []);
 
 
     return (
@@ -88,7 +88,7 @@ const UserPage = ({player}) => {
                                     <Image src={Team} className="align-middle d-inline-block" width="100" height="100" /> 
                                     <h3 className="p-3 pb-2 pt-0">Teams</h3>
                                     <ListGroup className="p-3 text-center">
-                                        {teamList.map((team) => (<ListGroup.Item action>{team}</ListGroup.Item>))}
+                                        {teamList.map((team) => (<ListGroup.Item>{team}</ListGroup.Item>))}
                                     </ListGroup>
                                 </Container>
                                 <Container />
