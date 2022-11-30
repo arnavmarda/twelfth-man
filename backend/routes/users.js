@@ -82,8 +82,11 @@ router.post("/login", (req, res) => {
 
                     jwt.sign(payload, SECRET_KEY, (err, token) => {
                         res.json({
-                            success: true,
-                            token: "Bearer " + token,
+                            token: token,
+                            name: savedUser.name,
+                            registrationID: savedUser.registrationID,
+                            hand: savedUser.hand,
+                            position: savedUser.position,
                         });
                     });
                 } else {
