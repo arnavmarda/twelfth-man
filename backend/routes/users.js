@@ -106,19 +106,19 @@ router.post("/login", (req, res) => {
 */
 router.get("/userList", (req, res) => {
     User.find({}, (err, users) => {
-        let usersMap = {};
+        let usersList = [];
 
         users.forEach((user) => {
-            usersMap[user.name] = {
-                _id: user._id,
-                registrationID: user.id,
+            usersList.push({
+                id: user.id,
+                name: user.name,
                 email: user.email,
                 hand: user.hand ? user.hand : "",
                 position: user.position ? user.position : "",
-            };
+            });
         });
 
-        res.status(200).json(usersMap);
+        res.status(200).json(usersList);
     }).catch((err) => console.log(err));
 });
 
