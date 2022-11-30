@@ -63,8 +63,6 @@ router.post("/login", (req, res) => {
         });
     }
 
-    console.log(req.body);
-
     User.findOne({ email: email }).then((savedUser) => {
         if (!savedUser) {
             return res.status(422).json({

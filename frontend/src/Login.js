@@ -4,7 +4,8 @@ import { NavigationBar } from "./components/NavbarTournament";
 import { FooterLogin } from "./components/FooterLogin";
 import { Link, Navigate } from "react-router-dom";
 import Register from "./components/Registration";
-import M from "materialize-css";
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
@@ -50,10 +51,17 @@ const LoginPage = () => {
         })
             .then((res) => res.json())
             .then((data) => {
+                console.log(data);
                 if (data.error) {
-                    M.toast({
-                        html: data.error,
-                        classes: "#b71c1c red darken-4",
+                    toast.error("Invalid username or password!", {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
                     });
                 } else {
                     localStorage.setItem("jwt", data.token);
@@ -64,7 +72,7 @@ const LoginPage = () => {
                     navigate("/user");
                 }
             })
-            .catch((error) => console.log("Error: ", error));
+            .catch((err) => console.log(err));
     };
 
     const onChange = (e) => {
@@ -89,6 +97,7 @@ const LoginPage = () => {
                             <button type="submit" id="RegistrationButton">
                                 Login
                             </button>
+                            <ToastContainer />
                         </div>
                         <div>
                             <Link
