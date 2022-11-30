@@ -62,8 +62,7 @@ const UserRegistration = () =>{
 
     const handleUp = (e) =>{
         e.preventDefault();
-        // eslint-disable-next-line 
-        fetch("https://localhost:9000/register", {
+        fetch("http://localhost:9000/register", {
             method: "POST",
             body: JSON.stringify({values}),
         })
