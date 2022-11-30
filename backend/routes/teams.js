@@ -26,17 +26,17 @@ router.get("/team/:id", (req, res) => {
 */
 router.get("/teamList", (req, res) => {
     Team.find({}, (err, teams) => {
-        let teamsMap = {};
+        let teamsList = [];
 
         teams.forEach((team) => {
-            teamsMap[team.name] = {
-                _id: team._id,
+            teamsList.push({
+                name: team.name,
                 captain: team.captain,
                 roster: team.roster,
-            };
+        });
         });
 
-        res.status(200).json(teamsMap);
+        res.status(200).json(teamsList);
     }).catch((err) => console.log(err));
 });
 

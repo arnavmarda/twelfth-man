@@ -91,13 +91,6 @@ export const NavigationBar = () => {
                         >
                             Create Tournament
                         </Button>
-                        <Button
-                            type="button"
-                            variant="outline-success"
-                            href="#create-tournament"
-                        >
-                            Home
-                        </Button>
                     </Form>
                 </Container>
             </Navbar>

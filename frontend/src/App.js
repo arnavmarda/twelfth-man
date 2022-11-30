@@ -6,7 +6,7 @@ import UserRegistration from "./UserRegistration";
 import LoginPage from "./Login";
 import MatchPage from "./MatchPage";
 import ScoringPage from "./ScoringPage";
-import NotFound from "./NotFound";
+// import NotFound from "./NotFound";
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TeamCreation from "./TeamCreation";
@@ -16,6 +16,7 @@ import TournamentCreation from "./TournamentCreation.js";
 function App() {
 
   const [playerIds, setPlayerIds] = useState([]);
+  const [teamNames, setTeamNames] = useState([]);
   
   useEffect(() => {
     fetch("http://localhost:9000/userList", {
@@ -29,7 +30,22 @@ function App() {
       let idsArray = data.map((user) => user.id);
       setPlayerIds(idsArray); 
     })
+    .catch((err) => console.log(err));
+
+    fetch("http://localhost:9000/teamList", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      let teamsArray = data.map((user) => user.name);
+      setTeamNames(teamsArray); 
+    })
     .catch((err) => console.log(err))
+
+
   }, []);
 
   return (
@@ -39,7 +55,7 @@ function App() {
           <Route exact path="/" element={<Home />}/>
           {playerIds.map((playerId) => (<Route path={`/user-${playerId}`} element={<UserPage player={playerId}/>} />))}
           <Route path="/tournament" element={<TournamentPage />} />
-          <Route path="/team" element={<TeamPage />} />
+          {teamNames.map((team) => (<Route path={`/user-${team}`} element={<TeamPage teamName={team}/>} />))}
           <Route path="/signup" element={<UserRegistration />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/createteam" element={<TeamCreation />} />
