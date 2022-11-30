@@ -7,7 +7,7 @@ import LoginPage from "./Login";
 import MatchPage from "./MatchPage";
 import ScoringPage from "./ScoringPage";
 import NotFound from "./NotFound";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TeamCreation from "./TeamCreation";
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -15,16 +15,28 @@ import TournamentCreation from "./TournamentCreation.js";
 
 function App() {
 
-  async function getPlayers() {
-  }
-
+  const [playerIds, setPlayerIds] = useState([]);
+  
+  useEffect(() => {
+    fetch("http://localhost:9000/userList", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      setPlayerIds(data.usersList.map((user) => user.id));
+    })
+    .catch((err) => console.log(err))
+  });
 
   return (
     <React.Fragment>
       <Router>
         <Routes>
           <Route exact path="/" element={<Home />}/>
-          <Route path="/user" element={<UserPage />} />
+          {playerIds.map((playerId) => (<Route path={`/user-${playerId}`} element={<UserPage player={playerId}/>} />))}
           <Route path="/tournament" element={<TournamentPage />} />
           <Route path="/team" element={<TeamPage />} />
           <Route path="/signup" element={<UserRegistration />} />
