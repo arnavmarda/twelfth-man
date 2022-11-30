@@ -8,6 +8,7 @@ const { randBetween } = require("../utility.js");
 const requireLogin = require("../middleware/requireLogin.js");
 
 const User = mongoose.model("User");
+const Team = mongoose.model("Team");
 
 /*
     REGISTRATION functionality
@@ -112,6 +113,37 @@ router.get("/userList", requireLogin, (req, res) => {
 
         res.status(200).json(usersMap);
     }).catch((err) => console.log(err));
+});
+
+/*
+    Get a list of a user's teams
+*/
+
+router.get("/userTeamList", requireLogin, (req, res) => {
+    const{ name } = req.body;
+    User.findOne({ name: name })
+        .then((foundUser) => {
+            if (!foundUser) {
+                return res.status(422).json({
+                    error: "No user with this name",
+                });
+            }
+
+            Team.find({}, (err, teams) => {
+                const teamArray = []; 
+        
+                teams.forEach((team) => {
+                    if(team.roster.includes(foundUser.name)){
+                        teamArray.push(team.name);
+                    }
+                });
+        
+                res.status(200).json(teamArray);
+            }).catch((err) => console.log(err));
+
+
+        })
+
 });
 
 module.exports = router;

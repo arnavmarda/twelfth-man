@@ -6,6 +6,7 @@ const { route } = require("./tournaments.js");
 
 const User = mongoose.model("User");
 const Team = mongoose.model("Team");
+const Tournament = mongoose.model("Tournament");
 
 /*
     Fetch a team
@@ -94,5 +95,44 @@ router.delete("/team/delete/:id", requireLogin, (req, res) => {
             });
         });
 });
+
+
+
+/*
+    Get a list of a team's tournaments
+*/
+
+
+router.get("/teamTournamentList", requireLogin, (req, res) => {
+    const{ name } = req.body;
+    Team.findOne({ name: name })
+        .then((foundTeam) => {
+            if (!foundTeam) {
+                return res.status(422).json({
+                    error: "No team with this name",
+                });
+            }
+
+            Tournament.find({}, (err, tournaments) => {
+                const tournamentArray = []; 
+        
+                tournaments.forEach((tournament) => {
+                    if(tournament.teams.includes(foundTeam.name)){
+                        tournamentArray.push(team.name);
+                    }
+                });
+        
+                res.status(200).json(tournamentArray);
+            }).catch((err) => console.log(err));
+
+
+        })
+
+});
+
+
+
+
+
 
 module.exports = router;

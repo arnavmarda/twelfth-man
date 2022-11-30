@@ -42,8 +42,22 @@ const TeamCreation = () => {
 
     const handleUp = (e) =>{
         e.preventDefault();
-        // eslint-disable-next-line 
-        const data = new FormData(e.target)
+        fetch("http://localhost:9000/team/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: values.name,
+                captain: values.captain,
+                roster: values.roster.map((player) => (player.label)),
+            }),
+        })
+        .then((res) => res.json())
+        .then((values) => console.log("Success: ", values))
+        .catch((err) => console.log("Error: ",err))
+
+        navigate("/team");
     }
 
     const onChange = (e)=>{

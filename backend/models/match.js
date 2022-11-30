@@ -54,6 +54,15 @@ const matchSchema = new Schema({
     },
     homeBowling: [String],
     awayBowling: [String],
+
+    isMatchOver: {
+        type: Boolean,
+        default: false,
+    },
+
+    winner: {
+        type: String,
+    }
 });
 
 module.exports = Match = mongoose.model("Match", matchSchema);

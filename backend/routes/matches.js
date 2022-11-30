@@ -127,20 +127,8 @@ router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
     const { runsToAdd, teamToUpdate, batsmanToUpdate } = req.body;
 
 
-
-
     teamToUpdate = teamToUpdate.toLowerCase();
     if (teamToUpdate === "home") {
-        /*
-
-
-        Here you need to write code that searches for batsmanToUpdate in homeBatsmen and then finds the index in the array
-        For that index number, look in homeBatsmenRuns and increment the corresponding position by runsToAdd
-        
-        
-
-        */
-
         let indexOfBatsman = homePlayers.indexOf(batsmanToUpdate); 
         homeBatsmenRuns[indexOfBatsman] += runsToAdd; 
 
@@ -151,8 +139,6 @@ router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
             { _id: req.params.id },
             { homeRuns: { $inc: runsToAdd } },
             {homeBatsmenRuns: homeBatsmenRuns},
-            //here add the update to homeBatsmenRuns, which will update the database
-
         )
             .then((response) => res.status(200).json(response))
             .catch((err) => {
@@ -161,8 +147,12 @@ router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
                 });
             });
     } else if (teamToUpdate === "away") {
+
+
         let indexOfAwayBatsman = awayPlayers.indexOf(batsmanToUpdate); 
         awayBatsmenRuns[indexOfAwayBatsman] += runsToAdd; 
+
+
         parseRuns(runsToAdd);
         Match.findOneAndUpdate(
             { _id: req.params.id },
