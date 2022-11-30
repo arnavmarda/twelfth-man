@@ -60,9 +60,9 @@ const matchSchema = new Schema({
         default: false,
     },
 
-    winner: {
-        type: String,
-    }
+    winner: String,
+
+    numOvers: Number,
 });
 
 module.exports = Match = mongoose.model("Match", matchSchema);
