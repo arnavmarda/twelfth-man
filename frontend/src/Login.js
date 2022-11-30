@@ -69,7 +69,7 @@ const LoginPage = () => {
                     localStorage.setItem("position", data.position);
                     localStorage.setItem("player-id", data.registrationID);
                     localStorage.setItem("name", data.name);
-                    navigate("/user");
+                    navigate(`/user-${data.registrationID}`);
                 }
             })
             .catch((err) => console.log(err));
