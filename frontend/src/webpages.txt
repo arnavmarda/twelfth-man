@@ -1,18 +1,3 @@
-List of webpages to make:
-
-1. Home Page - (Navbar, Jumbotron, Live Scores, Features, Footer) - **DONE**
-2. User registration (sign up page) 
-3. User registration (login page)
-4. User profile dock - (Navbar, Jumbotron, Tournament and Team Lists, Footer) - **DONE**
-5. Create team 
-6. Create tournament 
-7. Tournament page - (Navbar, Jumbotron, Teams, Standings, Bracket, Footer) - **DONE**
-8. Scoring page - (Navbar, Match Details, Info and Scoring, Footer) - **DONE**
-9. Match Page - (Navbar, Match Summary, Scoresheet, Footer) - **DONE**
-10. Team Page - (Navbar, Jumbotron, Roster, Tournaments, Footer) - **DONE**
-
-
-Arnav: 1, 7, 8, 9, 4, 10
-
-
-Ezequiel: 2, 3, 5, 6
+1. GET list of teams and render unique team pages in App.js. TODO - Need to add id for teams to render routes without spaces.
+2. GET tournamentList, teamRoster(todo), upcomingGames(todo) and upload dynamic data to user.
+3. Added create match page with all functionality. TODO - Add backend check to see if home == away.
