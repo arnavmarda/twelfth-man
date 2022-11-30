@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../keys.js");
 const { randBetween } = require("../utility.js");
+const requireLogin = require("../middleware/requireLogin.js");
 
 const User = mongoose.model("User");
 
