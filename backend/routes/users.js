@@ -84,7 +84,7 @@ router.post("/login", (req, res) => {
                         res.json({
                             token: token,
                             name: savedUser.name,
-                            registrationID: savedUser._id,
+                            registrationID: savedUser.id,
                             hand: savedUser.hand,
                             position: savedUser.position,
                         });
@@ -104,7 +104,7 @@ router.post("/login", (req, res) => {
 /*
     Get list of all users
 */
-router.get("/userList", requireLogin, (req, res) => {
+router.get("/userList", (req, res) => {
     User.find({}, (err, users) => {
         let usersMap = {};
 
