@@ -14,10 +14,36 @@ const matchSchema = new Schema({
         type: Number,
         default: 0,
     },
+
+    homePlayers: {
+        type: [String],
+    },
+
+    homeBatsmenRuns: {
+        type: [Number],
+    },
+
+    homeBowlerWickets: {
+        type: [Number],
+    },
+
     awayRuns: {
         type: Number,
         default: 0,
     },
+
+    awayPlayers: {
+        type: [String],
+    },
+
+    awayBatsmenRuns: {
+        type: [Number],
+    },
+
+    awayBowlerWickets: {
+        type: [Number],
+    },
+
     homeWicketsLost: {
         type: Number,
         default: 0,

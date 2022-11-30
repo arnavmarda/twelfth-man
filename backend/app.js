@@ -5,10 +5,7 @@ const PORT = 9000;
 
 const { MONGO_URI } = require("./keys.js");
 
-require("./models/user.js");
-
 app.use(express.json());
-app.use(require("./authorization/auth.js"));
 
 mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,

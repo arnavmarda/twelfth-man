@@ -11,7 +11,7 @@ const User = mongoose.model("User");
 /*
     REGISTRATION functionality
 */
-router.post("/registration", (req, res) => {
+router.post("/register", (req, res) => {
     const { name, email, password, hand, position } = req.body;
     if (!name || !email || !password) {
         return res.status(422).json({
@@ -90,6 +90,27 @@ router.post("/login", (req, res) => {
                 console.log(err);
             });
     });
+});
+
+/*
+    Get list of all users
+*/
+router.get("/userList", requireLogin, (req, res) => {
+    User.find({}, (err, users) => {
+        let usersMap = {};
+
+        users.forEach((user) => {
+            usersMap[user.name] = {
+                _id: user._id,
+                registrationID: user.id,
+                email: user.email,
+                hand: user.hand ? user.hand : "",
+                position: user.position ? user.position : "",
+            };
+        });
+
+        res.status(200).json(usersMap);
+    }).catch((err) => console.log(err));
 });
 
 module.exports = router;
