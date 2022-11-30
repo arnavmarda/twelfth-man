@@ -81,7 +81,7 @@ export const NavigationBar = ({isLoggedIn}) => {
                     <Form className="d-flex w-50">
                         <DropdownSearch options={searchList} handleChange={handleSearch} selectedOption={searchValue} placeholder={"Search for a team or tournament"} />
                     </Form>
-                    {isLoggedIn ? (
+                    {!isLoggedIn ? (
                         <Form className='d-flex'>
                             <Link to="/login"><Button type='button' variant='outline-success' href='login'>Login</Button></Link>
                             <Link to="/signup"><Button type='button' variant='outline-success' href='sign-up'>Sign Up</Button></Link>
