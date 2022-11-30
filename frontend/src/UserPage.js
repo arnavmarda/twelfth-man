@@ -88,7 +88,7 @@ const UserPage = ({player}) => {
                                     <Image src={Team} className="align-middle d-inline-block" width="100" height="100" /> 
                                     <h3 className="p-3 pb-2 pt-0">Teams</h3>
                                     <ListGroup className="p-3 text-center">
-                                        {teamList.map((team) => (<ListGroup.Item>{team}</ListGroup.Item>))}
+                                        {teamList.map((team) => (<ListGroup.Item action>{team}</ListGroup.Item>))}
                                     </ListGroup>
                                 </Container>
                                 <Container />
