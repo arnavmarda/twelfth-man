@@ -37,9 +37,9 @@ const LoginPage = () => {
         },
     ]
 
-    const handleUp = async (e) => {
+    const handleUp = (e) => {
         e.preventDefault();
-        const userLoginData = await fetch("http:localhost:9000/login", {
+        fetch("http:localhost:9000/login", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -48,23 +48,23 @@ const LoginPage = () => {
                 email: values.email,
                 password: values.password,
             })
-        });
-
-        const data = userLoginData.json();
-        console.log(data);
-
-        if(data.error) {
-            M.toast({ html: data.error, classes: "#b71c1c red darken-4" });
-            console.log("ERROR");
-        } else {
-            localStorage.setItem("jwt", data.token);
-            localStorage.setItem("hand", data.hand);
-            localStorage.setItem("position", data.position);
-            localStorage.setItem("player-id", data.registrationID);
-            localStorage.setItem("name", data.name);
-            console.log("NO ERROR");
-            navigate("/user");
-        } 
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            if(data.error) {
+                M.toast({ html: data.error, classes: "#b71c1c red darken-4" });
+                console.log("ERROR");
+            } else {
+                localStorage.setItem("jwt", data.token);
+                localStorage.setItem("hand", data.hand);
+                localStorage.setItem("position", data.position);
+                localStorage.setItem("player-id", data.registrationID);
+                localStorage.setItem("name", data.name);
+                console.log("NO ERROR");
+                navigate("/user");
+            } 
+        })
+        .catch((error) => console.log("Error: ", error));
     }
 
     const onChange = (e)=>{
