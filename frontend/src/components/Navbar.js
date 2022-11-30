@@ -43,6 +43,15 @@ export const NavigationBar = ({isLoggedIn}) => {
         navigate(goTo);
     }
 
+    const logOut = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("hand");
+        localStorage.removeItem("player-id");
+        localStorage.removeItem("name");
+        localStorage.removeItem("position");
+    }
+
     const searchList = [
         {value: "team", label: "Team 1"},
         {value: "team", label: "Team 2"},
@@ -88,7 +97,7 @@ export const NavigationBar = ({isLoggedIn}) => {
                         </Form>
                     ) : (
                         <Form className='d-flex'>
-                            <Button type='button' variant='outline-success' href='login'>Logout</Button>
+                            <Button type='button' onClick={logOut} variant='outline-success' href='login'>Logout</Button>
                             <Link to="/user"><Button type='button' variant='outline-success' href='sign-up'>User Page</Button></Link>
                         </Form>
                     )}
