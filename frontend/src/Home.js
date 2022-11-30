@@ -51,12 +51,12 @@ const Styles = styled.div`
         border: none;
         color: #eeeeee;
         display: inline-block;
-        padding: 5px 15px;
+        padding: 5px 12.5px;
         text-align: center;
         text-decoration: none;
         top: 15%;
         position: relative;
-        height: 30px;
+        height: 25px;
         margin: 0;
     }
 
