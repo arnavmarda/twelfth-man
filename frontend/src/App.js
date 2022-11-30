@@ -14,6 +14,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import TournamentCreation from "./TournamentCreation.js";
 
 function App() {
+
+  async function getPlayers() {
+  }
+
+
   return (
     <React.Fragment>
       <Router>

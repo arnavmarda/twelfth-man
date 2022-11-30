@@ -1,5 +1,5 @@
 import { Container, Navbar, Form, Button, Nav } from "react-bootstrap";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Logo from "../assets/logo.jpg"; 
 import { Link } from "react-router-dom";
@@ -33,6 +33,10 @@ const Styles = styled.div`
 
 export const NavigationBar = () => {
 
+    var [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("jwt") !== null ? true : false);
+
+    useEffect(() => {setIsLoggedIn(localStorage.getItem("jwt") !== null ? true : false)});
+
     var navigate = useNavigate();
 
     const [searchValue, setSearchValue] = useState("");
@@ -41,6 +45,16 @@ export const NavigationBar = () => {
         setSearchValue(searchValue);
         var goTo = `/${searchValue.value}`;
         navigate(goTo);
+    }
+
+    const logOut = (e) => {
+        e.preventDefault();
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("hand");
+        localStorage.removeItem("player-id");
+        localStorage.removeItem("name");
+        localStorage.removeItem("position");
+        navigate("/");
     }
 
     const searchList = [
@@ -81,10 +95,18 @@ export const NavigationBar = () => {
                     <Form className="d-flex w-50">
                         <DropdownSearch options={searchList} handleChange={handleSearch} selectedOption={searchValue} placeholder={"Search for a team or tournament"} />
                     </Form>
-                    <Form className='d-flex'>
-                        <Link to="/login"><Button type='button' variant='outline-success' href='login'>Login</Button></Link>
-                        <Link to="/signup"><Button type='button' variant='outline-success' href='sign-up'>Sign Up</Button></Link>
-                    </Form>
+                    {!isLoggedIn ? (
+                        <Form className='d-flex'>
+                            <Link to="/login"><Button type='button' variant='outline-success' href='login'>Login</Button></Link>
+                            <Link to="/signup"><Button type='button' variant='outline-success' href='sign-up'>Sign Up</Button></Link>
+                        </Form>
+                    ) : (
+                        <Form className='d-flex'>
+                            <Button type='button' onClick={logOut} variant='outline-success' href='login'>Logout</Button>
+                            <Link to="/user"><Button type='button' variant='outline-success' href='sign-up'>User Page</Button></Link>
+                        </Form>
+                    )}
+                    
                 </Container>
             </Navbar>
         </Styles>

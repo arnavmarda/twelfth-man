@@ -14,7 +14,12 @@ const Team = mongoose.model("Team");
     REGISTRATION functionality
 */
 router.post("/register", (req, res) => {
-    const { name, email, password, hand, position } = req.body;
+    // const { name, email, password, hand, position } = req.body;
+    const name = req.body.name;
+    const email = req.body.email;
+    const password = req.body.password;
+    const hand = req.body.hand;
+    const position = req.body.position;
     if (!name || !email || !password) {
         return res.status(422).json({
             error: "Missing required parameter",
@@ -70,7 +75,7 @@ router.post("/login", (req, res) => {
             .then((doMatch) => {
                 if (doMatch) {
                     const token = jwt.sign({ _id: savedUser._id }, SECRET_KEY);
-                    res.json({ token: token });
+                    // res.json({ token: token });
                     const payload = {
                         id: savedUser._id,
                         name: savedUser.name,
@@ -78,8 +83,11 @@ router.post("/login", (req, res) => {
 
                     jwt.sign(payload, SECRET_KEY, (err, token) => {
                         res.json({
-                            success: true,
-                            token: "Bearer " + token,
+                            token: token,
+                            name: savedUser.name,
+                            registrationID: savedUser.id,
+                            hand: savedUser.hand,
+                            position: savedUser.position,
                         });
                     });
                 } else {
@@ -97,21 +105,21 @@ router.post("/login", (req, res) => {
 /*
     Get list of all users
 */
-router.get("/userList", requireLogin, (req, res) => {
+router.get("/userList", (req, res) => {
     User.find({}, (err, users) => {
-        let usersMap = {};
+        let usersList = [];
 
         users.forEach((user) => {
-            usersMap[user.name] = {
-                _id: user._id,
-                registrationID: user.id,
+            usersList.push({
+                id: user.id,
+                name: user.name,
                 email: user.email,
                 hand: user.hand ? user.hand : "",
                 position: user.position ? user.position : "",
-            };
+            });
         });
 
-        res.status(200).json(usersMap);
+        res.status(200).json(usersList);
     }).catch((err) => console.log(err));
 });
 

@@ -24,7 +24,7 @@ router.get("/team/:id", (req, res) => {
 /* 
     Get all teams
 */
-router.get("/teamList", requireLogin, (req, res) => {
+router.get("/teamList", (req, res) => {
     Team.find({}, (err, teams) => {
         let teamsMap = {};
 
