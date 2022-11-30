@@ -6,6 +6,7 @@ import UserRegistration from "./UserRegistration";
 import LoginPage from "./Login";
 import MatchPage from "./MatchPage";
 import ScoringPage from "./ScoringPage";
+import CreateMatch from "./MatchCreation";
 // import NotFound from "./NotFound";
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -40,7 +41,7 @@ function App() {
     })
     .then((res) => res.json())
     .then((data) => {
-      let teamsArray = data.map((user) => user.name);
+      let teamsArray = data.map((team) => team.name);
       setTeamNames(teamsArray); 
     })
     .catch((err) => console.log(err))
@@ -62,6 +63,7 @@ function App() {
           <Route path="/createtournament" element={<TournamentCreation />} />
           <Route path="/scoring" element={<ScoringPage />} />
           <Route path="/match" element={<MatchPage />} />
+          <Route path="/creatematch" element={<CreateMatch />} />
           {/* <Route path='*' element={<NotFound />} /> */}
         </Routes>
       </Router>
