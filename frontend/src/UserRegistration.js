@@ -16,7 +16,8 @@ const UserRegistration = () =>{
         email: "",
         password: "",
         passwordVerification: "",
-        handedness: "Right",
+        hand: "",
+        position: "",
     });
 
     var navigate = useNavigate();
@@ -77,8 +78,8 @@ const UserRegistration = () =>{
         setValues({...values, [e.target.name]: e.target.value});
     }
     
-    const handleHands = (hands) => {
-        setValues({...values, hands: hands});
+    const handleHands = (hand) => {
+        setValues({...values, hand: hand});
     }
 
     const hands = [
@@ -90,7 +91,7 @@ const UserRegistration = () =>{
         setValues({...values, position: position});
     }
 
-    const position = [
+    const positions = [
         {value: "Batter", label: "Batter"},
         {value: "Bowler", label: "Bowler"},
         {value: "Keeper", label: "Keeper"},
@@ -111,8 +112,8 @@ const UserRegistration = () =>{
                         onChange={onChange}
                         />
                     )}
-                    <DropdownRadio handleChange={handleHands} options={hands} selectedOptions={values.hands} placeholder={"Select your preferred hand"} />
-                    <DropdownRadio handleChange={handlePosition} options={position} selectedOptions={values.position} placeholder={"Select your preferred position"} />
+                    <DropdownRadio handleChange={handleHands} options={hands} selectedOptions={values.hand} placeholder={"Select your preferred hand"} />
+                    <DropdownRadio handleChange={handlePosition} options={positions} selectedOptions={values.position} placeholder={"Select your preferred position"} />
                     <div className="RegistrationTitle">
                         <button type="submit" form="form1" className="RegistrationButton">Create Account</button>
                     </div>
