@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { Layout } from './components/Layout';
 import { NavigationBar } from './components/NavbarTournament';
 import { FooterLogin } from './components/FooterLogin';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Register from "./components/Registration";
+import M from "materialize-css";
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
+
+    const navigate = useNavigate();
 
     const [values, setValues] = useState({
         username: "",
@@ -33,11 +37,33 @@ const LoginPage = () => {
         },
     ]
 
-    const handleUp = (e) =>{
+    const handleUp = async (e) => {
         e.preventDefault();
-        // eslint-disable-next-line 
-        const data = new FormData(e.target)
+        const userLoginData = await fetch("http:localhost:9000/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: values.email,
+                password: values.password,
+            })
+        });
+
+        const data = await userLoginData.json();
+
+        if(data.error) {
+            M.toast({ html: data.error, classes: "#b71c1c red darken-4" });
+        } else {
+            localStorage.setItem("jwt", data.token);
+            localStorage.setItem("hand", data.hand);
+            localStorage.setItem("position", data.position);
+            localStorage.setItem("player-id", data.registrationID);
+            localStorage.setItem("name", data.name);
+            navigate("/user");
+        } 
     }
+
     const onChange = (e)=>{
         setValues({...values, [e.target.name]: e.target.value});
         console.log("Hi");
