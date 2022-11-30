@@ -31,7 +31,7 @@ const Styles = styled.div`
 `;
 
 
-export const NavigationBar = () => {
+export const NavigationBar = ({isLoggedIn}) => {
 
     var navigate = useNavigate();
 
@@ -81,10 +81,18 @@ export const NavigationBar = () => {
                     <Form className="d-flex w-50">
                         <DropdownSearch options={searchList} handleChange={handleSearch} selectedOption={searchValue} placeholder={"Search for a team or tournament"} />
                     </Form>
-                    <Form className='d-flex'>
-                        <Link to="/login"><Button type='button' variant='outline-success' href='login'>Login</Button></Link>
-                        <Link to="/signup"><Button type='button' variant='outline-success' href='sign-up'>Sign Up</Button></Link>
-                    </Form>
+                    {isLoggedIn ? (
+                        <Form className='d-flex'>
+                            <Link to="/login"><Button type='button' variant='outline-success' href='login'>Login</Button></Link>
+                            <Link to="/signup"><Button type='button' variant='outline-success' href='sign-up'>Sign Up</Button></Link>
+                        </Form>
+                    ) : (
+                        <Form className='d-flex'>
+                            <Button type='button' variant='outline-success' href='login'>Logout</Button>
+                            <Link to="/user"><Button type='button' variant='outline-success' href='sign-up'>User Page</Button></Link>
+                        </Form>
+                    )}
+                    
                 </Container>
             </Navbar>
         </Styles>

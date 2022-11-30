@@ -29,17 +29,19 @@ const Styles = styled.div`
 `;
 
 
-export const Jumbotron = () => (
-    <Styles>
-        <NavigationBar />
-        <div className="p-5 mb-0 rounded-1 jumbo">
-            <div className='overlay' />
-            <div className="container-fluid py-5">
-                <h1 className='display-5 fw-bold'>Twelfth Man</h1>
-                <p className='col-md-10 fs-4'>
-                    Twelfth Man will be a Web Application for team-by-team game and tournament management for cricket, which includes implementations of match scoring, tournament setups and statistics, individual and team registration, and friendly game creations.
-                </p>
+export const Jumbotron = ({isLoggedIn}) => {
+    return (
+        <Styles>
+            <NavigationBar isLoggedIn={isLoggedIn}/>
+            <div className="p-5 mb-0 rounded-1 jumbo">
+                <div className='overlay' />
+                <div className="container-fluid py-5">
+                    <h1 className='display-5 fw-bold'>Twelfth Man</h1>
+                    <p className='col-md-10 fs-4'>
+                        Twelfth Man will be a Web Application for team-by-team game and tournament management for cricket, which includes implementations of match scoring, tournament setups and statistics, individual and team registration, and friendly game creations.
+                    </p>
+                </div>
             </div>
-        </div>
-    </Styles>
-);
+        </Styles>
+    )
+}

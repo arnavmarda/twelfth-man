@@ -116,11 +116,19 @@ const Styles = styled.div`
 
 
 class Home extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoggedIn: localStorage.getItem("jwt") ? true : false,
+        }
+    }
+
     render() {
         return (  
             <Styles>
                 <Layout>
-                    <Jumbotron />
+                    <Jumbotron isLoggedIn={this.state.isLoggedIn}/>
                     <MatchCarousel />
                     <Container fluid className='features'>
                             <Row>
