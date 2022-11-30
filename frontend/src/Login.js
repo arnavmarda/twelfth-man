@@ -50,16 +50,19 @@ const LoginPage = () => {
             })
         });
 
-        const data = await userLoginData.json();
+        const data = userLoginData.json();
+        console.log(data);
 
         if(data.error) {
             M.toast({ html: data.error, classes: "#b71c1c red darken-4" });
+            console.log("ERROR");
         } else {
             localStorage.setItem("jwt", data.token);
             localStorage.setItem("hand", data.hand);
             localStorage.setItem("position", data.position);
             localStorage.setItem("player-id", data.registrationID);
             localStorage.setItem("name", data.name);
+            console.log("NO ERROR");
             navigate("/user");
         } 
     }

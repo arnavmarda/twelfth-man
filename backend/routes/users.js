@@ -63,6 +63,8 @@ router.post("/login", (req, res) => {
         });
     }
 
+    console.log(req.body);
+
     User.findOne({ email: email }).then((savedUser) => {
         if (!savedUser) {
             return res.status(422).json({
@@ -74,7 +76,7 @@ router.post("/login", (req, res) => {
             .then((doMatch) => {
                 if (doMatch) {
                     const token = jwt.sign({ _id: savedUser._id }, SECRET_KEY);
-                    res.json({ token: token });
+                    // res.json({ token: token });
                     const payload = {
                         id: savedUser._id,
                         name: savedUser.name,
