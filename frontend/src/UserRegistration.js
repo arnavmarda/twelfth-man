@@ -78,9 +78,9 @@ const UserRegistration = () => {
                 position: values.position.label,
             }),
         })
-            .then((res) => console.log(res))
-            .then((recdValues) => console.log(recdValues))
-            .catch((err) => console.log("Error: ", err));
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.log("Error: " + err));
 
         navigate("/");
     };
