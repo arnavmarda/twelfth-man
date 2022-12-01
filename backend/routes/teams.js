@@ -106,15 +106,87 @@ router.delete("/team/delete/:id", (req, res) => {
 });
 
 /*
-    Get a list of a team's upcoming games
+    Get a list of a team's tournaments
 */
+
+
+router.get("/getTeamTournaments", (req, res) => {
+    const { id } = req.body;
+    Team.findOne({ _id: id })
+    .then((foundTeam) => {
+        if (!foundTeam) {
+            return res.status(422).json({
+                error: "No team with this name",
+            });
+        }
+
+        let tournamentArray = [];
+
+        Tournament.find({}, (err, tournaments) => {
+            tournaments.forEach((tournament) => {
+                if (tournament.teams.includes(foundTeam.name)) {
+                    tournamentArray.push({
+                        name: tournament.name,
+                        id: tournament._id,
+                    });
+                }
+            });
+
+
+           
+        }).clone().catch((err) => console.log(err));
+
+        res.status(200).json(tournamentArray);
+
+    }).clone().catch((err) => console.log(err));
+
+});
+
+/*
+    Get a list of the team's upcoming matches
+*/
+
+router.get("/getTeamUpcomingMatches", (req, res) => {
+    const { id } = req.body;
+    Team.findOne({ _id: id })
+    .then((foundTeam) => {
+        if (!foundTeam) {
+            return res.status(422).json({
+                error: "No team with this name",
+            });
+        }
+
+        let arrayOfGames = [];
+
+        Match.find({}, (err, matches) => {
+            macthes.forEach((match) => {
+                if (
+                    match.home === foundTeam.name ||
+                    match.away === foundTeam.name
+                ) {
+                    if (!match.isMatchOver) {
+                        arrayOfGames.push({
+                            id: match._id,
+                            home: match.home,
+                            away: match.away,
+                        });
+                    }
+                }
+            });
+        }).clone().catch((err) => console.log(err));
+
+        res.status(200).json(arrayOfGames);
+
+    }).clone().catch((err) => console.log(err));
+
+});
 
 router.get("/getInfoForTeam", (req, res) => {
     const { id } = req.body;
+
     let arrayOfAllInfo = [];
     let rosterArray = [];
-    let arrayOfGames = [];
-    let tournamentArray = [];
+    
     Team.findOne({ _id: id })
         .then((foundTeam) => {
             if (!foundTeam) {
@@ -128,35 +200,7 @@ router.get("/getInfoForTeam", (req, res) => {
             //set captain
             const captainOfTeam = foundTeam.captain;
 
-            //create an array of upcoming matches of the team
-            Match.find({}, (err, matches) => {
-                macthes.forEach((match) => {
-                    if (
-                        match.home === foundTeam.name ||
-                        match.away === foundTeam.name
-                    ) {
-                        if (!match.isMatchOver) {
-                            arrayOfGames.push({
-                                id: match._id,
-                                home: match.home,
-                                away: match.away,
-                            });
-                        }
-                    }
-                });
-            }).catch((err) => console.log(err));
 
-            //create an array of all tournaments of the team
-            Tournament.find({}, (err, tournaments) => {
-                tournaments.forEach((tournament) => {
-                    if (tournament.teams.includes(foundTeam.name)) {
-                        tournamentArray.push({
-                            name: tournament.name,
-                            id: tournament._id,
-                        });
-                    }
-                });
-            }).catch((err) => console.log(err));
 
             let teamList = [];
 
@@ -177,13 +221,11 @@ router.get("/getInfoForTeam", (req, res) => {
                 captain: captainOfTeam,
                 name: foundTeam.name,
                 roster: rosterArray,
-                upcomingMatches: arrayOfGames,
-                tournaments: tournamentArray,
                 suggestedOpponent: teamToSuggest,
             });
             res.status(200).json(arrayOfAllInfo);
         })
-        .catch((err) => console.log(err));
+        .clone().catch((err) => console.log(err));
 });
 
 module.exports = router;
