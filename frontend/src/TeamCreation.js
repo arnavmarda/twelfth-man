@@ -122,7 +122,7 @@ const TeamCreation = () => {
                             />
                             <DropdownRadio
                                 options={values.players}
-                                selectedOption={values.roster}
+                                selectedOption={values.captain}
                                 handleChange={handleSelectCaptain}
                                 placeholder={"Choose a captain..."}
                             />
