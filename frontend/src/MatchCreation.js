@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationBar } from "./components/NavbarUser";
 import { DropdownRadio } from "./components/DropdownRadio";
 import Register from "./components/Registration";
-import 'react-toastify/dist/ReactToastify.min.css';
+import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer, toast } from "react-toastify";
 import { FooterLogin } from "./components/FooterLogin";
 import { Layout } from "./components/Layout";
@@ -15,28 +15,35 @@ const CreateMatch = () => {
     const [awayTeam, setAwayTeam] = React.useState("");
     const [numOvers, setNumOvers] = React.UseState(0);
 
-    React.useEffect(() => {
+    const getAllTeams = useCallback(() => {
         fetch("http://localhost:9000/teamList", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
         })
-        .then((res) => res.json())
-        .then((data) => {
-          let teamsArray = data.map((user) => ({value:user.name, label: user.name}));
-          setTeamList(teamsArray); 
-        })
-        .catch((err) => console.log(err))
-      }, []);
+            .then((res) => res.json())
+            .then((data) => {
+                let teamsArray = data.map((user) => ({
+                    value: user.name,
+                    label: user.name,
+                }));
+                setTeamList(teamsArray);
+            })
+            .catch((err) => console.log(err));
+    }, []);
+
+    useEffect(() => {
+        getAllTeams();
+    }, [getAllTeams]);
 
     const handleHomeTeam = (home) => {
         setHomeTeam(home);
     };
-    
+
     const handleAwayTeam = (away) => {
         setAwayTeam(away);
-    }
+    };
 
     const handleUp = (e) => {
         e.preventDefault();
@@ -53,10 +60,9 @@ const CreateMatch = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                if(data.error){
+                if (data.error) {
                     const errorMsg = data.error.toString();
-                    toast.error(errorMsg, 
-                    {
+                    toast.error(errorMsg, {
                         position: "top-center",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -130,7 +136,6 @@ const CreateMatch = () => {
             </styles>
         </div>
     );
-
-}
+};
 
 export default CreateMatch;

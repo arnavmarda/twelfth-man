@@ -1,5 +1,5 @@
 import { Container, Navbar, Form, Button, Nav } from "react-bootstrap";
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Logo from "../assets/logo.jpg"; 
 import { Link } from "react-router-dom";
@@ -33,17 +33,67 @@ const Styles = styled.div`
 
 export const NavigationBar = () => {
 
-    var [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("jwt") !== null ? true : false);
+    const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("jwt") !== null ? true : false);
+    const [searchList, setSearchList] = useState([]);
+    const [searchValue, setSearchValue] = useState();
 
-    useEffect(() => {setIsLoggedIn(localStorage.getItem("jwt") !== null ? true : false)});
+    const checkLoggedIn = useCallback(() => {
+        setIsLoggedIn(localStorage.getItem("jwt") !== null ? true : false);
+    }, []);
+
+    const getTeams = useCallback(() => {
+        fetch("http://localhost:9000/teamList", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+          let teamId = searchList.concat(data.map((team) => ({
+            id: `/tournament-${team.id}`,
+            value: team.name, 
+            label: team.name,
+        })));
+            setSearchList(teamId);
+    
+        })
+        .catch((err) => console.log(err));
+    }, []);
+
+    const getTournaments = useCallback(() => {
+        fetch("http://localhost:9000/tournamentList", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+            let tournamentId = searchList.concat(data.map((tournament) => ({
+            id: `/tournament-${tournament.id}`,
+            value: tournament.name, 
+            label: tournament.name,
+        })));
+            setSearchList(tournamentId);
+        })
+        .catch((err) => console.log(err));
+    }, [])
+
+    useEffect(() => {
+        checkLoggedIn();
+        getTeams();
+        getTournaments();
+        
+    }, [checkLoggedIn, getTeams, getTournaments]);
 
     var navigate = useNavigate();
 
-    const [searchValue, setSearchValue] = useState("");
-
     const handleSearch = (searchValue) => {
         setSearchValue(searchValue);
-        var goTo = `/${searchValue.value}`;
+        var goTo = `${searchValue.id}`;
         navigate(goTo);
     }
 
@@ -56,24 +106,6 @@ export const NavigationBar = () => {
         localStorage.removeItem("position");
         navigate("/");
     }
-
-    const searchList = [
-        {value: "team", label: "Team 1"},
-        {value: "team", label: "Team 2"},
-        {value: "team", label: "Team 3"},
-        {value: "tournament", label: "Tournament 1"},
-        {value: "tournament", label: "Tournament 2"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-    ];
 
     return(
         <Styles className="sticky-top">

@@ -1,6 +1,7 @@
 import { Container, Navbar, Form, Nav } from "react-bootstrap";
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 import Logo from "../assets/logo.jpg"; 
 import { Link } from "react-router-dom";
 import { DropdownSearch } from "./DropdownSearch";
@@ -31,28 +32,62 @@ const Styles = styled.div`
 export const NavigationBar = () => {
 
     const [searchValue, setSearchValue] = useState("");
+    const [searchList, setSearchList] = useState([]);
+
+    const getTeams = React.useCallback(() => {
+        fetch("http://localhost:9000/teamList", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+          let teamId = searchList.concat(data.map((team) => ({
+            id: `/tournament-${team.id}`,
+            value: team.name, 
+            label: team.name,
+        })));
+            setSearchList(teamId);
+    
+        })
+        .catch((err) => console.log(err));
+    }, []);
+
+    const getTournaments = React.useCallback(() => {
+        fetch("http://localhost:9000/tournamentList", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+            let tournamentId = searchList.concat(data.map((tournament) => ({
+            id: `/tournament-${tournament.id}`,
+            value: tournament.name, 
+            label: tournament.name,
+        })));
+            setSearchList(tournamentId);
+        })
+        .catch((err) => console.log(err));
+    }, [])
+
+    React.useEffect(() => {
+        getTeams();
+        getTournaments();
+        
+    }, [getTeams, getTournaments]);
+
+    let navigate = useNavigate();
 
     const handleSearch = (searchValue) => {
         setSearchValue(searchValue);
+        var goTo = `${searchValue.id}`;
+        navigate(goTo);
     }
-
-    const searchList = [
-        {values: "team", label: "Team 1"},
-        {values: "team", label: "Team 2"},
-        {values: "team", label: "Team 3"},
-        {values: "tournament", label: "Tournament 1"},
-        {values: "tournament", label: "Tournament 2"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-        {values: "tournament", label: "Tournament 3"},
-    ];
 
     return (
         <Styles className="sticky-top">
