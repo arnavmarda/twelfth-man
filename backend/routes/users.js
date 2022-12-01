@@ -6,9 +6,11 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../keys.js");
 const { randBetween } = require("../utility.js");
 const requireLogin = require("../middleware/requireLogin.js");
+const { each } = require("lodash");
 
 const User = mongoose.model("User");
 const Team = mongoose.model("Team");
+const Tournament = mongoose.model("Tournament");
 
 /*
     REGISTRATION functionality
@@ -136,22 +138,71 @@ router.get("/userTeamList", requireLogin, (req, res) => {
             });
         }
 
-        Team.find({}, (err, teams) => {
-            const teamArray = [];
+        let teamList = []
 
+        Team.find({}, (err, teams) => {
             teams.forEach((team) => {
-                if (team.roster.includes(foundUser.name)) {
-                    teamArray.push({
+                if (team.roster.includes(name)) {
+                    teamList.push({
                         name: team.name,
-                        teamID: team.teamID,
+                        id: team._id,
                     });
                 }
             });
-
-            res.status(200).json(teamArray);
+            res.status(200).json(teamList);
         }).clone().catch((err) => console.log(err));
+
+
     });
 });
+
+
+/*
+    Get a list of a user's tournaments
+*/
+
+
+router.get("/userTournamentList", requireLogin, (req, res) => {
+    const { name } = req.body;
+    User.findOne({ name: name }).then((foundUser) => {
+        if (!foundUser) {
+            return res.status(422).json({
+                error: "No user with this name",
+            });
+        }
+        let teamList = [];
+        let tournamentArray = [];
+        Team.find({}, (err, teams) => {
+            teams.forEach((team) => {
+                if (team.roster.includes(name)){
+                    teamList.push(team.name);
+                }
+            });
+    
+        }).clone().catch((err) => console.log(err));
+
+        for(eachTeam in teamList){
+            Tournament.find({}, (err, tournaments) => {
+                tournaments.forEach((tournament) => {
+                    if (tournament.teams.includes(eachTeam)) {
+                        tournamentArray.push({
+                            name: tournament.name,
+                            id: tournament._id,
+                        });
+                    }
+                });
+                res.status(200).json(tournamentArray);
+            }).clone().catch((err) => console.log(err));
+        }
+
+    });
+});
+
+
+
+
+
+
 
 /*
     Get user's profile
