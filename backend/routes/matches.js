@@ -31,6 +31,12 @@ router.post("/match/create", requireLogin, (req, res) => {
         });
     }
 
+    if (home === away) {
+        return res.status(422).json({
+            error: "Home team and Away team are the same",
+        });
+    }
+
     Team.findOne({ name: home })
         .then((team) => {
             if (!team) {
