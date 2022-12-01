@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../keys.js");
-const { randBetween } = require("../utility.js");
+const { randBetween } = require("../utilities/misc.js");
 
 const User = mongoose.model("User");
 
