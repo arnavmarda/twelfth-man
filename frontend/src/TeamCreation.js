@@ -6,6 +6,8 @@ import Register from "./components/Registration";
 import { DropdownChecklist } from "./components/DropdownChecklist";
 import { DropdownRadio } from "./components/DropdownRadio";
 import { useNavigate } from "react-router-dom";
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer, toast } from "react-toastify";
 
 const TeamCreation = () => {
     const navigate = useNavigate();
@@ -30,7 +32,6 @@ const TeamCreation = () => {
                     label: user.name,
                 }));
                 setValues({ ...values, players: namesArray });
-                console.log(values.players);
             })
             .catch((err) => console.log(err));
     }, []);
@@ -67,10 +68,26 @@ const TeamCreation = () => {
             }),
         })
             .then((res) => res.json())
-            .then((values) => console.log("Success: ", values))
+            .then((data) => {
+                if(data.error){
+                    const errorMsg = data.error.toString();
+                    toast.error(errorMsg, 
+                    {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                } else {
+                    navigate(`/team-${data._id}`);
+                }
+            })
             .catch((err) => console.log("Error: ", err));
 
-        navigate("/team");
     };
 
     const onChange = (e) => {
@@ -111,6 +128,7 @@ const TeamCreation = () => {
                                 <button type="submit" id="RegistrationButton">
                                     Create Team
                                 </button>
+                                <ToastContainer />
                             </div>
                         </form>
                     </container>

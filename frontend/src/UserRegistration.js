@@ -8,6 +8,8 @@ import { FooterLogin } from "./components/FooterLogin";
 import "./components/css-files/UserRegistration.css";
 import { useNavigate } from "react-router-dom";
 import { DropdownRadio } from "./components/DropdownRadio";
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer, toast } from "react-toastify";
 
 const UserRegistration = () => {
     const [values, setValues] = useState({
@@ -79,7 +81,22 @@ const UserRegistration = () => {
             }),
         })
             .then((res) => res.json())
-            .then((data) => console.log(data))
+            .then((data) => {
+                if(data.error){
+                    const errorMsg = data.error.toString();
+                    toast.error(errorMsg, 
+                    {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                }
+            })
             .catch((err) => console.log("Error: " + err));
 
         navigate("/");
@@ -143,6 +160,7 @@ const UserRegistration = () => {
                         >
                             Create Account
                         </button>
+                        <ToastContainer />
                     </div>
                     <div>
                         <Link to="/login" className="NavigationTitle">
