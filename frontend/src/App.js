@@ -7,7 +7,6 @@ import LoginPage from "./Login";
 import MatchPage from "./MatchPage";
 import ScoringPage from "./ScoringPage";
 import CreateMatch from "./MatchCreation";
-// import NotFound from "./NotFound";
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import TeamCreation from "./TeamCreation";
@@ -22,7 +21,9 @@ function App() {
   const [matchIds, setMatchIds] = useState([]);
   
   useEffect(() => {
-      fetch("http://localhost:9000/everything", {
+    
+      // GET all users
+      fetch("http://localhost:9000/userList", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -31,14 +32,53 @@ function App() {
     .then((res) => res.json())
     .then((data) => {
       console.log(data);
-      let userId = data.users.map((user) => user.id);
-      let teamId = data.teams.map((team) => team.id);
-      let tournamentId = data.tournaments.map((tournament) => tournament.id);
-      let matchId = data.matches.map((match) => match.id);
+      let userId = data.map((user) => user.id);
       setPlayerIds(userId);
+    })
+    .catch((err) => console.log(err));
+
+    // GET all teams
+    fetch("http://localhost:9000/teamList", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      let teamId = data.map((team) => team.id);
       setTeamIds(teamId);
-      setTournamentIds(tournamentId);
+    })
+    .catch((err) => console.log(err));
+
+    // GET all matches
+    fetch("http://localhost:9000/matchList", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      let matchId = data.map((match) => match.id);
       setMatchIds(matchId);
+    })
+    .catch((err) => console.log(err));
+
+    // GET all tournaments 
+    fetch("http://localhost:9000/tournamentList", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      let tournamentId = data.map((tournament) => tournament.id);
+      setTournamentIds(tournamentId);
     })
     .catch((err) => console.log(err));
   }, []);
