@@ -45,7 +45,7 @@ export const NavigationBar = () => {
         .then((data) => {
           // console.log(data);
           let teamId = searchList.concat(data.map((team) => ({
-            id: `/tournament-${team.id}`,
+            id: `/team-${team.id}`,
             value: team.name, 
             label: team.name,
         })));
@@ -79,7 +79,7 @@ export const NavigationBar = () => {
         getTeams();
         getTournaments();
         
-    }, [getTeams, getTournaments]);
+    }, []);
 
     let navigate = useNavigate();
 
