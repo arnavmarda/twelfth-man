@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { NavigationBar } from "./components/NavbarUser";
 import { DropdownRadio } from "./components/DropdownRadio";
+import Register from "./components/Registration";
 import 'react-toastify/dist/ReactToastify.min.css';
 import { ToastContainer, toast } from "react-toastify";
 import { FooterLogin } from "./components/FooterLogin";
@@ -12,6 +13,7 @@ const CreateMatch = () => {
     const [teamList, setTeamList] = React.useState([]);
     const [homeTeam, setHomeTeam] = React.useState("");
     const [awayTeam, setAwayTeam] = React.useState("");
+    const [numOvers, setNumOvers] = React.UseState(0);
 
     React.useEffect(() => {
         fetch("http://localhost:9000/teamList", {
@@ -46,6 +48,7 @@ const CreateMatch = () => {
             body: JSON.stringify({
                 home: homeTeam.label,
                 away: awayTeam.label,
+                numOvers: numOvers,
             }),
         })
             .then((res) => res.json())
@@ -63,11 +66,25 @@ const CreateMatch = () => {
                         progress: undefined,
                         theme: "dark",
                     });
+                } else {
+                    navigate(`/match-${data._id}`);
                 }
             })
             .catch((err) => console.log("Error: ", err));
+    };
 
-        navigate("/match");
+    const inputs = [
+        {
+            id: 1,
+            name: "numOvers",
+            type: "int",
+            placeholder: "Number of overs",
+            required: true,
+        },
+    ];
+
+    const onChange = (e) => {
+        setNumOvers(e.target.value);
     };
 
     return (
@@ -88,10 +105,18 @@ const CreateMatch = () => {
                             />
                             <DropdownRadio
                                 options={teamList}
-                                selectedOption={awayTeam}
+                                selectedOption={teamList}
                                 handleChange={handleAwayTeam}
                                 placeholder={"Choose an away team..."}
                             />
+                            {inputs.map((input) => (
+                                <Register
+                                    key={input.id}
+                                    {...input}
+                                    value={numOvers}
+                                    onChange={onChange}
+                                />
+                            ))}
                             <div className="RegistrationTitle">
                                 <button type="submit" id="RegistrationButton">
                                     Create Team
