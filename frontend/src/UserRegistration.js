@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Register from "./components/Registration";
 // eslint-disable-next-line
 import { BrowserRouter as Router, Link } from "react-router-dom";
-import { NavigationBar } from "./components/NavbarTournament";
+import { NavigationBar } from "./components/NavbarCreation";
 import { FooterLogin } from "./components/FooterLogin";
 import "./components/css-files/UserRegistration.css";
 import { useNavigate } from "react-router-dom";

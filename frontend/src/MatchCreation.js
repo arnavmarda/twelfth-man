@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { NavigationBar } from "./components/NavbarUser";
+import { NavigationBar } from "./components/NavbarCreation";
 import { DropdownRadio } from "./components/DropdownRadio";
 import Register from "./components/Registration";
 import "react-toastify/dist/ReactToastify.min.css";

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { NavigationBar } from "./components/NavbarTournament";
+import { NavigationBar } from "./components/NavbarCreation";
 import { FooterLogin } from "./components/FooterLogin";
 import { useNavigate } from "react-router-dom";
 import Register from "./components/Registration";

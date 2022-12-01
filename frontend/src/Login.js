@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Layout } from "./components/Layout";
-import { NavigationBar } from "./components/NavbarTournament";
+import { NavigationBar } from "./components/NavbarCreation";
 import { FooterLogin } from "./components/FooterLogin";
 import { Link, Navigate } from "react-router-dom";
 import Register from "./components/Registration";

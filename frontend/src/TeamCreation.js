@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Layout } from "./components/Layout";
-import { NavigationBar } from "./components/NavbarTournament";
+import { NavigationBar } from "./components/NavbarCreation";
 import { FooterLogin } from "./components/FooterLogin";
 import Register from "./components/Registration";
 import { DropdownChecklist } from "./components/DropdownChecklist";
