@@ -102,7 +102,7 @@ router.get("/matchList", (req, res) => {
         });
 
         res.status(200).json(matchesList);
-    }).catch((err) => console.log(err));
+    }).clone().catch((err) => console.log(err));
 });
 
 // update runs

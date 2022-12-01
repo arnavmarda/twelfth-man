@@ -120,7 +120,7 @@ router.get("/userList", (req, res) => {
         });
 
         res.status(200).json(usersList);
-    }).catch((err) => console.log(err));
+    }).clone().catch((err) => console.log(err));
 });
 
 /*
@@ -149,7 +149,7 @@ router.get("/userTeamList", requireLogin, (req, res) => {
             });
 
             res.status(200).json(teamArray);
-        }).catch((err) => console.log(err));
+        }).clone().catch((err) => console.log(err));
     });
 });
 

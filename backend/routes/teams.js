@@ -40,7 +40,7 @@ router.get("/teamList", (req, res) => {
         });
 
         res.status(200).json(teamsList);
-    }).catch((err) => console.log(err));
+    }).clone().catch((err) => console.log(err));
 });
 
 /*

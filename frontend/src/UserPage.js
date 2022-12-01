@@ -72,7 +72,7 @@ const UserPage = ({player}) => {
             setTeamList(data.teamList);
         })
         .catch((err) => console.log(err));
-    }, []);
+    }, [playerId]);
 
 
     return (
