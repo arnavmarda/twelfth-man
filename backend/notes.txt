@@ -18,3 +18,12 @@ Schemas:
     - home team wickets conceded
     - away team runs
     - away team wickets
+
+
+
+/*
+    batsmen runs// + balls//
+    bowlers runs// + overs// + wickets// + extras//
+    how to send all this info to frontend
+    fixture generator
+*/
