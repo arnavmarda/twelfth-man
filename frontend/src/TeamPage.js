@@ -9,6 +9,8 @@ import { GrSchedule } from "react-icons/gr";
 import Team from "./assets/team.jpg";
 import Tournament from "./assets/tournament.jpg";
 import { Link } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.min.css";
+import { ToastContainer, toast } from "react-toastify";
 
 const Styles = styled.div`
     .bg {
@@ -50,6 +52,7 @@ const TeamPage = ({ teamId }) => {
     const [upcomingGames, setUpcomingGames] = React.useState([]);
     const [captain, setCaptain] = React.useState("");
     const [name, setName] = React.useState("");
+    const [suggestedOpponenent, setSuggestedOpponenent] = React.useState("");
 
     const getTeamInfo = useCallback(() => {
         fetch("http://localhost:9000/getInfoForTeam", {
@@ -63,18 +66,64 @@ const TeamPage = ({ teamId }) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                setTournamentList(data.tournaments);
                 setRoster(data.roster);
-                setUpcomingGames(data.upcomingMatches);
                 setCaptain(data.captain);
                 setName(data.name);
+                setSuggestedOpponenent(data.suggestedOpponenent);
+                const toastMsg = `Consider playing a friendly with ${suggestedOpponenent}. We think it would be a great game of cricket!`;
+                toast(toastMsg, {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    });
+            })
+            .catch((err) => console.log(err));
+    }, []);
+
+    const getTeamTournaments = useCallback(() => {
+        fetch("http://localhost:9000/getTeamTournaments", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: teamId,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setTournamentList(data);
+            })
+            .catch((err) => console.log(err));
+    }, []);
+
+    const getTeamUpcomingMatches = useCallback(() => {
+        fetch("http://localhost:9000/getTeamUpcomingMatches", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: teamId,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setUpcomingGames(data);
             })
             .catch((err) => console.log(err));
     }, []);
 
     useEffect(() => {
         getTeamInfo();
-    }, [getTeamInfo]);
+        getTeamTournaments();
+        getTeamUpcomingMatches();
+    }, []);
 
     return (
         <Styles>
@@ -83,6 +132,7 @@ const TeamPage = ({ teamId }) => {
                 <MatchCarousel />
                 <Container fluid className="bg text pb-5">
                     <Container className="pt-5">
+                        <ToastContainer />
                         <Row>
                             <Col className="col-border ms-3">
                                 <Image

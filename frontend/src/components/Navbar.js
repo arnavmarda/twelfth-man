@@ -51,15 +51,17 @@ export const NavigationBar = () => {
         .then((res) => res.json())
         .then((data) => {
           // console.log(data);
-          let teamId = searchList.concat(data.map((team) => ({
-            id: `/tournament-${team.id}`,
+          const newteamId = data.map((team) => ({
+            id: `/team-${team.id}`,
             value: team.name, 
             label: team.name,
-        })));
+        }));
+            const teamId = searchList.concat(newteamId);
             setSearchList(teamId);
     
         })
         .catch((err) => console.log(err));
+        console.log("Teams: ", searchList);
     }, []);
 
     const getTournaments = useCallback(() => {
@@ -72,22 +74,25 @@ export const NavigationBar = () => {
         .then((res) => res.json())
         .then((data) => {
           // console.log(data);
-            let tournamentId = searchList.concat(data.map((tournament) => ({
+            const newtournamentId = data.map((tournament) => ({
             id: `/tournament-${tournament.id}`,
             value: tournament.name, 
             label: tournament.name,
-        })));
+        }));
+            const tournamentId = searchList.concat(newtournamentId);
             setSearchList(tournamentId);
         })
         .catch((err) => console.log(err));
+        console.log("Tournaments: ", searchList);
     }, [])
 
     useEffect(() => {
         checkLoggedIn();
         getTeams();
         getTournaments();
+        console.log("Assimilated: ", searchList);
         
-    }, [checkLoggedIn, getTeams, getTournaments]);
+    }, []);
 
     var navigate = useNavigate();
 
