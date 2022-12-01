@@ -5,8 +5,7 @@
 
 
 for backend:
-- get ALL users, teams, matches and tournaments (one function)
 - GET tournamentList, teamRoster(todo), upcomingGames(todo) and upload dynamic data to user.
 - use the auto generate fixtures from a list of teams library
 - isMatchDone parameter
-
+- get a random team
