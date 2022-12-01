@@ -53,6 +53,7 @@ router.post("/tournament/create", requireLogin, (req, res) => {
             name: name,
             teams: teams,
             numTeams: numTeams,
+            standings: teams,
         });
 
         newTournament
@@ -65,7 +66,7 @@ router.post("/tournament/create", requireLogin, (req, res) => {
 /* 
     Get all tournaments
 */
-router.get("/tournamentList", (req, res) => {
+router.post("/tournamentList", (req, res) => {
     Tournament.find({}, (err, tournaments) => {
         let tournamentsList = [];
 
@@ -81,6 +82,35 @@ router.get("/tournamentList", (req, res) => {
         res.status(200).json(tournamentsList);
     }).clone().catch((err) => console.log(err));
 });
+
+/* 
+    Get info for a tournament
+*/
+router.post("/getInfoForTournament", (req, res) => {
+    const { id } = req.body;
+
+
+    Tournament.findOne({ _id: id })
+        .then((foundTournament) => {
+            if (!foundTournament) {
+                return res.status(422).json({
+                    error: "No tournament with this name",
+                });
+            }
+            const arrayOfAllInfo = {
+                name: foundTournament.name,
+                teams: foundTournament.teams,
+                numTeams: foundTournament.numTeams,
+                standings: foundTournament.standings,
+            };
+            res.status(200).json(arrayOfAllInfo);
+        })
+        .catch((err) => console.log(err));
+});
+
+
+
+
 
 /*
     Delete a tournament
