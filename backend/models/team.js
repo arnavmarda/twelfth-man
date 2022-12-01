@@ -11,6 +11,10 @@ const teamSchema = new Schema({
         required: true,
     },
     roster: [String],
+    teamID: {
+        type: String,
+    },
+
 });
 
 module.exports = Team = mongoose.model("Team", teamSchema);

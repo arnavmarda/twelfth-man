@@ -29,6 +29,7 @@ router.get("/everything", (req, res) => {
         foundTeams.forEach((team) => {
             teams.push({
                 name: team.name,
+                teamID: team.teamID,
                 captain: team.captain,
                 roster: team.roster,
             });

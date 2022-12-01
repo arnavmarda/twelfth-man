@@ -141,7 +141,10 @@ router.get("/userTeamList", requireLogin, (req, res) => {
 
             teams.forEach((team) => {
                 if (team.roster.includes(foundUser.name)) {
-                    teamArray.push(team.name);
+                    teamArray.push({
+                        name: team.name,
+                        teamID: team.teamID,
+                    });
                 }
             });
 

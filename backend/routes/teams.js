@@ -64,10 +64,15 @@ router.post("/team/create", (req, res) => {
                             });
                         }
 
+                        const teamID = name;
+                        teamID = teamID.toLowerCase();
+                        teamID = teamID.replaceAll(' ', '');
+
                         const newTeam = new Team({
                             name: name,
                             captain: captain,
                             roster: roster,
+                            teamID: teamID
                         });
 
                         newTeam
@@ -106,12 +111,12 @@ router.delete("/team/delete/:id", (req, res) => {
 */
 
 router.get("/getInfoForTeam", (req, res) => {
-    const { name } = req.body;
+    const { teamID } = req.body;
     let arrayOfAllInfo = []
     let rosterArray = [];
     let arrayOfGames = [];
     let tournamentArray = [];
-    Team.findOne({ name: name }).then((foundTeam) => {
+    Team.findOne({ teamID: teamID }).then((foundTeam) => {
         if (!foundTeam) {
             return res.status(422).json({
                 error: "No team with this name",
@@ -127,7 +132,7 @@ router.get("/getInfoForTeam", (req, res) => {
         //create an array of upcoming matches of the team
         Match.find({}, (err, matches) => {
             macthes.forEach((match) => {
-                if (match.home === name || match.away === name) {
+                if (match.home === foundTeam.name || match.away === foundTeam.name) {
                     if(!match.isMatchOver){
                         arrayOfGames.push({
                             home: match.home,
