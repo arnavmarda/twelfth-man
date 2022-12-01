@@ -36,16 +36,28 @@ const Styles = styled.div`
         font-size: 60px;
         font-weight: bold;
     }
+
+    .tournament-header {
+        position: relative;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+        color: #00FFFF;
+        font-size: 40px;
+        font-weight: bold;
+    }
 `;
 
 
-export const Jumbotron = () => (
+export const Jumbotron = ({name, captain}) => (
     <Styles>
         <NavigationBar />
         <div className="p-5 mb-0 rounded-1 jumbo">
             <div className='overlay'></div>
             <div className="container-fluid py-5">
-               <p className="tournament-header">Team Name</p>
+               <p className="tournament-header">{name}</p>
+               <br />
+               <p className='team-captain'>{captain}</p>
             </div>
         </div>
     </Styles>

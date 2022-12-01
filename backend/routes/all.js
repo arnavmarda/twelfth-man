@@ -29,6 +29,7 @@ router.get("/everything", (req, res) => {
         foundTeams.forEach((team) => {
             teams.push({
                 name: team.name,
+                id: team._id,
                 teamID: team.teamID,
                 captain: team.captain,
                 roster: team.roster,
@@ -40,6 +41,7 @@ router.get("/everything", (req, res) => {
         foundMatches.forEach((match) => {
             matches.push({
                 home: match.home,
+                id: match._id,
                 away: match.away,
                 homeRuns: match.homeRuns,
                 homePlayers: match.homePlayers,
@@ -63,6 +65,7 @@ router.get("/everything", (req, res) => {
     Tournament.find({}, (err, foundTourns) => {
         foundTourns.forEach((tournament) => {
             tournaments.push({
+                id: tournament._id,
                 name: tournament.name,
                 teams: tournament.teams,
             });

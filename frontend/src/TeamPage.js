@@ -8,6 +8,7 @@ import { ListGroup, Container, Row, Col, Image } from "react-bootstrap";
 import { GrSchedule } from 'react-icons/gr';
 import Team from "./assets/team.jpg";
 import Tournament from "./assets/tournament.jpg";
+import { Link } from "react-router-dom";
 
 
 
@@ -46,65 +47,40 @@ const Styles = styled.div`
 
 `;
 
-const TeamPage = ({teamName}) => {
+const TeamPage = ({ teamId }) => {
 
     const [roster, setRoster] = React.useState([]);
     const [tournamentList, setTournamentList] = React.useState([]);
     const [upcomingGames, setUpcomingGames] = React.useState([]);
+    const [captain, setCaptain] = React.useState("");
+    const [name, setName] = React.useState("");
 
     React.useEffect(() => {
-        fetch("http://localhost:9000/teamTournamentList", {
+        fetch("http://localhost:9000/getInfoForTeam", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                name: teamName,
+                id: teamId,
             })
         })
         .then((res) => res.json())
         .then((data) => {
-            setTournamentList(data);
+            setTournamentList(data.tournaments);
+            setRoster(data.roster);
+            setUpcomingGames(data.upcomingMatches);
+            setCaptain(data.captain);
+            setName(data.name);
         })
         .catch((err) => console.log(err));
-
-        fetch("http://localhost:9000/teamRoster", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: teamName,
-            })
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            setRoster(data);
-        })
-        .catch((err) => console.log(err));
-
-        fetch("http://localhost:9000/upcomingGames", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                name: teamName,
-            })
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            setUpcomingGames(data);
-        })
-        .catch((err) => console.log(err));
-
     }, []);
 
 
     return (
         <Styles>
             <Layout>
-                <Jumbotron />
+                <Jumbotron name={name} captain={captain}/>
                 <MatchCarousel />
                 <Container fluid className="bg text pb-5">
                     <Container className="pt-5">
@@ -116,7 +92,7 @@ const TeamPage = ({teamName}) => {
                                     {roster ? 
                                     (roster.map((player) => (<ListGroup.Item as="li" action>{player}</ListGroup.Item>)))
                                     :
-                                    (<ListGroup.Item as="li" action>The team has no players.</ListGroup.Item>)
+                                    (<ListGroup.Item as="li">The team has no players.</ListGroup.Item>)
                                     }
                                     {/* <ListGroup.Item as="li" action>Player 1</ListGroup.Item>
                                     <ListGroup.Item as="li" action>Player 2</ListGroup.Item>
@@ -138,7 +114,9 @@ const TeamPage = ({teamName}) => {
                                     <h3 className="p-3 pb-2">Tournaments</h3>
                                     <ListGroup className="p-3 text-center">
                                         {tournamentList ? 
-                                        (tournamentList.map((tournament) => (<ListGroup.Item action>{tournament}</ListGroup.Item>)))
+                                        (tournamentList.map(
+                                            ((tournament) => (<Link to={`/tournament-${tournament.id}`}><ListGroup.Item action>{tournament.name}</ListGroup.Item></Link>))
+                                        ))
                                         :
                                         (<ListGroup.Item action>This team is not in any tournament.</ListGroup.Item>)
                                         }
@@ -152,7 +130,9 @@ const TeamPage = ({teamName}) => {
                                     <h3 className="p-3 pb-2">Upcoming Games</h3>
                                     <ListGroup className="p-3 text-center">
                                         {upcomingGames ? 
-                                        (upcomingGames.map((game) => (<ListGroup.Item action>{game}</ListGroup.Item>)))
+                                        (upcomingGames.map(
+                                            ((game) => (<Link to={`/match-${game.id}`}><ListGroup.Item action>{game.home} V {game.away}</ListGroup.Item></Link>))
+                                        ))
                                         :
                                         (<ListGroup.Item action>No upcoming games.</ListGroup.Item>)
                                         }
