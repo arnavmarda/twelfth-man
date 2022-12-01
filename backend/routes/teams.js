@@ -66,7 +66,7 @@ router.post("/team/create", (req, res) => {
                             });
                         }
 
-                        const teamID = name;
+                        let teamID = name;
                         teamID = teamID.toLowerCase();
                         teamID = teamID.replaceAll(" ", "");
 
@@ -110,7 +110,7 @@ router.delete("/team/delete/:id", (req, res) => {
 */
 
 
-router.get("/getTeamTournaments", (req, res) => {
+router.post("/getTeamTournaments", (req, res) => {
     const { id } = req.body;
     Team.findOne({ _id: id })
     .then((foundTeam) => {
@@ -134,11 +134,11 @@ router.get("/getTeamTournaments", (req, res) => {
 
 
            
-        }).clone().catch((err) => console.log(err));
+        }).catch((err) => console.log(err));
 
         res.status(200).json(tournamentArray);
 
-    }).clone().catch((err) => console.log(err));
+    }).catch((err) => console.log(err));
 
 });
 
@@ -146,7 +146,7 @@ router.get("/getTeamTournaments", (req, res) => {
     Get a list of the team's upcoming matches
 */
 
-router.get("/getTeamUpcomingMatches", (req, res) => {
+router.post("/getTeamUpcomingMatches", (req, res) => {
     const { id } = req.body;
     Team.findOne({ _id: id })
     .then((foundTeam) => {
@@ -159,7 +159,7 @@ router.get("/getTeamUpcomingMatches", (req, res) => {
         let arrayOfGames = [];
 
         Match.find({}, (err, matches) => {
-            macthes.forEach((match) => {
+            matches.forEach((match) => {
                 if (
                     match.home === foundTeam.name ||
                     match.away === foundTeam.name
@@ -173,19 +173,19 @@ router.get("/getTeamUpcomingMatches", (req, res) => {
                     }
                 }
             });
-        }).clone().catch((err) => console.log(err));
+        }).catch((err) => console.log(err));
 
         res.status(200).json(arrayOfGames);
 
-    }).clone().catch((err) => console.log(err));
+    }).catch((err) => console.log(err));
 
 });
 
-router.get("/getInfoForTeam", (req, res) => {
+router.post("/getInfoForTeam", (req, res) => {
     const { id } = req.body;
 
-    let arrayOfAllInfo = [];
     let rosterArray = [];
+
     
     Team.findOne({ _id: id })
         .then((foundTeam) => {
@@ -200,32 +200,32 @@ router.get("/getInfoForTeam", (req, res) => {
             //set captain
             const captainOfTeam = foundTeam.captain;
 
-
-
-            let teamList = [];
-
-            Team.find({}, (err, teams) => {
-                teams.forEach((team) => {
-                    teamList.push(team.name);
-                });
-            }).catch((err) => console.log(err));
-
-            const teamToSuggest = " ";
-
-            do {
-                const randIndex = Math.floor(Math.random() * teamList.length);
-                teamToSuggest = teamList[randIndex];
-            } while (teamToSuggest === foundTeam.name);
-
-            arrayOfAllInfo.push({
+            const arrayOfAllInfo = {
                 captain: captainOfTeam,
                 name: foundTeam.name,
-                roster: rosterArray,
-                suggestedOpponent: teamToSuggest,
-            });
+                roster: foundTeam.roster ? foundTeam.roster : [],
+            };
             res.status(200).json(arrayOfAllInfo);
         })
-        .clone().catch((err) => console.log(err));
+        .catch((err) => console.log(err));
+});
+
+router.post("/getRandomOpponent", (req, res) => {
+    const { id } = req.body;
+    let teamList = [];
+
+    Team.find({_id: {$ne: id}})
+    .then((foundTeam) => {
+        foundTeam.forEach((team) => {
+            if(team.id !== id) {
+                console.log("name: ", team.name);
+                teamList.push(team.name);
+            }
+        })
+        const randIndex = Math.floor(Math.random() * teamList.length);
+        res.status(200).json(teamList[randIndex]);
+    }).catch((err) => console.log(err));
+
 });
 
 module.exports = router;

@@ -52,7 +52,13 @@ const TeamPage = ({ teamId }) => {
     const [upcomingGames, setUpcomingGames] = React.useState([]);
     const [captain, setCaptain] = React.useState("");
     const [name, setName] = React.useState("");
-    const [suggestedOpponenent, setSuggestedOpponenent] = React.useState("");
+    const [searchList, setSearchList] = React.useState([]);
+    const [suggestedOpponent, setSuggestedOpponent] = React.useState("");
+
+
+    
+
+
 
     const getTeamInfo = useCallback(() => {
         fetch("http://localhost:9000/getInfoForTeam", {
@@ -69,8 +75,24 @@ const TeamPage = ({ teamId }) => {
                 setRoster(data.roster);
                 setCaptain(data.captain);
                 setName(data.name);
-                setSuggestedOpponenent(data.suggestedOpponenent);
-                const toastMsg = `Consider playing a friendly with ${suggestedOpponenent}. We think it would be a great game of cricket!`;
+            })
+            .catch((err) => console.log(err));
+    }, []);
+
+    const getRandomOpponent = useCallback(() => {
+        fetch("http://localhost:9000/getRandomOpponent", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: teamId,
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setSuggestedOpponent(data);
+                const toastMsg = `Consider playing a friendly with ${data}. We think it would be a great game of cricket!`;
                 toast(toastMsg, {
                     position: "top-center",
                     autoClose: 5000,
@@ -122,8 +144,9 @@ const TeamPage = ({ teamId }) => {
     useEffect(() => {
         getTeamInfo();
         getTeamTournaments();
+        getRandomOpponent();
         getTeamUpcomingMatches();
-    }, []);
+    }, [getTeamInfo, getTeamTournaments, getTeamUpcomingMatches, getRandomOpponent]);
 
     return (
         <Styles>
@@ -143,7 +166,7 @@ const TeamPage = ({ teamId }) => {
                                 />
                                 <h3 className="p-3 pb-2 pt-0">Roster</h3>
                                 <ListGroup as="ol" className="p-3 text-center">
-                                    {roster ? (
+                                    {roster.length !== 0 ? (
                                         roster.map((player) => (
                                             <ListGroup.Item as="li" action>
                                                 {player}
@@ -178,7 +201,7 @@ const TeamPage = ({ teamId }) => {
                                     />
                                     <h3 className="p-3 pb-2">Tournaments</h3>
                                     <ListGroup className="p-3 text-center">
-                                        {tournamentList ? (
+                                        {tournamentList.length !== 0 ? (
                                             tournamentList.map((tournament) => (
                                                 <Link
                                                     to={`/tournament-${tournament.id}`}
@@ -207,7 +230,7 @@ const TeamPage = ({ teamId }) => {
                                     />
                                     <h3 className="p-3 pb-2">Upcoming Games</h3>
                                     <ListGroup className="p-3 text-center">
-                                        {upcomingGames ? (
+                                        {upcomingGames.length !== 0 ? (
                                             upcomingGames.map((game) => (
                                                 <Link to={`/match-${game.id}`}>
                                                     <ListGroup.Item action>
