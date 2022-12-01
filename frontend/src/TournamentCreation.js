@@ -4,23 +4,45 @@ import { FooterLogin } from './components/FooterLogin';
 import {useNavigate} from 'react-router-dom';
 import Register from "./components/Registration";
 import { DropdownChecklist } from "./components/DropdownChecklist";
-import { DropdownRadio } from './components/DropdownRadio';
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer, toast } from "react-toastify";
 
 
 
 const LoginPage = () => {
 
     const [values, setValues] = useState({
-        noOfTeams: "",
         teams: [],
+        name: "",
     });
 
+    const [teamsList, setTeamsList] = useState([]);
+
+
     var navigate = useNavigate();
+
+    React.useEffect(() => {
+        fetch("http://localhost:9000/teamList", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            let teamsArray = data.map((team) => ({
+                value: team.name,
+                label: team.name,
+            }));
+            setTeamsList(teamsArray);
+        })
+        .catch((error) => {console.log(error)});
+    })
     
     const inputs = [
         {
             id:1,
-            name:"Tournament Name",
+            name:"name",
             type:"name",
             placeholder:"Tournament Name",
             required:true,
@@ -30,8 +52,36 @@ const LoginPage = () => {
     const handleUp = (e) =>{
         e.preventDefault();
 
-        console.log(values)
-        navigate('/tournament');
+        fetch("http://localhost:9000/tournament/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: values.name,
+                teams: values.teams.map((team) => team.label),
+            }),
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                if(data.error){
+                    const errorMsg = data.error.toString();
+                    toast.error(errorMsg, 
+                    {
+                        position: "top-center",
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                } else {
+                    navigate(`/tournament-${data._id}`);
+                }
+            })
+            .catch((err) => console.log("Error: ", err));
     }
     const onChange = (e)=>{
         setValues({...values, [e.target.name]: e.target.value});
@@ -40,24 +90,6 @@ const LoginPage = () => {
     const handleTeams = (teams) => {
         setValues({...values, teams: teams});
     }
-
-    const handleNoOfTeams = (noOfTeams) => {
-        setValues({...values, noOfTeams: noOfTeams});
-    }
-
-    const noOfTeams = [
-        {value: "2", label: "2"},
-        {value: "4", label: "4"},
-        {value: "8", label: "8"},
-        {value: "16", label: "16"}
-    ];
-
-    const teams = [
-        {value: "Team 1", label: "Team 1"},
-        {value: "Team 2", label: "Team 2"},
-        {value: "Team 3", label: "Team 3"},
-        {value: "Team 4", label: "Team 4"},
-    ];
 
     return(
         <div className="general" id="page">
@@ -73,11 +105,11 @@ const LoginPage = () => {
                         onChange={onChange}
                         />
                     )}
-                    <DropdownRadio handleChange={handleNoOfTeams} options={noOfTeams} selectedOptions={values.noOfTeams} placeholder={"Choose the number of teams..."} />
-                    <DropdownChecklist handleChange={handleTeams} options={teams} selectedOptions={values.teams} placeholder={"Choose teams to add..."} />
+                    <DropdownChecklist handleChange={handleTeams} options={teamsList} selectedOptions={values.teams} placeholder={"Choose teams to add..."} />
                     <div className="RegistrationTitle">
                         <button type="submit" id="tournamentSubmit" className="RegistrationButton">Create tournament</button>
                     </div>
+                    <ToastContainer />
                 </form>
                 <FooterLogin />
             </container>
