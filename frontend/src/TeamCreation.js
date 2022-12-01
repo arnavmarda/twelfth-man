@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Layout } from "./components/Layout";
 import { NavigationBar } from "./components/NavbarTournament";
 import { FooterLogin } from "./components/FooterLogin";
@@ -6,7 +6,7 @@ import Register from "./components/Registration";
 import { DropdownChecklist } from "./components/DropdownChecklist";
 import { DropdownRadio } from "./components/DropdownRadio";
 import { useNavigate } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.min.css';
+import "react-toastify/dist/ReactToastify.min.css";
 import { ToastContainer, toast } from "react-toastify";
 
 const TeamCreation = () => {
@@ -18,7 +18,7 @@ const TeamCreation = () => {
         players: [],
     });
 
-    React.useEffect(() => {
+    const getAllUsers = useCallback(() => {
         fetch("http://localhost:9000/userList", {
             method: "GET",
             headers: {
@@ -35,6 +35,10 @@ const TeamCreation = () => {
             })
             .catch((err) => console.log(err));
     }, []);
+
+    useEffect(() => {
+        getAllUsers();
+    }, [getAllUsers]);
 
     const handleSelectedPlayers = (roster) => {
         setValues({ ...values, roster: roster });
@@ -69,10 +73,9 @@ const TeamCreation = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                if(data.error){
+                if (data.error) {
                     const errorMsg = data.error.toString();
-                    toast.error(errorMsg, 
-                    {
+                    toast.error(errorMsg, {
                         position: "top-center",
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -87,7 +90,6 @@ const TeamCreation = () => {
                 }
             })
             .catch((err) => console.log("Error: ", err));
-
     };
 
     const onChange = (e) => {
