@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const requireLogin = require("../middleware/requireLogin.js");
+const team = require("../models/team.js");
 const { route } = require("./tournaments.js");
 
 const User = mongoose.model("User");
@@ -159,12 +160,29 @@ router.get("/getInfoForTeam", (req, res) => {
 
         }).catch((err) => console.log(err));
 
+        let teamList = [];
+
+        Team.find({}, (err, teams) => {
+            teams.forEach((team) => {
+                teamList.push(team.name);
+            });
+        }).catch((err) => console.log(err));
+        
+        const teamToSuggest = " ";
+
+        do {
+            const randIndex = Math.floor(Math.random() * teamList.length);
+            teamToSuggest = teamList[randIndex];
+          } while (teamToSuggest === foundTeam.name);
+
+
         arrayOfAllInfo.push({
             captain: captainOfTeam,
             name: foundTeam.name,
             roster: rosterArray,
             upcomingMatches: arrayOfGames,
             tournaments: tournamentArray,
+            suggestedOpponent: teamToSuggest,
         })
         res.status(200).json(arrayOfAllInfo);
 

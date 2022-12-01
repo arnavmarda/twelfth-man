@@ -25,7 +25,7 @@ router.get("/tournament/:id", (req, res) => {
     Create a Tournament
 */
 router.post("/tournament/create", requireLogin, (req, res) => {
-    const { name, teams } = req.body;
+    const { name, teams, numTeams } = req.body;
     if (!name || !teams) {
         return res.status(422).json({
             error: "Missing required parameter",
@@ -52,6 +52,7 @@ router.post("/tournament/create", requireLogin, (req, res) => {
         const newTournament = new Tournament({
             name: name,
             teams: teams,
+            numTeams: numTeams,
         });
 
         newTournament

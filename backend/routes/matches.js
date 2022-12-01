@@ -24,7 +24,7 @@ router.get("/match/:id", (req, res) => {
     Create a match
 */
 router.post("/match/create", requireLogin, (req, res) => {
-    const { home, away } = req.body;
+    const { home, away, numOvers } = req.body;
     if (!home || !away) {
         return res.status(422).json({
             error: "Missing required parameter",
@@ -65,6 +65,7 @@ router.post("/match/create", requireLogin, (req, res) => {
     const newMatch = new Match({
         home: home,
         away: away,
+        numOvers: numOvers,
         homePlayers: home.roster,
         awayPlayers: away.roster,
         homeBatsmenRuns: Array.apply(0, Array(11)),
@@ -96,35 +97,6 @@ router.delete("/match/delete/:id", requireLogin, (req, res) => {
     MATCH: main methods
 */
 
-function parseRuns(inputRuns) {
-    initialStr = " ";
-    switch (inputRuns) {
-        case 0:
-            scoring.dotBall(initialStr);
-            break;
-        case 1:
-            scoring.takeSingle(initialStr);
-            break;
-        case 2:
-            scoring.takeDouble(initialStr);
-            break;
-        case 3:
-            scoring.takeTriple(initialStr);
-            break;
-        case 4:
-            scoring.Boundary(initialStr);
-            break;
-        case 5:
-            scoring.takeFive(initialStr);
-            break;
-        case 6:
-            scoring.Sixer(initialStr);
-            break;
-
-        default:
-        // code block
-    }
-}
 
 
 
@@ -140,7 +112,6 @@ router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
 
 
 
-        parseRuns(runsToAdd);
         Match.findOneAndUpdate(
             { _id: req.params.id },
             { homeRuns: { $inc: runsToAdd } },
@@ -159,7 +130,6 @@ router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
         awayBatsmenRuns[indexOfAwayBatsman] += runsToAdd; 
 
 
-        parseRuns(runsToAdd);
         Match.findOneAndUpdate(
             { _id: req.params.id },
             { awayRuns: { $inc: runsToAdd } },
