@@ -22,8 +22,24 @@ const matchSchema = new Schema({
     homeBatsmenRuns: {
         type: [Number],
     },
+    
+    homeBatsmenBallsFaced: {
+        type: [Number],
+    },
+
+    homeBowlerRunsGiven: {
+        type: [Number],
+    },
+
+    homeBowlerBallsBowled: {
+        type: [Number],
+    },
 
     homeBowlerWickets: {
+        type: [Number],
+    },
+
+    homeBowlerExtras: {
         type: [Number],
     },
 
@@ -40,7 +56,23 @@ const matchSchema = new Schema({
         type: [Number],
     },
 
+    awayBatsmenBallsFaced: {
+        type: [Number],
+    },
+
+    awayBowlerRunsGiven: {
+        type: [Number],
+    },
+
+    awayBowlerBallsBowled: {
+        type: [Number],
+    },
+
     awayBowlerWickets: {
+        type: [Number],
+    },
+
+    awayBowlerExtras: {
         type: [Number],
     },
 
