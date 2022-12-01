@@ -7,6 +7,7 @@ const { route } = require("./tournaments.js");
 const User = mongoose.model("User");
 const Team = mongoose.model("Team");
 const Tournament = mongoose.model("Tournament");
+const Match = mongoose.model("Match");
 
 /*
     Fetch a team
@@ -97,31 +98,74 @@ router.delete("/team/delete/:id", (req, res) => {
         });
 });
 
+
+
+
 /*
-    Get a list of a team's tournaments
+    Get a list of a team's upcoming games
 */
 
-router.get("/teamTournamentList", (req, res) => {
+router.get("/getInfoForTeam", (req, res) => {
     const { name } = req.body;
+    let arrayOfAllInfo = []
+    let rosterArray = [];
+    let arrayOfGames = [];
+    let tournamentArray = [];
     Team.findOne({ name: name }).then((foundTeam) => {
         if (!foundTeam) {
             return res.status(422).json({
                 error: "No team with this name",
             });
         }
+        //create an array for the roster
+        rosterArray = foundTeam.roster;
 
+
+        //set captain
+        const captainOfTeam = foundTeam.captain;
+
+        //create an array of upcoming matches of the team
+        Match.find({}, (err, matches) => {
+            macthes.forEach((match) => {
+                if (match.home === name || match.away === name) {
+                    if(!match.isMatchOver){
+                        arrayOfGames.push({
+                            home: match.home,
+                            away: match.away,
+                        });
+                    }
+
+                }
+            });
+        }).catch((err) => console.log(err));
+
+
+        //create an array of all tournaments of the team
         Tournament.find({}, (err, tournaments) => {
-            const tournamentArray = [];
-
             tournaments.forEach((tournament) => {
                 if (tournament.teams.includes(foundTeam.name)) {
-                    tournamentArray.push(team.name);
+                    tournamentArray.push(tournament.name);
                 }
             });
 
-            res.status(200).json(tournamentArray);
         }).catch((err) => console.log(err));
-    });
+
+        arrayOfAllInfo.push({
+            captain: captainOfTeam,
+            roster: rosterArray,
+            upcomingMatches: arrayOfGames,
+            tournaments: tournamentArray,
+        })
+        res.status(200).json(arrayOfAllInfo);
+
+    }).catch((err) => console.log(err));
 });
 
 module.exports = router;
+
+
+
+
+
+
+
