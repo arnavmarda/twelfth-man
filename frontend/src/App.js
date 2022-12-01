@@ -19,6 +19,8 @@ function App() {
   const [teamIds, setTeamIds] = useState([]);
   const [tournamentIds, setTournamentIds] = useState([]);
   const [matchIds, setMatchIds] = useState([]);
+  const [tournamentNames, setTournamentNames] = useState([]);
+  const [searchList, setSearchList] = useState([]);
 
   const getUsers = useCallback(() => {
     fetch("http://localhost:9000/userList", {
@@ -48,7 +50,12 @@ function App() {
       // console.log(data);
       let teamId = data.map((team) => team.id);
       setTeamIds(teamId);
-
+      let teamNames = searchList.concat(data.map((team) => ({
+        id: `/team-${team.id}`,
+        value: team.name, 
+        label: team.name,
+      })));
+      setSearchList(teamNames);
     })
     .catch((err) => console.log(err));
   }, []);
@@ -81,39 +88,49 @@ function App() {
       // console.log(data);
       let tournamentId = data.map((tournament) => tournament.id);
       setTournamentIds(tournamentId);
+      let tournaments = data.map((tournament) => ({
+        id: `/tournament-${tournament.id}`,
+        value: tournament.name, 
+        label: tournament.name,
+      }));
+      setTournamentNames(tournaments);
     })
     .catch((err) => console.log(err));
   }, [])
   
   useEffect(() => {
+    setSearchList([]);
     getUsers();
     getTeams();
     getTournaments();
     getMatches();
+    const tournament = tournamentNames.concat(searchList);
+    setSearchList(tournament);
 }, [getUsers, getTeams, getTournaments, getMatches]);
 
+  console.log(searchList);
 
   return (
     <React.Fragment>
       <Router>
         <Routes>
-          <Route exact path="/" element={<Home />}/>
+          <Route exact path="/" element={<Home searchList={searchList}/>}/>
 
           {playerIds.map((playerId) => (
-          <Route path={`/user-${playerId}`} element={<UserPage player={playerId}/>} />
+          <Route path={`/user-${playerId}`} element={<UserPage player={playerId} searchList={searchList}/>} />
           ))}
 
           {tournamentIds.map((tournamentId) => (
-          <Route path={`/tournament-${tournamentId}`} element={<TournamentPage tournament={tournamentId}/>} />
+          <Route path={`/tournament-${tournamentId}`} element={<TournamentPage tournament={tournamentId} searchList={searchList}/>} />
           ))}
 
           {teamIds.map((team) => (
-          <Route path={`/team-${team}`} element={<TeamPage teamId={team}/>} />
+          <Route path={`/team-${team}`} element={<TeamPage teamId={team} searchList={searchList}/>} />
           ))}
 
           {matchIds.map((matchId) => (
-            (<Route path={`/match-${matchId}`} element={<MatchPage match={matchId}/>} />)
-            (<Route path={`/scoring-${matchId}`} element={<ScoringPage match={matchId}/>} />)
+            (<Route path={`/match-${matchId}`} element={<MatchPage match={matchId} searchList={searchList}/>} />)
+            (<Route path={`/scoring-${matchId}`} element={<ScoringPage match={matchId} searchList={searchList}/>} />)
           ))}
 
           <Route path="/signup" element={<UserRegistration />} />

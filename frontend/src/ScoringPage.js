@@ -192,187 +192,173 @@ const Styles = styled.div`
     }
 `;
 
-class ScoringPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentBall: "",
-            callOverEnd: false,
-            callWicket: false,
-        };
+const ScoringPage = ({searchList, match}) => {
 
-        this.handleEndOver = this.handleEndOver.bind(this);
-        this.updateExtras = this.updateExtras.bind(this);
-        this.handleSave = this.handleSave.bind(this);
-        this.updateBall = this.updateBall.bind(this);
+    const [currentBall, setCurrentBall] = React.useState("");
+    const [callOverEnd, setCallOverEnd] = React.useState(false);
+    const [callWicket, setCallWicket] = React.useState(false);
+
+    const handleEndOver = (event) => {
+        setCallOverEnd(true);
     }
 
-    handleEndOver(event) {
-        this.setState({callOverEnd: true});
+    const updateBall = (value) => {
+        setCurrentBall(value);
     }
 
-    updateBall(value) {
-        this.setState({currentBall: value});
+    const updateExtras = (value) => {
+       setCurrentBall(currentBall+value);
     }
 
-    updateExtras(value) {
-        this.setState({currentBall: this.state.currentBall + value});
-    }
-
-    handleSave(event) {
-        const currentBall = this.state.currentBall;
-        console.log(currentBall);
+    const handleSave = (event) => {
         if(currentBall.includes("W")){
-            this.setState({callWicket: true});
+            setCallWicket(true);
         }
     }
-
-    render() {
-        return (
-            <Styles>
-                <Layout>
-                    <ModalScoring />
-                    <Jumbotron />
-                    <Container fluid className="bg text pb-5 pt-5">
-                        <Container fluid className="headers mt-3 mb-0 header-main">
-                            <p className="blinking-live-icon"></p>
-                            <h fluid className="vertical-align-middle"> INNINGS 1 - TEAM A</h>
-                        </Container>
-                        <Container className="pt-5 pb-1">
-                            <Row>
-                                <Col className="ms-3">
-                                    <Container fluid className="headers m-3">
-                                        <h fluid>SCORING</h>
-                                    </Container>
-
-                                    <Container className="col-border m-3">
-                                        <Table striped hover className="mt-3"> 
-                                            <thead className="thead w-100">
-                                                <tr>
-                                                    <th>At the Crease</th>
-                                                </tr>
-                                            </thead>
-                                        </Table>
-                                        <Table striped hover className="mt-3">
-                                            <thead className="thead">
-                                                <tr>
-                                                    <th width="100">On Strike</th>
-                                                    <th>Batsman</th>
-                                                    <th>R</th>
-                                                    <th>B</th>
-                                                    <th>SR</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="tbody">
-                                                <tr>
-                                                        <th><p className="blinking-live-icon-2 me-3" /></th>
-                                                        <th>Player 1</th>
-                                                        <th>23</th>
-                                                        <th>20</th>
-                                                        <th>115</th>
-                                                </tr>
-                                            </tbody>
-                                            <tbody className="tbody">
-                                                <tr>
-                                                        <th></th>
-                                                        <th>Player 1</th>
-                                                        <th>23</th>
-                                                        <th>20</th>
-                                                        <th>115</th>
-                                                </tr>
-                                            </tbody>
-                                        </Table>
-                                        <Table>
-                                            <thead className="thead">
-                                                <tr>
-                                                    <th>Bowler</th>
-                                                    <th>O</th>
-                                                    <th>M</th>
-                                                    <th>R</th>
-                                                    <th>W</th>
-                                                    <th>Extras</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="tbody">
-                                                <tr>
-                                                    <th>Bowler</th>
-                                                    <th>0.0</th>
-                                                    <th>0</th>
-                                                    <th>0</th>
-                                                    <th>0</th>
-                                                    <th>0</th>
-                                                </tr>
-                                            </tbody>
-                                        </Table>
-                                        <hr className="solid"></hr>
-                                        <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Current Over'} overnumber={0} />
-                                        <hr className="solid"></hr>
-                                        <Table className="mb-0 mt-3">
-                                            <tbody className="tbody">
-                                                <tr>
-                                                    <ToggleButtonGroup type="radio" name="runs" id="runs" defaultValue={""} onChange={this.updateBall}>
-                                                        <ToggleButton value={"0"} id="tbg-radio-1" className="rounded-circle dot" name="runs">.</ToggleButton>
-                                                        <ToggleButton value={"1"} id="tbg-radio-2" className="rounded-circle one" name="runs">1</ToggleButton>
-                                                        <ToggleButton value={"2"} id="tbg-radio-3" className="rounded-circle one" name="runs">2</ToggleButton>
-                                                        <ToggleButton value={"3"} id="tbg-radio-4" className="rounded-circle one" name="runs">3</ToggleButton>
-                                                        <ToggleButton value={"4"} id="tbg-radio-5" className="rounded-circle four" name="runs">4</ToggleButton>
-                                                        <ToggleButton value={"5"} id="tbg-radio-6" className="rounded-circle four" name="runs">5</ToggleButton>
-                                                        <ToggleButton value={"6"} id="tbg-radio-7" className="rounded-circle six" name="runs">6</ToggleButton>
-                                                        <ToggleButton value={"W"} id="tbg-radio-8" className="rounded-circle wicket" name="runs">W</ToggleButton>
-                                                    </ToggleButtonGroup>
-                                                </tr>
-                                            </tbody>
-                                        </Table>
-                                        <Table className="mt-0 mb-0">
-                                            <tbody className="tbody">
-                                                <tr>
-                                                    <ToggleButtonGroup type="radio" name="extras" id="extras" defaultValue={""} onChange={this.updateExtras}>
-                                                        <ToggleButton value={""} id="extras-radio-4" className="rounded-circle extras" name="extras">N/A</ToggleButton>
-                                                        <ToggleButton value={"Wd"} id="extras-radio-3" className="rounded-circle extras" name="extras">Wd</ToggleButton>
-                                                        <ToggleButton value={"B"} id="extras-radio-2" className="rounded-circle extras" name="extras">B</ToggleButton>
-                                                        <ToggleButton value={"NB"} id="extras-radio-1" className="rounded-circle extras" name="extras">NB</ToggleButton>
-                                                    </ToggleButtonGroup>
-                                                </tr>
-                                            </tbody>
-                                        </Table>
-                                        <Table className="mt-0 mb-3">
-                                            <tbody className="tbody">
-                                                <tr>
-                                                    <Button type="submit" className="submit-buttons" variant="primary" onClick={this.handleSave}>Save</Button>
-                                                    {this.state.callWicket ? <ModalWicket /> : <input type="hidden"></input>}
-                                                    <Button type="submit" className="submit-buttons" onClick={this.handleEndOver} variant="primary">End Over</Button>
-                                                    {this.state.callOverEnd ? <ModalOver /> : <input type="hidden"></input>}
-                                                    <Button type="submit" className="submit-buttons" variant="primary">End Innings</Button>
-                                                </tr>
-                                            </tbody>
-                                        </Table>
-                                    </Container>
-                                </Col>
-                                <Col className="ms-3">
-                                    <Container fluid className="headers m-3">
-                                        <h fluid>OVER BY OVER</h>
-                                    </Container>
-                                    
-                                    <Container className="col-border m-3">
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 0'} overnumber={0} />
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 1'} overnumber={1} />
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 2'} overnumber={2} />
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 3'} overnumber={3} />
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 4'} overnumber={4} />
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 5'} overnumber={5} />
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 6'} overnumber={6} />
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 7'} overnumber={7} />
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 8'} overnumber={8} />
-                                    </Container>
-                                </Col>
-                            </Row>
-                        </Container>
+    return (
+        <Styles>
+            <Layout>
+                <ModalScoring />
+                <Jumbotron searchList={searchList}/>
+                <Container fluid className="bg text pb-5 pt-5">
+                    <Container fluid className="headers mt-3 mb-0 header-main">
+                        <p className="blinking-live-icon"></p>
+                        <h fluid className="vertical-align-middle"> INNINGS 1 - TEAM A</h>
                     </Container>
-                    <Footer />
-                </Layout>
-            </Styles>
-        )
-    }
+                    <Container className="pt-5 pb-1">
+                        <Row>
+                            <Col className="ms-3">
+                                <Container fluid className="headers m-3">
+                                    <h fluid>SCORING</h>
+                                </Container>
+
+                                <Container className="col-border m-3">
+                                    <Table striped hover className="mt-3"> 
+                                        <thead className="thead w-100">
+                                            <tr>
+                                                <th>At the Crease</th>
+                                            </tr>
+                                        </thead>
+                                    </Table>
+                                    <Table striped hover className="mt-3">
+                                        <thead className="thead">
+                                            <tr>
+                                                <th width="100">On Strike</th>
+                                                <th>Batsman</th>
+                                                <th>R</th>
+                                                <th>B</th>
+                                                <th>SR</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="tbody">
+                                            <tr>
+                                                    <th><p className="blinking-live-icon-2 me-3" /></th>
+                                                    <th>Player 1</th>
+                                                    <th>23</th>
+                                                    <th>20</th>
+                                                    <th>115</th>
+                                            </tr>
+                                        </tbody>
+                                        <tbody className="tbody">
+                                            <tr>
+                                                    <th></th>
+                                                    <th>Player 1</th>
+                                                    <th>23</th>
+                                                    <th>20</th>
+                                                    <th>115</th>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                    <Table>
+                                        <thead className="thead">
+                                            <tr>
+                                                <th>Bowler</th>
+                                                <th>O</th>
+                                                <th>M</th>
+                                                <th>R</th>
+                                                <th>W</th>
+                                                <th>Extras</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="tbody">
+                                            <tr>
+                                                <th>Bowler</th>
+                                                <th>0.0</th>
+                                                <th>0</th>
+                                                <th>0</th>
+                                                <th>0</th>
+                                                <th>0</th>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                    <hr className="solid"></hr>
+                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Current Over'} overnumber={0} />
+                                    <hr className="solid"></hr>
+                                    <Table className="mb-0 mt-3">
+                                        <tbody className="tbody">
+                                            <tr>
+                                                <ToggleButtonGroup type="radio" name="runs" id="runs" defaultValue={""} onChange={updateBall}>
+                                                    <ToggleButton value={"0"} id="tbg-radio-1" className="rounded-circle dot" name="runs">.</ToggleButton>
+                                                    <ToggleButton value={"1"} id="tbg-radio-2" className="rounded-circle one" name="runs">1</ToggleButton>
+                                                    <ToggleButton value={"2"} id="tbg-radio-3" className="rounded-circle one" name="runs">2</ToggleButton>
+                                                    <ToggleButton value={"3"} id="tbg-radio-4" className="rounded-circle one" name="runs">3</ToggleButton>
+                                                    <ToggleButton value={"4"} id="tbg-radio-5" className="rounded-circle four" name="runs">4</ToggleButton>
+                                                    <ToggleButton value={"5"} id="tbg-radio-6" className="rounded-circle four" name="runs">5</ToggleButton>
+                                                    <ToggleButton value={"6"} id="tbg-radio-7" className="rounded-circle six" name="runs">6</ToggleButton>
+                                                    <ToggleButton value={"W"} id="tbg-radio-8" className="rounded-circle wicket" name="runs">W</ToggleButton>
+                                                </ToggleButtonGroup>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                    <Table className="mt-0 mb-0">
+                                        <tbody className="tbody">
+                                            <tr>
+                                                <ToggleButtonGroup type="radio" name="extras" id="extras" defaultValue={""} onChange={updateExtras}>
+                                                    <ToggleButton value={""} id="extras-radio-4" className="rounded-circle extras" name="extras">N/A</ToggleButton>
+                                                    <ToggleButton value={"Wd"} id="extras-radio-3" className="rounded-circle extras" name="extras">Wd</ToggleButton>
+                                                    <ToggleButton value={"B"} id="extras-radio-2" className="rounded-circle extras" name="extras">B</ToggleButton>
+                                                    <ToggleButton value={"NB"} id="extras-radio-1" className="rounded-circle extras" name="extras">NB</ToggleButton>
+                                                </ToggleButtonGroup>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                    <Table className="mt-0 mb-3">
+                                        <tbody className="tbody">
+                                            <tr>
+                                                <Button type="submit" className="submit-buttons" variant="primary" onClick={handleSave}>Save</Button>
+                                                {callWicket ? <ModalWicket /> : <input type="hidden"></input>}
+                                                <Button type="submit" className="submit-buttons" onClick={handleEndOver} variant="primary">End Over</Button>
+                                                {callOverEnd ? <ModalOver /> : <input type="hidden"></input>}
+                                                <Button type="submit" className="submit-buttons" variant="primary">End Innings</Button>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </Container>
+                            </Col>
+                            <Col className="ms-3">
+                                <Container fluid className="headers m-3">
+                                    <h fluid>OVER BY OVER</h>
+                                </Container>
+                                
+                                <Container className="col-border m-3">
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 0'} overnumber={0} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 1'} overnumber={1} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 2'} overnumber={2} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 3'} overnumber={3} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 4'} overnumber={4} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 5'} overnumber={5} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 6'} overnumber={6} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 7'} overnumber={7} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 8'} overnumber={8} />
+                                </Container>
+                            </Col>
+                        </Row>
+                    </Container>
+                </Container>
+                <Footer />
+            </Layout>
+        </Styles>
+    )
 }
 
 export default ScoringPage;

@@ -31,68 +31,19 @@ const Styles = styled.div`
 `;
 
 
-export const NavigationBar = () => {
+export const NavigationBar = ({searchList}) => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem("jwt") !== null ? true : false);
-    const [searchList, setSearchList] = useState([]);
     const [searchValue, setSearchValue] = useState();
 
     const checkLoggedIn = useCallback(() => {
         setIsLoggedIn(localStorage.getItem("jwt") !== null ? true : false);
     }, []);
 
-    const getTeams = useCallback(() => {
-        fetch("http://localhost:9000/teamList", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data);
-          const newteamId = data.map((team) => ({
-            id: `/team-${team.id}`,
-            value: team.name, 
-            label: team.name,
-        }));
-            const teamId = searchList.concat(newteamId);
-            setSearchList(teamId);
-    
-        })
-        .catch((err) => console.log(err));
-        console.log("Teams: ", searchList);
-    }, []);
-
-    const getTournaments = useCallback(() => {
-        fetch("http://localhost:9000/tournamentList", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data);
-            const newtournamentId = data.map((tournament) => ({
-            id: `/tournament-${tournament.id}`,
-            value: tournament.name, 
-            label: tournament.name,
-        }));
-            const tournamentId = searchList.concat(newtournamentId);
-            setSearchList(tournamentId);
-        })
-        .catch((err) => console.log(err));
-        console.log("Tournaments: ", searchList);
-    }, [])
-
     useEffect(() => {
         checkLoggedIn();
-        getTeams();
-        getTournaments();
-        console.log("Assimilated: ", searchList);
         
-    }, []);
+    }, [checkLoggedIn]);
 
     var navigate = useNavigate();
 

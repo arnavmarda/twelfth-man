@@ -29,10 +29,10 @@ const Styles = styled.div`
 `;
 
 
-export const Jumbotron = () => {
+export const Jumbotron = ({searchList}) => {
     return (
         <Styles>
-            <NavigationBar />
+            <NavigationBar searchList={searchList} />
             <div className="p-5 mb-0 rounded-1 jumbo">
                 <div className='overlay' />
                 <div className="container-fluid py-5">

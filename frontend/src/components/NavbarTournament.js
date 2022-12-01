@@ -29,57 +29,9 @@ const Styles = styled.div`
 `;
 
 
-export const NavigationBar = () => {
+export const NavigationBar = ({searchList}) => {
 
-    const [searchValue, setSearchValue] = useState("");
-    const [searchList, setSearchList] = useState([]);
-
-    const getTeams = React.useCallback(() => {
-        fetch("http://localhost:9000/teamList", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data);
-          let teamId = searchList.concat(data.map((team) => ({
-            id: `/team-${team.id}`,
-            value: team.name, 
-            label: team.name,
-        })));
-            setSearchList(teamId);
-    
-        })
-        .catch((err) => console.log(err));
-    }, []);
-
-    const getTournaments = React.useCallback(() => {
-        fetch("http://localhost:9000/tournamentList", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          }
-        })
-        .then((res) => res.json())
-        .then((data) => {
-          // console.log(data);
-            let tournamentId = searchList.concat(data.map((tournament) => ({
-            id: `/tournament-${tournament.id}`,
-            value: tournament.name, 
-            label: tournament.name,
-        })));
-            setSearchList(tournamentId);
-        })
-        .catch((err) => console.log(err));
-    }, [])
-
-    React.useEffect(() => {
-        getTeams();
-        getTournaments();
-        
-    }, []);
+    const [searchValue, setSearchValue] = useState();
 
     let navigate = useNavigate();
 

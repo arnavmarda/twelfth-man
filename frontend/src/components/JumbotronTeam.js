@@ -37,28 +37,30 @@ const Styles = styled.div`
         font-weight: bold;
     }
 
-    .tournament-header {
+    .team-captain {
         position: relative;
         padding: 0;
         margin: 0;
         text-align: center;
         color: #00FFFF;
-        font-size: 40px;
+        font-size: 27px;
         font-weight: bold;
     }
 `;
 
 
-export const Jumbotron = ({name, captain}) => (
-    <Styles>
-        <NavigationBar />
-        <div className="p-5 mb-0 rounded-1 jumbo">
-            <div className='overlay'></div>
-            <div className="container-fluid py-5">
-               <p className="tournament-header">{name}</p>
-               <br />
-               <p className='team-captain'>{captain}</p>
+export const Jumbotron = ({name, captain, searchList}) => {
+
+    return(
+        <Styles>
+            <NavigationBar searchList={searchList}/>
+            <div className="p-5 mb-0 rounded-1 jumbo">
+                <div className='overlay'></div>
+                <div className="container-fluid py-5">
+                <p className="tournament-header">{name}</p>
+                <p className='team-captain'>Captain: {captain}</p>
+                </div>
             </div>
-        </div>
-    </Styles>
-);
+        </Styles>
+    )
+};

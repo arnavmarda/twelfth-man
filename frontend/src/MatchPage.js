@@ -54,12 +54,11 @@ const Styles = styled.div`
     }
 `;
 
-class MatchPage extends React.Component {
-    render() {
+const MatchPage = ({searchList}) => {
         return (
             <Styles>
                 <Layout>
-                    <Jumbotron />
+                    <Jumbotron searchList={searchList}/>
                     <Container fluid className="bg text pb-5">
                         <Container className="pt-5 pb-1">
                             <Row>
@@ -390,7 +389,6 @@ class MatchPage extends React.Component {
                 </Layout>
             </Styles>
         )
-    }
 }
 
 export default MatchPage;

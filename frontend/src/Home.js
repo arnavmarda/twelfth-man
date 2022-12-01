@@ -115,45 +115,36 @@ const Styles = styled.div`
 `;
 
 
-class Home extends Component {
+const Home = ({searchList}) => {
+    return (  
+        <Styles>
+            <Layout>
+                <Jumbotron searchList={searchList}/>
+                <MatchCarousel />
+                <Container fluid className='features'>
+                        <Row>
+                            <Col className='features-component'>
+                                <p className='blinking-live-icon'></p>    
+                                <p className='feature-titles'>Live Scoring</p>
+                                <p className='feature-info'>Use Twelfth Man to update match scores live. The wesbite will display live scores and past scorecards for the scored match.</p>
+                            </Col>
+                            <Col className='features-component'>
+                                <p className='feature-icon'><TbTournament size={35} /></p>
+                                <p className='feature-titles'>Tournament Creation</p>
+                                <p className='feature-info'>Twelfth Man allows you to efficiently create and manage tournaments with live and past scores, player rankings and tournament trees and brackets.</p>
+                            </Col>
+                            <Col className='features-component'>
+                                <p className='feature-icon'><BsGeoFill size={35} /></p>
+                                <p className='feature-titles'>Organize Friendlies</p>
+                                <p className='feature-info'>Twelfth Man searches for teams near you based on past performances and suggests teams to play friendly matches with.</p>
+                            </Col>
+                        </Row>
+                </Container>
+                <Footer />
+            </Layout>
+        </Styles>          
 
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
-
-    render() {
-        return (  
-            <Styles>
-                <Layout>
-                    <Jumbotron />
-                    <MatchCarousel />
-                    <Container fluid className='features'>
-                            <Row>
-                                <Col className='features-component'>
-                                    <p className='blinking-live-icon'></p>    
-                                    <p className='feature-titles'>Live Scoring</p>
-                                    <p className='feature-info'>Use Twelfth Man to update match scores live. The wesbite will display live scores and past scorecards for the scored match.</p>
-                                </Col>
-                                <Col className='features-component'>
-                                    <p className='feature-icon'><TbTournament size={35} /></p>
-                                    <p className='feature-titles'>Tournament Creation</p>
-                                    <p className='feature-info'>Twelfth Man allows you to efficiently create and manage tournaments with live and past scores, player rankings and tournament trees and brackets.</p>
-                                </Col>
-                                <Col className='features-component'>
-                                    <p className='feature-icon'><BsGeoFill size={35} /></p>
-                                    <p className='feature-titles'>Organize Friendlies</p>
-                                    <p className='feature-info'>Twelfth Man searches for teams near you based on past performances and suggests teams to play friendly matches with.</p>
-                                </Col>
-                            </Row>
-                    </Container>
-                    <Footer />
-                </Layout>
-            </Styles>          
-
-        )
-    }
+    )
 }
 
 export default Home;

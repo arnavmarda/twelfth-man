@@ -46,19 +46,12 @@ const Styles = styled.div`
     }
 `;
 
-const TeamPage = ({ teamId }) => {
+const TeamPage = ({ teamId, searchList }) => {
     const [roster, setRoster] = React.useState([]);
     const [tournamentList, setTournamentList] = React.useState([]);
     const [upcomingGames, setUpcomingGames] = React.useState([]);
     const [captain, setCaptain] = React.useState("");
     const [name, setName] = React.useState("");
-    const [searchList, setSearchList] = React.useState([]);
-    const [suggestedOpponent, setSuggestedOpponent] = React.useState("");
-
-
-    
-
-
 
     const getTeamInfo = useCallback(() => {
         fetch("http://localhost:9000/getInfoForTeam", {
@@ -91,7 +84,6 @@ const TeamPage = ({ teamId }) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                setSuggestedOpponent(data);
                 const toastMsg = `Consider playing a friendly with ${data}. We think it would be a great game of cricket!`;
                 toast(toastMsg, {
                     position: "top-center",
@@ -148,10 +140,11 @@ const TeamPage = ({ teamId }) => {
         getTeamUpcomingMatches();
     }, [getTeamInfo, getTeamTournaments, getTeamUpcomingMatches, getRandomOpponent]);
 
+
     return (
         <Styles>
             <Layout>
-                <Jumbotron name={name} captain={captain} />
+                <Jumbotron name={name} captain={captain} searchList={searchList}/>
                 <MatchCarousel />
                 <Container fluid className="bg text pb-5">
                     <Container className="pt-5">

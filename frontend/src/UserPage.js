@@ -42,7 +42,7 @@ const Styles = styled.div`
     }
 `;
 
-const UserPage = ({ player }) => {
+const UserPage = ({ player, searchList }) => {
     const [playerId, setPlayerId] = useState(player);
     const [name, setName] = useState("");
     const [hand, setHand] = useState("");
@@ -81,6 +81,7 @@ const UserPage = ({ player }) => {
                     hand={hand}
                     playerId={playerId}
                     position={position}
+                    searchList={searchList}
                 />
                 <MatchCarousel />
                 <Container fluid className="bg text pb-5">

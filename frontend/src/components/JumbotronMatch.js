@@ -108,9 +108,9 @@ const Styles = styled.div`
 `;
 
 
-export const Jumbotron = () => (
+export const Jumbotron = ({searchList}) => (
     <Styles>
-        <NavigationBar />
+        <NavigationBar searchList={searchList} />
         <div className="p-5 mb-0 rounded-1 jumbo">
             <div className='overlay'></div>
             <div className="container-fluid py-5">
