@@ -53,7 +53,7 @@ function App() {
     .catch((err) => console.log(err));
   }, []);
 
-  const getMatches = useCallback(() =>{
+  const getMatches = useCallback(() => {
     fetch("http://localhost:9000/matchList", {
       method: "GET",
       headers: {
