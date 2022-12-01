@@ -36,30 +36,60 @@ export const NavigationBar = () => {
     var navigate = useNavigate();
 
     const [searchValue, setSearchValue] = useState("");
+    const [searchList, setSearchList] = useState([]);
+
+    const getTeams = React.useCallback(() => {
+        fetch("http://localhost:9000/teamList", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+          let teamId = searchList.concat(data.map((team) => ({
+            id: `/tournament-${team.id}`,
+            value: team.name, 
+            label: team.name,
+        })));
+            setSearchList(teamId);
+    
+        })
+        .catch((err) => console.log(err));
+    }, []);
+
+    const getTournaments = React.useCallback(() => {
+        fetch("http://localhost:9000/tournamentList", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data);
+            let tournamentId = searchList.concat(data.map((tournament) => ({
+            id: `/tournament-${tournament.id}`,
+            value: tournament.name, 
+            label: tournament.name,
+        })));
+            setSearchList(tournamentId);
+        })
+        .catch((err) => console.log(err));
+    }, [])
+
+    React.useEffect(() => {
+        getTeams();
+        getTournaments();
+        
+    }, [getTeams, getTournaments]);
 
     const handleSearch = (searchValue) => {
         setSearchValue(searchValue);
-        var goTo = `/${searchValue.value}`;
+        var goTo = `${searchValue.id}`;
         navigate(goTo);
     }
-
-    const searchList = [
-        {value: "team", label: "Team 1"},
-        {value: "team", label: "Team 2"},
-        {value: "team", label: "Team 3"},
-        {value: "tournament", label: "Tournament 1"},
-        {value: "tournament", label: "Tournament 2"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-        {value: "tournament", label: "Tournament 3"},
-    ];
 
     return(
         <Styles className="sticky-top">
