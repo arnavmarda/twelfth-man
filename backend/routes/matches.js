@@ -44,12 +44,8 @@ router.post("/match/create", requireLogin, (req, res) => {
                     error: "No team found with name " + home,
                 });
             }
-        
-
         })
         .catch((err) => console.log(err));
-
-        
 
     Team.findOne({ name: away })
         .then((team) => {
@@ -60,7 +56,6 @@ router.post("/match/create", requireLogin, (req, res) => {
             }
         })
         .catch((err) => console.log(err));
-
 
     const newMatch = new Match({
         home: home,
@@ -93,29 +88,36 @@ router.delete("/match/delete/:id", requireLogin, (req, res) => {
         });
 });
 
-/*
-    MATCH: main methods
+/* 
+    Get all matches
 */
+router.get("/matchList", (req, res) => {
+    Match.find({}, (err, matches) => {
+        let matchesList = [];
 
+        matches.forEach((match) => {
+            matchesList.push({
+                id: match._id,
+            });
+        });
 
-
+        res.status(200).json(matchesList);
+    }).catch((err) => console.log(err));
+});
 
 // update runs
 router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
     const { runsToAdd, teamToUpdate, batsmanToUpdate } = req.body;
 
-
     teamToUpdate = teamToUpdate.toLowerCase();
     if (teamToUpdate === "home") {
-        let indexOfBatsman = homePlayers.indexOf(batsmanToUpdate); 
-        homeBatsmenRuns[indexOfBatsman] += runsToAdd; 
-
-
+        let indexOfBatsman = homePlayers.indexOf(batsmanToUpdate);
+        homeBatsmenRuns[indexOfBatsman] += runsToAdd;
 
         Match.findOneAndUpdate(
             { _id: req.params.id },
             { homeRuns: { $inc: runsToAdd } },
-            {homeBatsmenRuns: homeBatsmenRuns},
+            { homeBatsmenRuns: homeBatsmenRuns }
         )
             .then((response) => res.status(200).json(response))
             .catch((err) => {
@@ -124,16 +126,13 @@ router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
                 });
             });
     } else if (teamToUpdate === "away") {
-
-
-        let indexOfAwayBatsman = awayPlayers.indexOf(batsmanToUpdate); 
-        awayBatsmenRuns[indexOfAwayBatsman] += runsToAdd; 
-
+        let indexOfAwayBatsman = awayPlayers.indexOf(batsmanToUpdate);
+        awayBatsmenRuns[indexOfAwayBatsman] += runsToAdd;
 
         Match.findOneAndUpdate(
             { _id: req.params.id },
             { awayRuns: { $inc: runsToAdd } },
-            {awayBatsmenRuns: awayBatsmenRuns},
+            { awayBatsmenRuns: awayBatsmenRuns }
         )
             .then((response) => res.status(200).json(response))
             .catch((err) => {
@@ -153,7 +152,7 @@ router.patch("/match/:id/updateWickets", requireLogin, (req, res) => {
     const { wicketsToAdd, teamToUpdate, bowlerToUpdate } = req.body;
     teamToUpdate = teamToUpdate.toLowerCase();
     if (teamToUpdate === "home") {
-        let indexOfBowler = homePlayers.indexOf(bowlerToUpdate); 
+        let indexOfBowler = homePlayers.indexOf(bowlerToUpdate);
         homeBowlerWickets[indexOfBowler] += wicketsToAdd;
         Match.findOneAndUpdate(
             { _id: req.params.id },
@@ -166,7 +165,7 @@ router.patch("/match/:id/updateWickets", requireLogin, (req, res) => {
                 });
             });
     } else if (teamToUpdate === "away") {
-        let indexOfAwayBowler = awayPlayers.indexOf(bowlerToUpdate); 
+        let indexOfAwayBowler = awayPlayers.indexOf(bowlerToUpdate);
         awayBowlerWickets[indexOfAwayBowler] += wicketsToAdd;
         Match.findOneAndUpdate(
             { _id: req.params.id },

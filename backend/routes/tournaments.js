@@ -62,6 +62,26 @@ router.post("/tournament/create", requireLogin, (req, res) => {
     });
 });
 
+/* 
+    Get all tournaments
+*/
+router.get("/tournamentList", (req, res) => {
+    Tournament.find({}, (err, tournaments) => {
+        let tournamentsList = [];
+
+        tournaments.forEach((tournament) => {
+            tournamentsList.push({
+                id: tournament._id,
+                name: tournament.name,
+                teams: tournament.teams,
+                numTeams: tournament.numTeams,
+            });
+        });
+
+        res.status(200).json(tournamentsList);
+    }).catch((err) => console.log(err));
+});
+
 /*
     Delete a tournament
 */
