@@ -111,12 +111,12 @@ router.delete("/team/delete/:id", (req, res) => {
 */
 
 router.get("/getInfoForTeam", (req, res) => {
-    const { teamID } = req.body;
+    const { id } = req.body;
     let arrayOfAllInfo = []
     let rosterArray = [];
     let arrayOfGames = [];
     let tournamentArray = [];
-    Team.findOne({ teamID: teamID }).then((foundTeam) => {
+    Team.findOne({ _id: id }).then((foundTeam) => {
         if (!foundTeam) {
             return res.status(422).json({
                 error: "No team with this name",
@@ -135,6 +135,7 @@ router.get("/getInfoForTeam", (req, res) => {
                 if (match.home === foundTeam.name || match.away === foundTeam.name) {
                     if(!match.isMatchOver){
                         arrayOfGames.push({
+                            id: match._id,
                             home: match.home,
                             away: match.away,
                         });
@@ -149,7 +150,10 @@ router.get("/getInfoForTeam", (req, res) => {
         Tournament.find({}, (err, tournaments) => {
             tournaments.forEach((tournament) => {
                 if (tournament.teams.includes(foundTeam.name)) {
-                    tournamentArray.push(tournament.name);
+                    tournamentArray.push({
+                        name: tournament.name,
+                        id: tournament._id,
+                    });
                 }
             });
 
@@ -157,6 +161,7 @@ router.get("/getInfoForTeam", (req, res) => {
 
         arrayOfAllInfo.push({
             captain: captainOfTeam,
+            name: foundTeam.name,
             roster: rosterArray,
             upcomingMatches: arrayOfGames,
             tournaments: tournamentArray,

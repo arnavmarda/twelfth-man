@@ -17,10 +17,12 @@ import TournamentCreation from "./TournamentCreation.js";
 function App() {
 
   const [playerIds, setPlayerIds] = useState([]);
-  const [teamNames, setTeamNames] = useState([]);
+  const [teamIds, setTeamIds] = useState([]);
+  const [tournamentIds, setTournamentIds] = useState([]);
+  const [matchIds, setMatchIds] = useState([]);
   
   useEffect(() => {
-    fetch("http://localhost:9000/userList", {
+    fetch("http://localhost:9000/everything", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -28,25 +30,16 @@ function App() {
     })
     .then((res) => res.json())
     .then((data) => {
-      let idsArray = data.map((user) => user.id);
-      setPlayerIds(idsArray); 
+      let userId = data.users.map((user) => user.id);
+      let teamId = data.teams.map((team) => team.id);
+      let tournamentId = data.tournaments.map((tournament) => tournament.id);
+      let matchId = data.matches.map((match) => match.id);
+      setPlayerIds(userId);
+      setTeamIds(teamId);
+      setTournamentIds(tournamentId);
+      setMatchIds(matchId);
     })
     .catch((err) => console.log(err));
-
-    fetch("http://localhost:9000/teamList", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      }
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      let teamsArray = data.map((team) => team.name);
-      setTeamNames(teamsArray); 
-    })
-    .catch((err) => console.log(err))
-
-
   }, []);
 
   return (
@@ -54,17 +47,29 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/" element={<Home />}/>
-          {playerIds.map((playerId) => (<Route path={`/user-${playerId}`} element={<UserPage player={playerId}/>} />))}
-          <Route path="/tournament" element={<TournamentPage />} />
-          {teamNames.map((team) => (<Route path={`/user-${team}`} element={<TeamPage teamName={team}/>} />))}
+
+          {playerIds.map((playerId) => (
+          <Route path={`/user-${playerId}`} element={<UserPage player={playerId}/>} />
+          ))}
+
+          {tournamentIds.map((tournamentId) => (
+          <Route path={`/tournament-${tournamentId}`} element={<TournamentPage tournament={tournamentId}/>} />
+          ))}
+
+          {teamIds.map((team) => (
+          <Route path={`/user-${team}`} element={<TeamPage teamId={team}/>} />
+          ))}
+
+          {matchIds.map((matchId) => (
+            (<Route path={`/match-${matchId}`} element={<MatchPage match={matchId}/>} />)
+            (<Route path={`/scoring-${matchId}`} element={<ScoringPage match={matchId}/>} />)
+          ))}
+
           <Route path="/signup" element={<UserRegistration />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/createteam" element={<TeamCreation />} />
           <Route path="/createtournament" element={<TournamentCreation />} />
-          <Route path="/scoring" element={<ScoringPage />} />
-          <Route path="/match" element={<MatchPage />} />
           <Route path="/creatematch" element={<CreateMatch />} />
-          {/* <Route path='*' element={<NotFound />} /> */}
         </Routes>
       </Router>
     </React.Fragment>
