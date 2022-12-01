@@ -16,7 +16,9 @@ require("./models/tournament");
 app.use(require("./routes/matches.js"));
 app.use(require("./routes/teams.js"));
 app.use(require("./routes/tournaments.js"));
-app.use(require("./routes/users.js"))
+app.use(require("./routes/users.js"));
+app.use(require("./routes/all.js"));
+
 
 mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,

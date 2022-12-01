@@ -22,7 +22,7 @@ function App() {
   const [matchIds, setMatchIds] = useState([]);
   
   useEffect(() => {
-    fetch("http://localhost:9000/everything", {
+      fetch("http://localhost:9000/everything", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -30,6 +30,7 @@ function App() {
     })
     .then((res) => res.json())
     .then((data) => {
+      console.log(data);
       let userId = data.users.map((user) => user.id);
       let teamId = data.teams.map((team) => team.id);
       let tournamentId = data.tournaments.map((tournament) => tournament.id);

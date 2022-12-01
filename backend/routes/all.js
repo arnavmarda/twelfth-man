@@ -13,7 +13,8 @@ router.get("/everything", (req, res) => {
     let matches = [];
     let tournaments = [];
 
-    User.find({}, (err, foundUsers) => {
+    const findUsers = () => {
+        User.find({}).then((err, foundUsers) => {
         foundUsers.forEach((user) => {
             users.push({
                 id: user.id,
@@ -23,9 +24,10 @@ router.get("/everything", (req, res) => {
                 position: user.position ? user.position : "",
             });
         });
-    }).catch((err) => console.log(err));
+    }).catch((err) => console.log("Users: ", err))};
 
-    Team.find({}, (err, foundTeams) => {
+    const findTeams = () => {
+        Team.find({}).then((err, foundTeams) => {
         foundTeams.forEach((team) => {
             teams.push({
                 name: team.name,
@@ -35,9 +37,9 @@ router.get("/everything", (req, res) => {
                 roster: team.roster,
             });
         });
-    }).catch((err) => console.log(err));
+    }).catch((err) => console.log("Teams: ", err))};
 
-    Match.find({}, (err, foundMatches) => {
+    const findMatches = Match.find({}).then((err, foundMatches) => {
         foundMatches.forEach((match) => {
             matches.push({
                 home: match.home,
@@ -60,9 +62,9 @@ router.get("/everything", (req, res) => {
                 numOvers: match.numOvers,
             });
         });
-    }).catch((err) => console.log(err));
+    }).catch((err) => console.log("Matches: ", err));
 
-    Tournament.find({}, (err, foundTourns) => {
+    const findTournaments = Tournament.find({}).then((err, foundTourns) => {
         foundTourns.forEach((tournament) => {
             tournaments.push({
                 id: tournament._id,
@@ -70,7 +72,12 @@ router.get("/everything", (req, res) => {
                 teams: tournament.teams,
             });
         });
-    }).catch((err) => console.log(err));
+    }).catch((err) => console.log("Tournaments: ", err));
+
+    findTeams.clone().exec();
+    findUsers.clone().exec();
+    findTournaments.clone().exec();
+    findMatches.clone().exec();
 
     res.status(200).json({
         users: users,
