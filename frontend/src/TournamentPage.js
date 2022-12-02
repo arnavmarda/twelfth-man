@@ -58,6 +58,29 @@ const Styles = styled.div`
 
 const TournamentPage = ({tournament, searchList}) => {
 
+    const [tournamentData, setTournamentData] = React.useState();
+
+    const getTournamentData = React.useCallback(() => {
+        fetch("http://localhost:9000/getInfoForTournament", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: tournament,
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            setTournamentData(data);
+        })
+        .catch(err => console.log(err))
+    }, []);
+
+    React.useEffect(() => {
+        getTournamentData();
+    }, [])
+
     return(
         <Styles>
             <Layout>
@@ -71,9 +94,12 @@ const TournamentPage = ({tournament, searchList}) => {
                                     <Image src={Team} className="align-middle d-inline-block" width="100" height="100" /> 
                                     <h3 className="p-3 pb-2 pt-0">Teams</h3>
                                     <ListGroup className="p-3 text-center">
-                                        <ListGroup.Item action className="team">Team 1</ListGroup.Item>
-                                        <ListGroup.Item action className="team">Team 2</ListGroup.Item>
-                                        <ListGroup.Item action className="team">Team 3</ListGroup.Item>
+                                        {(tournamentData.teams) ? (
+                                                tournamentData.teams.map((team) => (<ListGroup.Item action className="team">{team}</ListGroup.Item>))
+                                            ) : (
+                                                <ListGroup.Item action className="team">There are no teams in the tournament.</ListGroup.Item>
+                                            )
+                                        }
                                     </ListGroup>
                                 </Container>
                                 <Container />
@@ -82,19 +108,19 @@ const TournamentPage = ({tournament, searchList}) => {
                             <Col className="col-border ms-3">
                                 <Container>
                                     <Image src={Standing} className="align-middle d-inline-block pt-1" width="80" height="80" /> 
-                                    <h3 className="p-3 pb-2">Standings</h3>
+                                    <h3 className="p-3 pb-2">Upcoming Games</h3>
                                     <ListGroup as="ol" numbered className="p-3 text-center">
-                                        <ListGroup.Item as="li">Team 1</ListGroup.Item>
-                                        <ListGroup.Item as="li">Team 2</ListGroup.Item>
-                                        <ListGroup.Item as="li">Team 3</ListGroup.Item>
+                                        {(tournamentData.fixtures) ? (
+                                            tournamentData.fixtures.map((fixture) => (
+                                                <ListGroup.Item as="li">{fixture.home} V {fixture.away}</ListGroup.Item>
+                                            ))
+                                        ) : (
+                                            <ListGroup.Item as="li">No fixtures to display.</ListGroup.Item>
+                                        )}
                                     </ListGroup>
                                 </Container>
                                 <Container />
                             </Col>
-                        </Row>
-                        <Row className="col-border w-100">
-                            <Image src={Tournament} fluid className="tournament-icon align-middle d-inline-block" width="10" height="10" />
-                            <h3 className="p-3 pb-2 pt-0 text-center">Bracket</h3>
                         </Row>
                     </Container>
                 </Container>
