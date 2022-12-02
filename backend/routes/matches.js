@@ -118,6 +118,30 @@ router.get("/matchList", (req, res) => {
         .catch((err) => console.log(err));
 });
 
+/*
+    End a match
+*/
+
+router.post("/endMatch", (req, res) => {
+    const { id, winner } = req.body;
+    Match.findOne({ _id: id })
+    .then((foundMatch) => {
+        if (!foundMatch) {
+            return res.status(422).json({
+                error: "No match with this id",
+            });
+        }
+        matchStatus = foundMatch.isMatchOver;
+        matchWinner = foundMatch.winner;
+        matchStatus = true;
+        matchWinner = winner;
+        
+        foundMatch.save();
+    })
+        .clone()
+        .catch((err) => console.log(err));
+});
+
 // update runs
 router.patch("/match/:id/updateRuns", requireLogin, (req, res) => {
     const { runsToAdd, teamToUpdate, batsmanToUpdate } = req.body;

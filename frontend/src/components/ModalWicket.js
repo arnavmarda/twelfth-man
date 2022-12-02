@@ -6,11 +6,18 @@ import { Form } from "react-bootstrap";
 export const ModalWicket = (props) => {
 
     const [isShown, setIsShown] = useState(true);
+    const [isSelected, setIsSelected] = useState("");
+
+    const handleChange = (batsman) => {
+        setIsSelected(batsman);
+        props.onChange(batsman);
+    }
 
     const closeModal = () => {
         setIsShown(false);
     }
 
+    const batsmenList = props.batsmen.map((batsmen) => ({value: batsmen, label: batsmen}))
     return (
         <Modal autoFocus centered show={isShown} onExit={closeModal} onExited={closeModal}>
             <Modal.Header>
@@ -19,32 +26,23 @@ export const ModalWicket = (props) => {
 
             <Modal.Body>
                 <Form> 
-                    <Form.Group className="mb-3" controlId="chooseBatsmanOut">
-                        <Form.Select required aria-label="Who got out?" className="mb-2">
-                            <option>Who got out?</option>
-                            <option value="Batsman 1">Batsman 1</option>
-                            <option value="Batsman 2">Batsman 2</option>
-                        </Form.Select>
-                        <Form.Select required aria-label="How did they get out?">
-                            <option>How did they get out?</option>
-                            <option value="b">Bowled</option>
-                            <option value="lbw">LBW</option>
-                            <option value="c&b">Caught and Bowled</option>
-                            <option value="st">Stumped</option>
-                            <option value="c">Caught</option>
-                            <option value="hw">Hit-Wicket</option>
-                        </Form.Select>
-                    </Form.Group>
-                    <hr className="solid"></hr>
                     <Form.Group>
                         <Form.Select required aria-label="Next Batsman">
-                            <option>Next Batsman</option>
+
+                            <DropdownRadio 
+                            options={batsmenList} 
+                            selectedOption={isSelected} 
+                            onChange={handleChange} 
+                            placeholder="Select next batsman"
+                            />
+
+                            {/* <option>Next Batsman</option>
                             <option value="Batsman 3">Batsman 3</option>
                             <option value="Batsman 4">Batsman 4</option>
                             <option value="Batsman 5">Batsman 5</option>
                             <option value="Batsman 6">Batsman 6</option>
                             <option value="Batsman 7">Batsman 7</option>
-                            <option value="Batsman 8">Batsman 8</option>
+                            <option value="Batsman 8">Batsman 8</option> */}
                         </Form.Select>
                     </Form.Group>
                 </Form>
