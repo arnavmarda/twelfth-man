@@ -18,6 +18,7 @@ app.use(require("./routes/teams.js"));
 app.use(require("./routes/tournaments.js"));
 app.use(require("./routes/users.js"));
 app.use(require("./routes/all.js"));
+app.use(require("./routes/scoring.js"));
 
 
 mongoose.connect(MONGO_URI, {

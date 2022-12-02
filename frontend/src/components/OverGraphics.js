@@ -34,9 +34,18 @@ function RenderButton(props) {
 
 export function RenderOver(props) {
     const over = props.balls;
-    const balls = over.map((ball) => 
+    let balls = [];
+    if(over.length !== 0 && over[0] !== ""){
+        console.log(props)
+        balls = over.map((ball) => 
         <th><RenderButton ball={ball}/></th>
     ); 
+    } else {
+        const randOver = ["", "", "", "", "", ""]
+        balls = randOver.map((ball) => 
+        <th><RenderButton ball={ball}/></th>
+    ); 
+    }
     return (
         <React.Fragment>
             <Table className="tbody over mt-3">

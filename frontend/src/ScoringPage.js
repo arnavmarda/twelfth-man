@@ -197,6 +197,138 @@ const ScoringPage = ({searchList, match}) => {
     const [currentBall, setCurrentBall] = React.useState("");
     const [callOverEnd, setCallOverEnd] = React.useState(false);
     const [callWicket, setCallWicket] = React.useState(false);
+    const [homeData, setHomeData] = React.useState({
+        home: "",
+        homeRuns: 0,
+        homeWicketsLost: 0,
+        winner: "",
+        homePlayers: [],
+        homeBatsmenRuns: [],
+        homeBatsmenBallsFaced: [],
+        homeBowlerRunsGiven: [],
+        homeBowlerBallsBowled: [],
+        homeBowlerWickets: [],
+        homeBowlerExtras: [],
+        battingFirst: true,
+    });
+    const [awayData, setAwayData] = React.useState({
+        away: "",
+        awayRuns: 0,
+        awayWicketsLost: 0,
+        awayPlayers: [],
+        awayBatsmenRuns: [],
+        awayBatsmenBallsFaced: [],
+        awayBowlerRunsGiven: [],
+        awayBowlerBallsBowled: [],
+        awayBowlerWickets: [],
+        awayBowlerExtras: [],
+        homeBowling: [],
+        awayBowling: [],
+        battingFirst: false,
+    })
+    const [isMatchOver, setIsMatchOver] = React.useState(false);
+    const [isBattingFirst, setIsBattingFirst] = React.useState("");
+    // const [battingNow, setBattingNow] = React.useState("");
+    const [currInnings, setCurrInnings] = React.useState(1);
+    const [striker, setStriker] = React.useState({
+        name: "",
+        runs: 0,
+        balls: 0,
+    });
+    const [nonStriker, setNonStriker] = React.useState({
+        name: "",
+        runs: 0,
+        balls: 0,
+    });
+    const [bowler, setBowler] = React.useState({
+        name: "",
+        overs: "",
+        runs: 0,
+        wickets: 0,
+        extras: 0,
+    })
+    const [batsmen, setBatsmen] = React.useState([]);
+    const [bowlers, setBowlers] = React.useState([]);
+    const [currOver, setCurrOver] = React.useState(0);
+
+    const getMatchInfo = React.useCallback(() => {
+        fetch("http://localhost:9000/match/getInfo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: match,
+            }) 
+        })
+        .then(response => response.json())
+        .then(data => {
+            setHomeData({
+                ...homeData,
+                home: data.home,
+                homeRuns: data.homeRuns,
+                homeWicketsLost: data.homeWicketsLost,
+                winner: data.winner,
+                homePlayers: data.homePlayers,
+                homeBatsmenRuns: data.homeBatsmenRuns,
+                homeBatsmenBallsFaced: data.homeBatsmenBallsFaced,
+                homeBowlerRunsGiven: data.homeBowlerRunsGiven,
+                homeBowlerBallsBowled: data.homeBowlerBallsBowled,
+                homeBowlerWickets: data.homeBowlerWickets,
+                homeBowlerExtras: data.homeBowlerExtras,
+                homeBowling: data.homeBowling,
+            });
+            setAwayData({
+                ...awayData,
+                away: data.away,
+                awayRuns: data.awayRuns,
+                awayWicketsLost: data.awayWicketsLost,
+                awayPlayers: data.awayPlayers,
+                awayBatsmenRuns: data.awayBatsmenRuns,
+                awayBatsmenBallsFaced: data.awayBatsmenBallsFaced,
+                awayBowlerRunsGiven: data.awayBowlerRunsGiven,
+                awayBowlerBallsBowled: data.awayBowlerBallsBowled,
+                awayBowlerWickets: data.awayBowlerWickets,
+                awayBowlerExtras: data.awayBowlerExtras,
+                awayBowling: data.awayBowling,
+            });
+            console.log(data);
+            setIsMatchOver(data.isMatchOver);
+            setIsBattingFirst(data.home);
+            setStriker({
+                ...striker,
+                name: data.homePlayers[0],
+                runs: data.homeBatsmenRuns[0],
+                balls: data.homeBatsmenBallsFaced[0],
+            });
+            setNonStriker({
+                ...nonStriker,
+                name: data.homePlayers[1],
+                runs: data.homeBatsmenRuns[1],
+                balls: data.homeBatsmenBallsFaced[1],
+            });
+            setBowler({
+                ...bowler, 
+                name: data.awayPlayers[0],
+                overs: data.awayBowlerBallsBowled[0],
+                runs: data.awayBowlerRunsGiven[0],
+                wickets: data.awayBowlerWickets[0],
+                extras: data.awayBowlerExtras[0]
+            })
+            let allBatsmen = data.homePlayers.map((player, index) => {
+                if(index < 2){
+                } else{
+                    return player;
+                }
+            })
+            setBatsmen(allBatsmen);
+            setBowlers(data.awayPlayers);
+        })
+    }, []);
+
+    React.useEffect(() => {
+        getMatchInfo();
+    }, []);
 
     const handleEndOver = (event) => {
         setCallOverEnd(true);
@@ -215,15 +347,16 @@ const ScoringPage = ({searchList, match}) => {
             setCallWicket(true);
         }
     }
+    console.log("Home: ", homeData);
     return (
         <Styles>
             <Layout>
-                <ModalScoring />
-                <Jumbotron searchList={searchList}/>
+                {/* <ModalScoring home={homeData.home} away={awayData.away} setIsBattingFirst={setIsBattingFirst}/> */}
+                <Jumbotron searchList={searchList} home={homeData.home} away={awayData.away}/>
                 <Container fluid className="bg text pb-5 pt-5">
                     <Container fluid className="headers mt-3 mb-0 header-main">
                         <p className="blinking-live-icon"></p>
-                        <h fluid className="vertical-align-middle"> INNINGS 1 - TEAM A</h>
+                        <h fluid className="vertical-align-middle"> INNINGS {currInnings} - {isBattingFirst}</h>
                     </Container>
                     <Container className="pt-5 pb-1">
                         <Row>
@@ -253,19 +386,19 @@ const ScoringPage = ({searchList, match}) => {
                                         <tbody className="tbody">
                                             <tr>
                                                     <th><p className="blinking-live-icon-2 me-3" /></th>
-                                                    <th>Player 1</th>
-                                                    <th>23</th>
-                                                    <th>20</th>
-                                                    <th>115</th>
+                                                    <th>{striker.name}</th>
+                                                    <th>{striker.runs}</th>
+                                                    <th>{striker.balls}</th>
+                                                    <th>{striker.runs / striker.balls}</th>
                                             </tr>
                                         </tbody>
                                         <tbody className="tbody">
                                             <tr>
                                                     <th></th>
-                                                    <th>Player 1</th>
-                                                    <th>23</th>
-                                                    <th>20</th>
-                                                    <th>115</th>
+                                                    <th>{nonStriker.name}</th>
+                                                    <th>{nonStriker.runs}</th>
+                                                    <th>{nonStriker.balls}</th>
+                                                    <th>{nonStriker.runs / nonStriker.balls}</th>
                                             </tr>
                                         </tbody>
                                     </Table>
@@ -274,7 +407,6 @@ const ScoringPage = ({searchList, match}) => {
                                             <tr>
                                                 <th>Bowler</th>
                                                 <th>O</th>
-                                                <th>M</th>
                                                 <th>R</th>
                                                 <th>W</th>
                                                 <th>Extras</th>
@@ -282,17 +414,20 @@ const ScoringPage = ({searchList, match}) => {
                                         </thead>
                                         <tbody className="tbody">
                                             <tr>
-                                                <th>Bowler</th>
-                                                <th>0.0</th>
-                                                <th>0</th>
-                                                <th>0</th>
-                                                <th>0</th>
-                                                <th>0</th>
+                                                <th>{bowler.name}</th>
+                                                <th>{bowler.overs}</th>
+                                                <th>{bowler.runs}</th>
+                                                <th>{bowler.wickets}</th>
+                                                <th>{bowler.extras}</th>
                                             </tr>
                                         </tbody>
                                     </Table>
                                     <hr className="solid"></hr>
-                                    <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Current Over'} overnumber={0} />
+                                    {homeData.homeBowling ? (
+                                        <RenderOver balls={homeData.homeBowling[currOver].split(" ")} over={'Current Over'} overnumber={currOver} />
+                                    ) : (
+                                        <RenderOver balls={[]} over={'Current Over'} overnumber={currOver} />
+                                    )}
                                     <hr className="solid"></hr>
                                     <Table className="mb-0 mt-3">
                                         <tbody className="tbody">
@@ -329,7 +464,11 @@ const ScoringPage = ({searchList, match}) => {
                                                 {callWicket ? <ModalWicket /> : <input type="hidden"></input>}
                                                 <Button type="submit" className="submit-buttons" onClick={handleEndOver} variant="primary">End Over</Button>
                                                 {callOverEnd ? <ModalOver /> : <input type="hidden"></input>}
-                                                <Button type="submit" className="submit-buttons" variant="primary">End Innings</Button>
+                                                {currInnings === 1 ? (
+                                                    <Button type="submit" className="submit-buttons" variant="primary">End Innings</Button>
+                                                ) : (
+                                                    <Button type="submit" className="submit-buttons" variant="primary">End Match</Button>
+                                                )}
                                             </tr>
                                         </tbody>
                                     </Table>
@@ -341,7 +480,10 @@ const ScoringPage = ({searchList, match}) => {
                                 </Container>
                                 
                                 <Container className="col-border m-3">
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 0'} overnumber={0} />
+                                {homeData.homeBowling.map((over, index) => (
+                                    <RenderOver balls={over.split(" ")} over={`Over ${index}`} overnumber={index} />
+                                ))}
+                                {/* <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 0'} overnumber={0} />
                                 <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 1'} overnumber={1} />
                                 <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 2'} overnumber={2} />
                                 <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 3'} overnumber={3} />
@@ -349,7 +491,7 @@ const ScoringPage = ({searchList, match}) => {
                                 <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 5'} overnumber={5} />
                                 <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 6'} overnumber={6} />
                                 <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 7'} overnumber={7} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 8'} overnumber={8} />
+                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 8'} overnumber={8} /> */}
                                 </Container>
                             </Col>
                         </Row>

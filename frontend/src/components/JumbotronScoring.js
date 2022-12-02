@@ -88,17 +88,16 @@ const Styles = styled.div`
 `;
 
 
-export const Jumbotron = ({searchList}) => (
+export const Jumbotron = ({searchList, home, away}) => (
     <Styles>
         <NavigationBar searchList={searchList} />
         <div className="p-5 mb-0 rounded-1 jumbo">
             <div className='overlay'></div>
             <div className="container-fluid py-5">
                 <Image src={teamIcon} className="align-middle d-inline-block p-0 m-0 team-logo-1" width="250" height="250" />
-                <p className='team-name-1'>TEAM 1</p>
+                <p className='team-name-1'>{home}</p>
                 <h className='versus'> V </h>
-                <p className='team-name-2'>TEAM 2</p>
-                <p className='date'>Date: XX / XX / XXXX</p>
+                <p className='team-name-2'>{away}</p>
                 <Image src={teamIcon} className="align-middle d-inline-block p-0 m-0 team-logo-2" width="250" height="250" />
             </div>
         </div>
