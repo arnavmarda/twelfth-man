@@ -118,7 +118,7 @@ const Styles = styled.div`
 `;
 
 
-export const Jumbotron = ({searchList, match, isMatchOver}) => (
+export const Jumbotron = ({searchList, home, away, isMatchOver}) => (
     <Styles>
         <NavigationBar searchList={searchList} />
         <div className="p-5 mb-0 rounded-1 jumbo">
@@ -126,26 +126,26 @@ export const Jumbotron = ({searchList, match, isMatchOver}) => (
             <div className="container-fluid py-5">
                 <Image src={teamIcon} className="align-middle d-inline-block p-0 m-0 team-logo-1" width="250" height="250" />
                 {!isMatchOver ? (
-                <p className='team-name-1 not-scored'>{match.home}</p>
+                <p className='team-name-1 not-scored'>{home.home}</p>
                 ) : (
-                    match.winner === match.home ? (
-                        <p className='team-name-1 winner'>{match.home}</p>
+                    home.winner === home.home ? (
+                        <p className='team-name-1 winner'>{home.home}</p>
                     ) : (
-                        <p className='team-name-1 loser'>{match.home}</p>
+                        <p className='team-name-1 loser'>{home.home}</p>
                     )
                 )}
-                <p className='score-1'>{match.homeRuns}/{match.homeWicketsLost}</p>
+                <p className='score-1'>{home.homeRuns}/{home.homeWicketsLost}</p>
                 <h className='versus'> V </h>
                 {!isMatchOver ? (
-                <p className='team-name-2 not-scored'>{match.away}</p>
+                <p className='team-name-2 not-scored'>{home.away}</p>
                 ) : (
-                    match.winner === match.away ? (
-                        <p className='team-name-2 winner'>{match.away}</p>
+                    home.winner === away.away ? (
+                        <p className='team-name-2 winner'>{away.away}</p>
                     ) : (
-                        <p className='team-name-2 loser'>{match.away}</p>
+                        <p className='team-name-2 loser'>{away.away}</p>
                     )
                 )}
-                <p className='score-2'>{match.awayRuns}/{match.awayWicketsLost}</p>
+                <p className='score-2'>{away.awayRuns}/{away.awayWicketsLost}</p>
                 <Image src={teamIcon} className="align-middle d-inline-block p-0 m-0 team-logo-2" width="250" height="250" />
             </div>
         </div>

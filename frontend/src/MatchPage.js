@@ -57,15 +57,35 @@ const Styles = styled.div`
 
 const MatchPage = ({searchList, match}) => {
 
-    const [matchData, setMatchData] = React.useState({
+    const [homeData, setHomeData] = React.useState({
         home: "",
-        away: "",
         homeRuns: 0,
-        awayRuns: 0,
         homeWicketsLost: 0,
-        awayWicketsLost: 0,
         winner: "",
+        homePlayers: [],
+        homeBatsmenRuns: [],
+        homeBatsmenBallsFaced: [],
+        homeBowlerRunsGiven: [],
+        homeBowlerBallsBowled: [],
+        homeBowlerWickets: [],
+        homeBowlerExtras: [],
+        battingFirst: true,
     });
+    const [awayData, setAwayData] = React.useState({
+        away: "",
+        awayRuns: 0,
+        awayWicketsLost: 0,
+        awayPlayers: [],
+        awayBatsmenRuns: [],
+        awayBatsmenBallsFaced: [],
+        awayBowlerRunsGiven: [],
+        awayBowlerBallsBowled: [],
+        awayBowlerWickets: [],
+        awayBowlerExtras: [],
+        homeBowling: [],
+        awayBowling: [],
+        battingFirst: false,
+    })
     const [isMatchOver, setIsMatchOver] = React.useState(false);
 
     const getMatchInfo = useCallback(() => {
@@ -80,15 +100,34 @@ const MatchPage = ({searchList, match}) => {
         })
         .then(response => response.json())
         .then(data => {
-            setMatchData({
-                ...matchData,
+            setHomeData({
+                ...homeData,
                 home: data.home,
-                away: data.away,
                 homeRuns: data.homeRuns,
-                awayRuns: data.awayRuns,
                 homeWicketsLost: data.homeWicketsLost,
-                awayWicketsLost: data.awayWicketsLost,
                 winner: data.winner,
+                homePlayers: data.homePlayers,
+                homeBatsmenRuns: data.homeBatsmenRuns,
+                homeBatsmenBallsFaced: data.homeBatsmenBallsFaced,
+                homeBowlerRunsGiven: data.homeBowlerRunsGiven,
+                homeBowlerBallsBowled: data.homeBowlerBallsBowled,
+                homeBowlerWickets: data.homeBowlerWickets,
+                homeBowlerExtras: data.homeBowlerExtras,
+                homeBowling: data.homeBowling,
+            });
+            setAwayData({
+                ...awayData,
+                away: data.away,
+                awayRuns: data.awayRuns,
+                awayWicketsLost: data.awayWicketsLost,
+                awayPlayers: data.awayPlayers,
+                awayBatsmenRuns: data.awayBatsmenRuns,
+                awayBatsmenBallsFaced: data.awayBatsmenBallsFaced,
+                awayBowlerRunsGiven: data.awayBowlerRunsGiven,
+                awayBowlerBallsBowled: data.awayBowlerBallsBowled,
+                awayBowlerWickets: data.awayBowlerWickets,
+                awayBowlerExtras: data.awayBowlerExtras,
+                awayBowling: data.awayBowling,
             });
             setIsMatchOver(data.isMatchOver);
         })
@@ -101,7 +140,7 @@ const MatchPage = ({searchList, match}) => {
             return (
                 <Styles>
                     <Layout>
-                    <Jumbotron match={matchData} searchList={searchList} isMatchOver={isMatchOver}/>
+                    <Jumbotron home={homeData} away={awayData} searchList={searchList} isMatchOver={isMatchOver}/>
                         {(isMatchOver) ? (
                             <React.Fragment>
                             <Container fluid className="bg text pb-5">
@@ -109,7 +148,7 @@ const MatchPage = ({searchList, match}) => {
                                     <Row>
                                         <Col className="ms-3">
                                             <Container fluid className="team-name m-3">
-                                                <h fluid>TEAM 1</h>
+                                                <h fluid>{homeData.home}</h>
                                             </Container>
                                             <Container className="col-border m-3">
                                                 <Table striped hover className="mt-3">
@@ -117,68 +156,28 @@ const MatchPage = ({searchList, match}) => {
                                                         <tr>
                                                             <th>#</th>
                                                             <th>Player</th>
-                                                            <th>Fall of Wicket</th>
                                                             <th>R</th>
                                                             <th>B</th>
                                                             <th>SR</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>1</th>
-                                                            <th>Anirudh Rao</th>
-                                                            <th>not out</th>
-                                                            <th>83</th>
-                                                            <th>50</th>
-                                                            <th>166.0</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>2</th>
-                                                            <th>Tanmay Desai</th>
-                                                            <th>b Angad K</th>
-                                                            <th>10</th>
-                                                            <th>4</th>
-                                                            <th>250.0</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>3</th>
-                                                            <th>Paul Eggert</th>
-                                                            <th>c&b Angad K</th>
-                                                            <th>0</th>
-                                                            <th>1</th>
-                                                            <th>0</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>4</th>
-                                                            <th>Arnav Marda</th>
-                                                            <th>not out</th>
-                                                            <th>20</th>
-                                                            <th>10</th>
-                                                            <th>200</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Extras</th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th>0</th>
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
+                                                    {homeData.homeBatsmenRuns.map((batsman, index) => (
+                                                        <tbody className="tbody">
+                                                            <tr>
+                                                                <th>{index+1}</th>
+                                                                <th>{batsman}</th>
+                                                                <th>{homeData.homeBatsmenRuns[index]}</th>
+                                                                <th>{homeData.homeBatsmenBallsFaced[index]}</th>
+                                                                <th>{homeData.homeBatsmenRuns[index]/homeData.homeBatsmenBallsFaced[index]}</th>
+                                                            </tr>
+                                                        </tbody>
+                                                    ))}
                                                     <tbody className="tbody">
                                                         <tr>
                                                             <th>Total</th>
                                                             <th></th>
-                                                            <th>(2 wickets, 12.3 overs)</th>
-                                                            <th>123</th>
+                                                            <th>({homeData.homeWicketsLost} wickets)</th>
+                                                            <th>{homeData.homeRuns}</th>
                                                             <th></th>
                                                             <th></th>
                                                         </tr>
@@ -192,57 +191,22 @@ const MatchPage = ({searchList, match}) => {
                                                         <tr>
                                                             <th>Bowler</th>
                                                             <th>O</th>
-                                                            <th>M</th>
                                                             <th>R</th>
                                                             <th>W</th>
-                                                            <th>Econ</th>
                                                             <th>Extras</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Angad K</th>
-                                                            <th>4</th>
-                                                            <th>0</th>
-                                                            <th>44</th>
-                                                            <th>2</th>
-                                                            <th>11.0</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>David S</th>
-                                                            <th>4</th>
-                                                            <th>0</th>
-                                                            <th>60</th>
-                                                            <th>0</th>
-                                                            <th>15.0</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Richard K</th>
-                                                            <th>4</th>
-                                                            <th>0</th>
-                                                            <th>60</th>
-                                                            <th>0</th>
-                                                            <th>15.0</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Ezequiel H</th>
-                                                            <th>0.3</th>
-                                                            <th>0</th>
-                                                            <th>3</th>
-                                                            <th>0</th>
-                                                            <th>6.0</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
+                                                    {awayData.awayPlayers.map((bowler, index) => (
+                                                       <tbody className="tbody">
+                                                            <tr>
+                                                                <th>{bowler}</th>
+                                                                <th>{awayData.awayBowlerBallsBowled[index]}</th>
+                                                                <th>{awayData.awayBowlerRunsGiven[index]}</th>
+                                                                <th>{awayData.awayBowlerWickets[index]}</th>
+                                                                <th>{awayData.awayBowlerExtras[index]}</th>
+                                                            </tr>
+                                                        </tbody> 
+                                                    ))}
                                                 </Table>
                                             </Container>
                                             <Container />
@@ -264,62 +228,23 @@ const MatchPage = ({searchList, match}) => {
                                                             <th>SR</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>1</th>
-                                                            <th>Anirudh Rao</th>
-                                                            <th>not out</th>
-                                                            <th>83</th>
-                                                            <th>50</th>
-                                                            <th>166.0</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>2</th>
-                                                            <th>Tanmay Desai</th>
-                                                            <th>b Angad K</th>
-                                                            <th>10</th>
-                                                            <th>4</th>
-                                                            <th>250.0</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>3</th>
-                                                            <th>Paul Eggert</th>
-                                                            <th>c&b Angad K</th>
-                                                            <th>0</th>
-                                                            <th>1</th>
-                                                            <th>0</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>4</th>
-                                                            <th>Arnav Marda</th>
-                                                            <th>not out</th>
-                                                            <th>20</th>
-                                                            <th>10</th>
-                                                            <th>200</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Extras</th>
-                                                            <th></th>
-                                                            <th></th>
-                                                            <th>0</th>
-                                                            <th></th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
+                                                    {awayData.awayBatsmenRuns.map((batsman, index) => (
+                                                        <tbody className="tbody">
+                                                            <tr>
+                                                                <th>{index+1}</th>
+                                                                <th>{batsman}</th>
+                                                                <th>{awayData.awayBatsmenRuns[index]}</th>
+                                                                <th>{awayData.awayBatsmenBallsFaced[index]}</th>
+                                                                <th>{awayData.awayBatsmenRuns[index]/homeData.awayBatsmenBallsFaced[index]}</th>
+                                                            </tr>
+                                                        </tbody>
+                                                    ))}
                                                     <tbody className="tbody">
                                                         <tr>
                                                             <th>Total</th>
                                                             <th></th>
-                                                            <th>(2 wickets, 12.3 overs)</th>
-                                                            <th>123</th>
+                                                            <th>({awayData.awayWicketsLost} wickets)</th>
+                                                            <th>{awayData.awayRuns}</th>
                                                             <th></th>
                                                             <th></th>
                                                         </tr>
@@ -333,99 +258,25 @@ const MatchPage = ({searchList, match}) => {
                                                         <tr>
                                                             <th>Bowler</th>
                                                             <th>O</th>
-                                                            <th>M</th>
                                                             <th>R</th>
                                                             <th>W</th>
-                                                            <th>Econ</th>
                                                             <th>Extras</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Angad K</th>
-                                                            <th>4</th>
-                                                            <th>0</th>
-                                                            <th>44</th>
-                                                            <th>2</th>
-                                                            <th>11.0</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>David S</th>
-                                                            <th>4</th>
-                                                            <th>0</th>
-                                                            <th>60</th>
-                                                            <th>0</th>
-                                                            <th>15.0</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Richard K</th>
-                                                            <th>4</th>
-                                                            <th>0</th>
-                                                            <th>60</th>
-                                                            <th>0</th>
-                                                            <th>15.0</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Ezequiel H</th>
-                                                            <th>0.3</th>
-                                                            <th>0</th>
-                                                            <th>3</th>
-                                                            <th>0</th>
-                                                            <th>6.0</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </tbody>
+                                                    {homeData.homePlayers.map((bowler, index) => (
+                                                       <tbody className="tbody">
+                                                            <tr>
+                                                                <th>{bowler}</th>
+                                                                <th>{homeData.homeBowlerBallsBowled[index]}</th>
+                                                                <th>{homeData.homeBowlerRunsGiven[index]}</th>
+                                                                <th>{homeData.homeBowlerWickets[index]}</th>
+                                                                <th>{homeData.homeBowlerExtras[index]}</th>
+                                                            </tr>
+                                                        </tbody> 
+                                                    ))}
                                                 </Table>
                                             </Container>
                                             <Container />
-                                        </Col>
-                                    </Row>
-                                </Container>
-                                <hr className="solid position-relative" />
-                                <Container className="pt-1">
-                                    <Row>
-                                        <Col className="ms-3">
-                                            <Container className="team-name m-3">
-                                                <h fluid>MATCH SUMMARY</h>
-                                            </Container>
-    
-                                            <Container className="col-border ms-3">
-                                                <Table striped hover className="mt-3">
-                                                    <thead className="thead">
-                                                        <tr>
-                                                            <th>Topic</th>
-                                                            <th>Details</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Tournament:</th>
-                                                            <th>Tournament Name</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Match Date:</th>
-                                                            <th>XX / XX / XXXX</th>
-                                                        </tr>
-                                                    </tbody>
-                                                    <tbody className="tbody">
-                                                        <tr>
-                                                            <th>Toss:</th>
-                                                            <th>Team A won the toss and decided to bat first.</th>
-                                                        </tr>
-                                                    </tbody>
-                                                </Table>
-                                            </Container>
                                         </Col>
                                     </Row>
                                 </Container>
