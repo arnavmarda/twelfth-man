@@ -260,6 +260,7 @@ const ScoringPage = ({ searchList, match }) => {
     const batsmen = React.useRef([]);
     const [bowlers, setBowlers] = React.useState([]);
     const currInnings = React.useRef(1);
+    currInnings.current = 1;
     const getMatchInfo = React.useCallback(() => {
         fetch("http://localhost:9000/match/getInfo", {
             method: "POST",
@@ -510,7 +511,7 @@ const ScoringPage = ({ searchList, match }) => {
                 bowler: bowler,
                 runsMade: runsToSend,
                 wicketsTaken: wicketsToSend,
-                inningsNo: currInnings.current === 1 ? 1 : 0,
+                inningsNo: currInnings,
                 currentOver: currOver.current,
                 ballSymbol: symbolToSend,
                 isExtra: isItExtra,

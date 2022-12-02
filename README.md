@@ -1,6 +1,10 @@
 # Twelfth Man
 
-Twelfth Man is a web application that aims to act as a scoring mechanism for cricket games.
+#### By Lightning Sharks
+
+--
+
+Twelfth Man is a web application that aims to act as a hosting platform for cricket games. We provide features to create player profiles, teams, matches, tournaments, as well as score games. 
 
 ## Motivations
 
@@ -10,16 +14,22 @@ As some of us are avid cricket players and enthusiasts, we found that an applica
 
 Once you have cloned the repository into your desired folder, perform the following steps:
 
+1. Install packages in the main directory:
+
+```bash
+npm install
+```
+
 1. Change directory to the frontend:
 
 ```bash
 cd frontend
 ```
 
-2. Start the frontend:
+2. Install required packages:
 
 ```bash
-npm start
+npm install
 ```
 
 3. Change directory to the backend:
@@ -29,9 +39,16 @@ cd ..
 cd backend
 ```
 
-4. Start the backend:
+4. Install required packages:
 
 ```bash
+npm install
+```
+
+4. Change back to the main directory and start:
+
+```bash
+cd ..
 npm start
 ```
 

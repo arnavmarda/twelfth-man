@@ -69,7 +69,7 @@ const LoginPage = () => {
                     localStorage.setItem("position", data.position);
                     localStorage.setItem("player-id", data.registrationID);
                     localStorage.setItem("name", data.name);
-                    navigate(`/user-${data.registrationID}`);
+                    navigate(`/`);
                 }
             })
             .catch((err) => console.log(err));
@@ -101,7 +101,7 @@ const LoginPage = () => {
                         </div>
                         <div>
                             <Link
-                                to="/registration"
+                                to="/signup"
                                 className="NavigationTitle"
                             >
                                 <p id="LoginRedirect">
