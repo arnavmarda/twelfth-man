@@ -86,6 +86,7 @@ router.post("/ballUpdate", (req, res) => {
                         homeBowling = match.homeBowling;
                         homeBowling[overToUpdateIDX] =
                             homeBowling[overToUpdateIDX] + " " + ballSymbol;
+                        
 
                         match.save();
                     })

@@ -50,6 +50,16 @@ router.post("/match/create", (req, res) => {
                     console.log("HOME: ", resHome.roster);
                     console.log("AWAY: ", resAway.roster);
 
+                    let homeBowling = [];
+                    for (let i = 0; i < numOvers; i++) {
+                        homeBowling.push("");
+                    }
+
+                    let awayBowling = [];
+                    for (let i = 0; i < numOvers; i++) {
+                        awayBowling.push("");
+                    }
+
                     const newMatch = new Match({
                         home: home,
                         away: away,
@@ -62,7 +72,7 @@ router.post("/match/create", (req, res) => {
                         homeBowlerBallsBowled: new Array(11).fill(0),
                         homeBowlerWickets: new Array(11).fill(0),
                         homeBowlerExtras: new Array(11).fill(0),
-                        homeBowling: new Array(numOvers).fill(""),
+                        homeBowling: homeBowling,
                         homeWicketsLost: 0,
                         awayRuns: 0,
                         awayPlayers: resAway.roster,
@@ -72,7 +82,7 @@ router.post("/match/create", (req, res) => {
                         awayBowlerBallsBowled: new Array(11).fill(0),
                         awayBowlerWickets: new Array(11).fill(0),
                         awayBowlerExtras: new Array(11).fill(0),
-                        awayBowling: new Array(numOvers).fill(""),
+                        awayBowling: awayBowling,
                         awayWicketsLost: 0,
                     });
 

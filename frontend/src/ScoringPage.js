@@ -223,7 +223,7 @@ const ScoringPage = ({ searchList, match }) => {
         homeBowlerBallsBowled: [],
         homeBowlerWickets: [],
         homeBowlerExtras: [],
-        homeBowling: Array(currOver).fill(""),
+        homeBowling: [""],
         battingFirst: true,
     });
     const [awayData, setAwayData] = React.useState({
@@ -237,7 +237,7 @@ const ScoringPage = ({ searchList, match }) => {
         awayBowlerBallsBowled: [],
         awayBowlerWickets: [],
         awayBowlerExtras: [],
-        awayBowling: Array(currOver).fill(""),
+        awayBowling: [""],
         battingFirst: false,
     });
     const [striker, setStriker] = React.useState({
@@ -299,7 +299,6 @@ const ScoringPage = ({ searchList, match }) => {
                     awayBowlerExtras: data.awayBowlerExtras,
                     awayBowling: data.awayBowling,
                 });
-                console.log("Away bowling: ", data.awayBowling);
                 if(currInnings === 1){
                     setStriker({
                         ...striker,
@@ -322,6 +321,7 @@ const ScoringPage = ({ searchList, match }) => {
                         extras: data.awayBowlerExtras[bowlerIDX.current],
                     });
                 } else {
+                    console.log("IN here");
                     setStriker({
                         ...striker,
                         name: data.awayPlayers[strikerIDX.current],
@@ -388,25 +388,7 @@ const ScoringPage = ({ searchList, match }) => {
             bowlers.indexOf(bowler.name) === bowlers.length - 1
                 ? 0
                 : bowlers.indexOf(bowler.name) + 1;
-        // if (currInnings === 1) {
-        //     const temp = {
-        //         name: awayData.awayPlayers[idx],
-        //         overs: awayData.awayBowlerBallsBowled[idx],
-        //         runs: awayData.awayBowlerRunsGiven[idx],
-        //         wickets: awayData.awayBowlerWickets[idx],
-        //         extras: awayData.awayBowlerExtras[idx],
-        //     };
-        //     setBowler(temp);
-        // } else {
-        //     const temp = {
-        //         name: homeData.homePlayers[idx],
-        //         overs: homeData.homeBowlerBallsBowled[idx],
-        //         runs: homeData.homeBowlerRunsGiven[idx],
-        //         wickets: homeData.homeBowlerWickets[idx],
-        //         extras: homeData.homeBowlerExtras[idx],
-        //     };
-        //     setBowler(temp);
-        // }
+
         bowlerIDX.current = idx;
     };
 
@@ -434,9 +416,10 @@ const ScoringPage = ({ searchList, match }) => {
 
     const handleEndOver = (event) => {
         swapStrikerNonStriker();
-        currOver.current += 1;
-        setCallOverEnd(true);
         updateBowler();
+        const currentOver = currOver.current;
+        currOver.current = currentOver+1;
+        setCallOverEnd(true);
     };
 
     const updateBall = (value) => {
@@ -477,11 +460,11 @@ const ScoringPage = ({ searchList, match }) => {
     };
 
     const handleEndInnings = () => {
-        currInnings.current += 1;
+        currInnings.current = 2;
         currOver.current = 0;
         bowlerIDX.current = 0;
         strikerIDX.current = 0;
-        nonStrikerIDX.current = 0;
+        nonStrikerIDX.current = 1;
         firstRender.current = true;
         
     };
@@ -507,7 +490,7 @@ const ScoringPage = ({ searchList, match }) => {
             .then((data) => console.log(data))
             .catch((err) => console.log(err));
 
-        navigate(`/match-${match}`);
+        navigate(`/`);
     };
 
     const sendBallUpdate = (
@@ -527,8 +510,8 @@ const ScoringPage = ({ searchList, match }) => {
                 bowler: bowler,
                 runsMade: runsToSend,
                 wicketsTaken: wicketsToSend,
-                inningsNo: currInnings,
-                currentOver: currOver,
+                inningsNo: currInnings.current === 1 ? 1 : 0,
+                currentOver: currOver.current,
                 ballSymbol: symbolToSend,
                 isExtra: isItExtra,
             }),
@@ -537,6 +520,8 @@ const ScoringPage = ({ searchList, match }) => {
             .then((data) => console.log(data))
             .catch((err) => console.log(err));
     };
+
+    console.log(homeData.homeBowling[currOver.current].split(" "))
 
     return (
         <Styles>
@@ -646,9 +631,7 @@ const ScoringPage = ({ searchList, match }) => {
                                         </tbody>
                                     </Table>
                                     <hr className="solid"></hr>
-                                    {currInnings.current !== 1 ? (
-                                        currOver.current <
-                                        homeData.homeBowling.length ? (
+                                    {currInnings.current === 1 ? (
                                             <RenderOver
                                                 balls={homeData.homeBowling[
                                                     currOver.current
@@ -658,27 +641,13 @@ const ScoringPage = ({ searchList, match }) => {
                                             />
                                         ) : (
                                             <RenderOver
-                                                balls={[]}
+                                                balls={awayData.awayBowling[
+                                                    currOver.current
+                                                ].split(" ")}
                                                 over={"Current Over"}
                                                 overnumber={currOver.current}
                                             />
-                                        )
-                                    ) : currOver.current <
-                                      awayData.awayBowling.length ? (
-                                        <RenderOver
-                                            balls={awayData.awayBowling[
-                                                currOver.current
-                                            ].split(" ")}
-                                            over={"Current Over"}
-                                            overnumber={currOver.current}
-                                        />
-                                    ) : (
-                                        <RenderOver
-                                            balls={[]}
-                                            over={"Current Over"}
-                                            overnumber={currOver.current}
-                                        />
-                                    )}
+                                        )}
                                     <hr className="solid"></hr>
                                     <Table className="mb-0 mt-3">
                                         <tbody className="tbody">
@@ -859,7 +828,7 @@ const ScoringPage = ({ searchList, match }) => {
                                 </Container>
 
                                 <Container className="col-border m-3">
-                                    {currInnings.current !== 1
+                                    {currInnings.current === 1
                                         ? homeData.homeBowling.map(
                                               (over, index) => (
                                                   <RenderOver
