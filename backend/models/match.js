@@ -10,10 +10,7 @@ const matchSchema = new Schema({
         type: String,
         required: true,
     },
-    homeRuns: {
-        type: Number,
-        default: 0,
-    },
+    homeRuns: Number,
 
     homePlayers: {
         type: [String],
@@ -32,7 +29,7 @@ const matchSchema = new Schema({
     },
 
     homeBowlerBallsBowled: {
-        type: [String],
+        type: [Number],
     },
 
     homeBowlerWickets: {
@@ -65,7 +62,7 @@ const matchSchema = new Schema({
     },
 
     awayBowlerBallsBowled: {
-        type: [String],
+        type: [Number],
     },
 
     awayBowlerWickets: {
