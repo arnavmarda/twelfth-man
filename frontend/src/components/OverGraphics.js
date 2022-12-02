@@ -35,10 +35,13 @@ function RenderButton(props) {
 export function RenderOver(props) {
     const over = props.balls;
     let balls = [];
-    if(over.length !== 0 && over[0] !== ""){
+    if(over.length !== 1){
         console.log(props)
-        balls = over.map((ball) => 
-        <th><RenderButton ball={ball}/></th>
+        balls = over.map((ball, index) => {
+            if (index > 0) {
+                return <th><RenderButton ball={ball}/></th>
+            }
+        }
     ); 
     } else {
         const randOver = ["", "", "", "", "", ""]
@@ -58,12 +61,12 @@ export function RenderOver(props) {
                 <tbody className="tbody tr-no-border">
                     <tr>
                         <th></th>
+                        <th>{props.overnumber}.0</th>
                         <th>{props.overnumber}.1</th>
                         <th>{props.overnumber}.2</th>
                         <th>{props.overnumber}.3</th>
                         <th>{props.overnumber}.4</th>
                         <th>{props.overnumber}.5</th>
-                        <th>{props.overnumber}.6</th>
                     </tr>
                 </tbody>
             </Table>

@@ -210,6 +210,7 @@ const ScoringPage = ({searchList, match}) => {
         homeBowlerBallsBowled: [],
         homeBowlerWickets: [],
         homeBowlerExtras: [],
+        homeBowling: [""],
         battingFirst: true,
     });
     const [awayData, setAwayData] = React.useState({
@@ -223,8 +224,7 @@ const ScoringPage = ({searchList, match}) => {
         awayBowlerBallsBowled: [],
         awayBowlerWickets: [],
         awayBowlerExtras: [],
-        homeBowling: [],
-        awayBowling: [],
+        awayBowling: [""],
         battingFirst: false,
     })
     const [isMatchOver, setIsMatchOver] = React.useState(false);
@@ -264,8 +264,9 @@ const ScoringPage = ({searchList, match}) => {
         })
         .then(response => response.json())
         .then(data => {
+            console.log("DATA:");
+            console.log(data);
             setHomeData({
-                ...homeData,
                 home: data.home,
                 homeRuns: data.homeRuns,
                 homeWicketsLost: data.homeWicketsLost,
@@ -280,7 +281,6 @@ const ScoringPage = ({searchList, match}) => {
                 homeBowling: data.homeBowling,
             });
             setAwayData({
-                ...awayData,
                 away: data.away,
                 awayRuns: data.awayRuns,
                 awayWicketsLost: data.awayWicketsLost,
@@ -328,7 +328,9 @@ const ScoringPage = ({searchList, match}) => {
 
     React.useEffect(() => {
         getMatchInfo();
-    }, []);
+        console.log("called useEffect");
+        console.log(awayData.awayBowling[currOver].split(" "));
+    });
 
     const handleEndOver = (event) => {
         setCallOverEnd(true);
@@ -469,10 +471,10 @@ const ScoringPage = ({searchList, match}) => {
                                         </tbody>
                                     </Table>
                                     <hr className="solid"></hr>
-                                    {homeData.homeBowling ? (
+                                    {(currInnings !== 1) ? (
                                         <RenderOver balls={homeData.homeBowling[currOver].split(" ")} over={'Current Over'} overnumber={currOver} />
                                     ) : (
-                                        <RenderOver balls={[]} over={'Current Over'} overnumber={currOver} />
+                                        <RenderOver balls={awayData.awayBowling[currOver].split(" ")} over={'Current Over'} overnumber={currOver} />
                                     )}
                                     <hr className="solid"></hr>
                                     <Table className="mb-0 mt-3">
@@ -526,18 +528,15 @@ const ScoringPage = ({searchList, match}) => {
                                 </Container>
                                 
                                 <Container className="col-border m-3">
-                                {homeData.homeBowling.map((over, index) => (
-                                    <RenderOver balls={over.split(" ")} over={`Over ${index}`} overnumber={index} />
-                                ))}
-                                {/* <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 0'} overnumber={0} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 1'} overnumber={1} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 2'} overnumber={2} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 3'} overnumber={3} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 4'} overnumber={4} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 5'} overnumber={5} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 6'} overnumber={6} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 7'} overnumber={7} />
-                                <RenderOver balls={["1", "2", "1", "1", "1", "1"]} over={'Over 8'} overnumber={8} /> */}
+                                { currInnings !== 1 ? (
+                                    homeData.homeBowling.map((over, index) => (
+                                        <RenderOver balls={over.split(" ")} over={`Over ${index}`} overnumber={index} />
+                                    ))
+                                ) : (
+                                    awayData.awayBowling.map((over, index) => (
+                                        <RenderOver balls={over.split(" ")} over={`Over ${index}`} overnumber={index} />
+                                    ))
+                                )}
                                 </Container>
                             </Col>
                         </Row>
