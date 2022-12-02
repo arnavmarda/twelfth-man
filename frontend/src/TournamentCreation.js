@@ -62,6 +62,7 @@ const LoginPage = () => {
             body: JSON.stringify({
                 name: values.name,
                 teams: values.teams.map((team) => team.label),
+                numTeams: values.teams.length,
             }),
         })
             .then((res) => res.json())

@@ -58,7 +58,9 @@ const Styles = styled.div`
 
 const TournamentPage = ({tournament, searchList}) => {
 
-    const [tournamentData, setTournamentData] = React.useState();
+    const [tournamentName, setTournamentName] = React.useState("");
+    const [tournamentTeams, setTournamentTeams] = React.useState([]);
+    const [tournamentFixtures, setTournamentFixtures] = React.useState([]);
 
     const getTournamentData = React.useCallback(() => {
         fetch("http://localhost:9000/getInfoForTournament", {
@@ -72,7 +74,9 @@ const TournamentPage = ({tournament, searchList}) => {
         })
         .then(res => res.json())
         .then(data => {
-            setTournamentData(data);
+            setTournamentName(data.name);
+            setTournamentTeams(data.teams);
+            setTournamentFixtures(data.fixtures);
         })
         .catch(err => console.log(err))
     }, []);
@@ -80,6 +84,8 @@ const TournamentPage = ({tournament, searchList}) => {
     React.useEffect(() => {
         getTournamentData();
     }, [])
+
+    console.log(typeof(tournamentTeams));
 
     return(
         <Styles>
@@ -94,8 +100,8 @@ const TournamentPage = ({tournament, searchList}) => {
                                     <Image src={Team} className="align-middle d-inline-block" width="100" height="100" /> 
                                     <h3 className="p-3 pb-2 pt-0">Teams</h3>
                                     <ListGroup className="p-3 text-center">
-                                        {(tournamentData.teams) ? (
-                                                tournamentData.teams.map((team) => (<ListGroup.Item action className="team">{team}</ListGroup.Item>))
+                                        {(tournamentTeams.length !== 0) ? (
+                                                tournamentTeams.map((team) => (<ListGroup.Item action className="team">{team}</ListGroup.Item>))
                                             ) : (
                                                 <ListGroup.Item action className="team">There are no teams in the tournament.</ListGroup.Item>
                                             )
@@ -109,9 +115,9 @@ const TournamentPage = ({tournament, searchList}) => {
                                 <Container>
                                     <Image src={Standing} className="align-middle d-inline-block pt-1" width="80" height="80" /> 
                                     <h3 className="p-3 pb-2">Upcoming Games</h3>
-                                    <ListGroup as="ol" numbered className="p-3 text-center">
-                                        {(tournamentData.fixtures) ? (
-                                            tournamentData.fixtures.map((fixture) => (
+                                    <ListGroup as="ul" numbered className="p-3 text-center">
+                                        {(tournamentFixtures) ? (
+                                            tournamentFixtures.map((fixture) => (
                                                 <ListGroup.Item as="li">{fixture.home} V {fixture.away}</ListGroup.Item>
                                             ))
                                         ) : (

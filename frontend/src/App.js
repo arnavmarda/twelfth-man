@@ -20,6 +20,7 @@ function App() {
   const [tournamentIds, setTournamentIds] = useState([]);
   const [matchIds, setMatchIds] = useState([]);
   const [tournamentNames, setTournamentNames] = useState([]);
+  const [teamNames, setTeamNames] = useState([]);
   const [searchList, setSearchList] = useState([]);
 
   const getUsers = useCallback(() => {
@@ -55,7 +56,7 @@ function App() {
         value: team.name, 
         label: team.name,
       })));
-      setSearchList(teamNames);
+      setTeamNames(teamNames);
     })
     .catch((err) => console.log(err));
   }, []);
@@ -85,7 +86,6 @@ function App() {
     })
     .then((res) => res.json())
     .then((data) => {
-      // console.log(data);
       let tournamentId = data.map((tournament) => tournament.id);
       setTournamentIds(tournamentId);
       let tournaments = data.map((tournament) => ({
@@ -93,22 +93,21 @@ function App() {
         value: tournament.name, 
         label: tournament.name,
       }));
+      // tournaments = tournaments.concat(searchList)
       setTournamentNames(tournaments);
     })
     .catch((err) => console.log(err));
   }, [])
   
   useEffect(() => {
-    setSearchList([]);
     getUsers();
     getTeams();
     getTournaments();
     getMatches();
-    const tournament = tournamentNames.concat(searchList);
-    setSearchList(tournament);
-}, [getUsers, getTeams, getTournaments, getMatches]);
+    setSearchList(tournamentNames.concat(teamNames));
+  }, []);
 
-  console.log(searchList);
+  console.log('Search List', searchList);
 
   return (
     <React.Fragment>

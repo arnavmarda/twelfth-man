@@ -127,7 +127,7 @@ router.get("/userList", (req, res) => {
     Get a list of a user's teams
 */
 
-router.get("/userTeamList", requireLogin, (req, res) => {
+router.get("/userTeamList", (req, res) => {
     const { name } = req.body;
     User.findOne({ name: name }).then((foundUser) => {
         if (!foundUser) {
@@ -160,7 +160,7 @@ router.get("/userTeamList", requireLogin, (req, res) => {
 */
 
 
-router.get("/userTournamentList", requireLogin, (req, res) => {
+router.get("/userTournamentList", (req, res) => {
     const { name } = req.body;
     User.findOne({ name: name }).then((foundUser) => {
         if (!foundUser) {

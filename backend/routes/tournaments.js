@@ -24,8 +24,9 @@ router.get("/tournament/:id", (req, res) => {
 /*
     Create a Tournament
 */
-router.post("/tournament/create", requireLogin, (req, res) => {
+router.post("/tournament/create", (req, res) => {
     const { name, teams, numTeams } = req.body;
+    console.log("Teams: ", teams);
     if (!name || !teams) {
         return res.status(422).json({
             error: "Missing required parameter",
@@ -39,15 +40,15 @@ router.post("/tournament/create", requireLogin, (req, res) => {
             });
         }
 
-        for (oneTeam in teams) {
-            Team.findOne({ name: oneTeam }).then((foundTeam) => {
-                if (!foundTeam) {
-                    return res.status(400)({
-                        error: "No team found with name " + foundTeam,
-                    });
-                }
-            });
-        }
+        // for (oneTeam in teams) {
+        //     Team.findOne({ name: oneTeam }).then((foundTeam) => {
+        //         if (!foundTeam) {
+        //             return res.status(400).json({
+        //                 error: "No team found with name " + foundTeam,
+        //             });
+        //         }
+        //     });
+        // }
 
         const league = generateRandomFixture(teams);
 
@@ -73,13 +74,13 @@ router.post("/tournament/create", requireLogin, (req, res) => {
             .save()
             .then((tournament) => res.json(tournament))
             .catch((err) => console.log(err));
-    });
+    }).catch((err) => console.log(err));
 });
 
 /* 
     Get all tournaments
 */
-router.post("/tournamentList", (req, res) => {
+router.get("/tournamentList", (req, res) => {
     Tournament.find({}, (err, tournaments) => {
         let tournamentsList = [];
 
@@ -120,16 +121,22 @@ router.post("/getInfoForTournament", (req, res) => {
                     away: foundTournament.fixtures[i+1],
                 })
             };
-            
-            const fixtures = generateRandomFixture(foundTournament.teams);
-
-            const arrayOfAllInfo = {
+                        
+            let tournamentInfo = {
                 name: foundTournament.name,
                 teams: foundTournament.teams,
                 numTeams: foundTournament.numTeams,
                 fixtures: fixtureList,
-            };
-            res.status(200).json(arrayOfAllInfo);
+            }
+
+            console.log(tournamentInfo);
+
+            res.status(200).json({
+                name: foundTournament.name,
+                teams: foundTournament.teams,
+                numTeams: foundTournament.numTeams,
+                fixtures: fixtureList,
+            });
         })
         .catch((err) => console.log(err));
 });
