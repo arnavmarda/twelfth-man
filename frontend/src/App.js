@@ -105,9 +105,9 @@ function App() {
     getTournaments();
     getMatches();
     setSearchList(tournamentNames.concat(teamNames));
-  }, []);
+  }, [getMatches, getUsers, getTeams, getTournaments]);
 
-  console.log('Search List', searchList);
+  console.log('Search List', matchIds);
 
   return (
     <React.Fragment>
@@ -128,8 +128,11 @@ function App() {
           ))}
 
           {matchIds.map((matchId) => (
-            (<Route path={`/match-${matchId}`} element={<MatchPage match={matchId} searchList={searchList}/>} />)
-            (<Route path={`/scoring-${matchId}`} element={<ScoringPage match={matchId} searchList={searchList}/>} />)
+            <Route path={`/match-${matchId}`} element={<MatchPage match={matchId} searchList={searchList}/>} />
+            // (<Route path={`/scoring-${matchId}`} element={<ScoringPage match={matchId} searchList={searchList}/>} />)
+          ))}
+          {matchIds.map((matchId) => (
+            <Route path={`/scoring-${matchId}`} element={<ScoringPage match={matchId} searchList={searchList}/>} />
           ))}
 
           <Route path="/signup" element={<UserRegistration />} />

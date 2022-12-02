@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { Jumbotron } from "./components/JumbotronMatch";
 import { Footer } from "./components/Footer";
 import { Layout } from "./components/Layout";
 import { Container, Row, Col, Table, Button } from "react-bootstrap";
-import { Link } from "react-bootstrap/lib/Navbar";
 
 const Styles = styled.div`
     .bg {
@@ -57,19 +57,39 @@ const Styles = styled.div`
 
 const MatchPage = ({searchList, match}) => {
 
-    const [matchData, setMatchData] = React.useState();
+    const [matchData, setMatchData] = React.useState({
+        home: "",
+        away: "",
+        homeRuns: 0,
+        awayRuns: 0,
+        homeWicketsLost: 0,
+        awayWicketsLost: 0,
+        winner: "",
+    });
     const [isMatchOver, setIsMatchOver] = React.useState(false);
 
     const getMatchInfo = useCallback(() => {
-        fetch(`http://localhost:9000/match/:${match}`, {
-            method: "GET",
+        fetch("http://localhost:9000/match/getInfo", {
+            method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            }
+            },
+            body: JSON.stringify({
+                id: match,
+            }) 
         })
         .then(response => response.json())
         .then(data => {
-            setMatchData(data);
+            setMatchData({
+                ...matchData,
+                home: data.home,
+                away: data.away,
+                homeRuns: data.homeRuns,
+                awayRuns: data.awayRuns,
+                homeWicketsLost: data.homeWicketsLost,
+                awayWicketsLost: data.awayWicketsLost,
+                winner: data.winner,
+            });
             setIsMatchOver(data.isMatchOver);
         })
     }, []);
@@ -81,7 +101,7 @@ const MatchPage = ({searchList, match}) => {
             return (
                 <Styles>
                     <Layout>
-                    <Jumbotron searchList={searchList}/>
+                    <Jumbotron match={matchData} searchList={searchList} isMatchOver={isMatchOver}/>
                         {(isMatchOver) ? (
                             <React.Fragment>
                             <Container fluid className="bg text pb-5">
@@ -417,8 +437,9 @@ const MatchPage = ({searchList, match}) => {
                                 <Container fluid className="bg text pb-5">
                                     <Row>
                                         <Container fluid className="team-name m-3">
-                                            <h fluid>TEAM 1</h>
-                                            <Button>Start Scoring Game</Button>
+                                            <h fluid>Match has not been played.</h>
+                                            <br />
+                                            <Link to={`/scoring-${match}`}><Button>Start Scoring Game</Button></Link>
                                         </Container>
                                     </Row>
                                 </Container>

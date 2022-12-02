@@ -10,8 +10,9 @@ const Match = mongoose.model("Match");
 /*
     Fetch a match
 */
-router.get("/match/:id", (req, res) => {
-    Match.findOne({ _id: req.params.id })
+router.post("/match/getInfo", (req, res) => {
+    const { id } = req.body;
+    Match.findOne({ _id: id })
         .then((match) => res.status(200).json(match))
         .catch((err) => {
             return res.status(400).json({
@@ -23,7 +24,7 @@ router.get("/match/:id", (req, res) => {
 /*
     Create a match
 */
-router.post("/match/create", requireLogin, (req, res) => {
+router.post("/match/create", (req, res) => {
     const { home, away, numOvers } = req.body;
     if (!home || !away) {
         return res.status(422).json({

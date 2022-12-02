@@ -13,7 +13,7 @@ const CreateMatch = () => {
     const [teamList, setTeamList] = React.useState([]);
     const [homeTeam, setHomeTeam] = React.useState("");
     const [awayTeam, setAwayTeam] = React.useState("");
-    const [numOvers, setNumOvers] = React.UseState(0);
+    const [numOvers, setNumOvers] = React.useState(0);
 
     const getAllTeams = useCallback(() => {
         fetch("http://localhost:9000/teamList", {
@@ -111,7 +111,7 @@ const CreateMatch = () => {
                             />
                             <DropdownRadio
                                 options={teamList}
-                                selectedOption={teamList}
+                                selectedOption={awayTeam}
                                 handleChange={handleAwayTeam}
                                 placeholder={"Choose an away team..."}
                             />
