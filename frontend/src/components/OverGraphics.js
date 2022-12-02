@@ -33,6 +33,7 @@ function RenderButton(props) {
 }
 
 export function RenderOver(props) {
+    // console.log("CALLED WITH BALLS: ", props.balls);
     const over = props.balls;
     let balls = [];
     if(over.length !== 1){

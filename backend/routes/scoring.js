@@ -63,6 +63,7 @@ router.post("/ballUpdate", (req, res) => {
                             awayBowling[overToUpdateIDX] + " " + ballSymbol;
 
                         match.save();
+                        res.status(200).json(match.awayBowling);
                     })
                     .catch((err) => console.log(err));
             } else {

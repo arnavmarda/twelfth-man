@@ -201,9 +201,12 @@ const ScoringPage = ({ searchList, match }) => {
     const [numBalls, setNumBalls] = React.useState(0);
     const [callOverEnd, setCallOverEnd] = React.useState(false);
     const [callWicket, setCallWicket] = React.useState(false);
-    let firstRender = true;
+    const firstRender = React.useRef(true);
+    const strikerIDX = React.useRef(0);
+    const nonStrikerIDX = React.useRef(1);
+    const bowlerIDX = React.useRef(0);
     const [winner, setWinner] = React.useState("");
-    const [currOver, setCurrOver] = React.useState(0);
+    const currOver = React.useRef(0);
     const [runsToSend, setRunsToSend] = React.useState(0);
     const [wicketsToSend, setWicketsToSend] = React.useState(0);
     const [ballSymbol, setBallSymbol] = React.useState("");
@@ -254,9 +257,9 @@ const ScoringPage = ({ searchList, match }) => {
         wickets: 0,
         extras: 0,
     });
-    const [batsmen, setBatsmen] = React.useState([]);
+    const batsmen = React.useRef([]);
     const [bowlers, setBowlers] = React.useState([]);
-    const [currInnings, setCurrInnings] = React.useState(1);
+    const currInnings = React.useRef(1);
     const getMatchInfo = React.useCallback(() => {
         fetch("http://localhost:9000/match/getInfo", {
             method: "POST",
@@ -296,28 +299,51 @@ const ScoringPage = ({ searchList, match }) => {
                     awayBowlerExtras: data.awayBowlerExtras,
                     awayBowling: data.awayBowling,
                 });
-                if (firstRender) {
-                    console.log(firstRender);
+                console.log("Away bowling: ", data.awayBowling);
+                if(currInnings === 1){
                     setStriker({
                         ...striker,
-                        name: data.homePlayers[0],
-                        runs: data.homeBatsmenRuns[0],
-                        balls: data.homeBatsmenBallsFaced[0],
+                        name: data.homePlayers[strikerIDX.current],
+                        runs: data.homeBatsmenRuns[strikerIDX.current],
+                        balls: data.homeBatsmenBallsFaced[strikerIDX.current],
                     });
                     setNonStriker({
                         ...nonStriker,
-                        name: data.homePlayers[1],
-                        runs: data.homeBatsmenRuns[1],
-                        balls: data.homeBatsmenBallsFaced[1],
+                        name: data.homePlayers[nonStrikerIDX.current],
+                        runs: data.homeBatsmenRuns[nonStrikerIDX.current],
+                        balls: data.homeBatsmenBallsFaced[nonStrikerIDX.current],
                     });
                     setBowler({
                         ...bowler,
-                        name: data.awayPlayers[0],
-                        overs: data.awayBowlerBallsBowled[0],
-                        runs: data.awayBowlerRunsGiven[0],
-                        wickets: data.awayBowlerWickets[0],
-                        extras: data.awayBowlerExtras[0],
+                        name: data.awayPlayers[bowlerIDX.current],
+                        overs: data.awayBowlerBallsBowled[bowlerIDX.current],
+                        runs: data.awayBowlerRunsGiven[bowlerIDX.current],
+                        wickets: data.awayBowlerWickets[bowlerIDX.current],
+                        extras: data.awayBowlerExtras[bowlerIDX.current],
                     });
+                } else {
+                    setStriker({
+                        ...striker,
+                        name: data.awayPlayers[strikerIDX.current],
+                        runs: data.awayBatsmenRuns[strikerIDX.current],
+                        balls: data.awayBatsmenBallsFaced[strikerIDX.current],
+                    });
+                    setNonStriker({
+                        ...nonStriker,
+                        name: data.awayPlayers[nonStrikerIDX.current],
+                        runs: data.awayBatsmenRuns[nonStrikerIDX.current],
+                        balls: data.awayBatsmenBallsFaced[nonStrikerIDX.current],
+                    });
+                    setBowler({
+                        ...bowler,
+                        name: data.homePlayers[bowlerIDX.current],
+                        overs: data.homeBowlerBallsBowled[bowlerIDX.current],
+                        runs: data.homeBowlerRunsGiven[bowlerIDX.current],
+                        wickets: data.homeBowlerWickets[bowlerIDX.current],
+                        extras: data.homeBowlerExtras[bowlerIDX.current],
+                    });
+                }
+                if(firstRender.current && currInnings.current === 1){
                     let allBatsmen = data.homePlayers.map((player, index) => {
                         if (index < 2) {
                         } else {
@@ -325,21 +351,32 @@ const ScoringPage = ({ searchList, match }) => {
                         }
                     });
                     allBatsmen = allBatsmen.filter((batsman)=>(batsman !== undefined))
-                    setBatsmen(allBatsmen);
+                    batsmen.current = allBatsmen;
+                    firstRender.current = false;
+                } else if (firstRender.current && currInnings.current === 2) {
+                    let allBatsmen = data.awayPlayers.map((player, index) => {
+                        if (index < 2) {
+                        } else {
+                            return player;
+                        }
+                    });
+                    allBatsmen = allBatsmen.filter((batsman)=>(batsman !== undefined))
+                    batsmen.current = allBatsmen;
+                    firstRender.current = false;
+                }
+                
+                if(currInnings === 1){
                     setBowlers(data.awayPlayers);
-                    firstRender = false;
+                } else {
+                    setBowlers(data.homePlayers);
                 }
             });
-    }, []);
+    });
 
     function swapStrikerNonStriker() {
-        const temp = {
-            name: nonStriker.name,
-            runs: nonStriker.runs,
-            balls: nonStriker.balls,
-        };
-        setNonStriker(striker);
-        setStriker(temp);
+        const tempIDX = nonStrikerIDX.current;
+        nonStrikerIDX.current = strikerIDX.current;
+        strikerIDX.current = tempIDX;
     }
 
     React.useEffect(() => {
@@ -351,50 +388,53 @@ const ScoringPage = ({ searchList, match }) => {
             bowlers.indexOf(bowler.name) === bowlers.length - 1
                 ? 0
                 : bowlers.indexOf(bowler.name) + 1;
-        if (currInnings === 1) {
-            const temp = {
-                name: awayData.awayPlayers[idx],
-                overs: awayData.awayBowlerBallsBowled[idx],
-                runs: awayData.awayBowlerRunsGiven[idx],
-                wickets: awayData.awayBowlerWickets[idx],
-                extras: awayData.awayBowlerExtras[idx],
-            };
-            setBowler(temp);
-        } else {
-            const temp = {
-                name: homeData.homePlayers[idx],
-                overs: homeData.homeBowlerBallsBowled[idx],
-                runs: homeData.homeBowlerRunsGiven[idx],
-                wickets: homeData.homeBowlerWickets[idx],
-                extras: homeData.homeBowlerExtras[idx],
-            };
-            setBowler(temp);
-        }
+        // if (currInnings === 1) {
+        //     const temp = {
+        //         name: awayData.awayPlayers[idx],
+        //         overs: awayData.awayBowlerBallsBowled[idx],
+        //         runs: awayData.awayBowlerRunsGiven[idx],
+        //         wickets: awayData.awayBowlerWickets[idx],
+        //         extras: awayData.awayBowlerExtras[idx],
+        //     };
+        //     setBowler(temp);
+        // } else {
+        //     const temp = {
+        //         name: homeData.homePlayers[idx],
+        //         overs: homeData.homeBowlerBallsBowled[idx],
+        //         runs: homeData.homeBowlerRunsGiven[idx],
+        //         wickets: homeData.homeBowlerWickets[idx],
+        //         extras: homeData.homeBowlerExtras[idx],
+        //     };
+        //     setBowler(temp);
+        // }
+        bowlerIDX.current = idx;
     };
 
     const updateBatsmen = () => {
-        if (currInnings === 1) {
-            const idx = homeData.homePlayers.indexOf(batsmen[0]);
-            const temp = {
-                name: homeData.homePlayers[idx],
-                balls: homeData.homeBatsmenBallsFaced[idx],
-                runs: homeData.homeBatsmenRuns[idx],
-            };
-            setStriker(temp);
+        if (currInnings.current === 1) {
+            const idx = homeData.homePlayers.indexOf(batsmen.current[0]);
+            // const temp = {
+            //     name: homeData.homePlayers[idx],
+            //     balls: homeData.homeBatsmenBallsFaced[idx],
+            //     runs: homeData.homeBatsmenRuns[idx],
+            // };
+            // setStriker(temp);
+            strikerIDX.current = idx;
         } else {
-            const idx = awayData.awayPlayers.indexOf(batsmen[0]);
-            const temp = {
-                name: awayData.awayPlayers[idx],
-                balls: awayData.awayBatsmenBallsFaced[idx],
-                runs: awayData.awayBatsmenRuns[idx],
-            };
-            setStriker(temp);
+            const idx = awayData.awayPlayers.indexOf(batsmen.current[0]);
+            // const temp = {
+            //     name: awayData.awayPlayers[idx],
+            //     balls: awayData.awayBatsmenBallsFaced[idx],
+            //     runs: awayData.awayBatsmenRuns[idx],
+            // };
+            // setStriker(temp);
+            strikerIDX.current = idx;
         }
     };
 
     const handleEndOver = (event) => {
         swapStrikerNonStriker();
-        setCurrOver(currOver + 1);
+        currOver.current += 1;
         setCallOverEnd(true);
         updateBowler();
     };
@@ -402,9 +442,8 @@ const ScoringPage = ({ searchList, match }) => {
     const updateBall = (value) => {
         setCurrentBall(value);
         if (value === "W") {
-            const newBatsmen = batsmen.filter((batsman) => (batsman !== undefined && batsman !== striker.name));
-            setBatsmen(newBatsmen);
-            console.log(batsmen);
+            const newBatsmen = batsmen.current.filter((batsman) => (batsman !== undefined && batsman !== striker.name));
+            batsmen.current = newBatsmen;
             updateBatsmen();
             setRunsToSend(0);
             setWicketsToSend(1);
@@ -438,37 +477,13 @@ const ScoringPage = ({ searchList, match }) => {
     };
 
     const handleEndInnings = () => {
-        setCurrInnings(currInnings + 1);
-        setCurrOver(0);
-        setStriker({
-            ...striker,
-            name: awayData.awayPlayers[0],
-            runs: awayData.awayBatsmenRuns[0],
-            balls: awayData.awayBatsmenBallsFaced[0],
-        });
-        setNonStriker({
-            ...nonStriker,
-            name: awayData.awayPlayers[1],
-            runs: awayData.awayBatsmenRuns[1],
-            balls: awayData.awayBatsmenBallsFaced[1],
-        });
-        setBowler({
-            ...bowler,
-            name: homeData.homePlayers[0],
-            overs: homeData.homeBowlerBallsBowled[0],
-            runs: homeData.homeBowlerRunsGiven[0],
-            wickets: homeData.homeBowlerWickets[0],
-            extras: homeData.homeBowlerExtras[0],
-        });
-        let allBatsmen = awayData.awayPlayers.map((player, index) => {
-            if (index < 2) {
-            } else {
-                return player;
-            }
-        });
-        allBatsmen = allBatsmen.filter((batsman)=>(batsman !== undefined))
-        setBatsmen(allBatsmen);
-        setBowlers(homeData.homePlayers);
+        currInnings.current += 1;
+        currOver.current = 0;
+        bowlerIDX.current = 0;
+        strikerIDX.current = 0;
+        nonStrikerIDX.current = 0;
+        firstRender.current = true;
+        
     };
 
     const handleEndMatch = (event) => {
@@ -519,7 +534,7 @@ const ScoringPage = ({ searchList, match }) => {
             }),
         })
             .then((response) => response.json())
-            .then((data) => {})
+            .then((data) => console.log(data))
             .catch((err) => console.log(err));
     };
 
@@ -535,11 +550,11 @@ const ScoringPage = ({ searchList, match }) => {
                 <Container fluid className="bg text pb-5 pt-5">
                     <Container fluid className="headers mt-3 mb-0 header-main">
                         <p className="blinking-live-icon"></p>
-                        {currInnings === 1 ? (
+                        {currInnings.current === 1 ? (
                             <React.Fragment>
                                 <h fluid className="vertical-align-middle">
                                     {" "}
-                                    INNINGS {currInnings} - {homeData.home}
+                                    INNINGS {currInnings.current} - {homeData.home}
                                 <br></br>
                                     {" "}
                                     {/* {homeData.awayRuns} / {homeData.homeWicketsLost} */}
@@ -550,7 +565,7 @@ const ScoringPage = ({ searchList, match }) => {
                             <React.Fragment>
                                 <h fluid className="vertical-align-middle">
                                     {" "}
-                                    INNINGS {currInnings} - {awayData.away}
+                                    INNINGS {currInnings.current} - {awayData.away}
                                 <br></br>
                                     {" "}
                                     {/* {awayData.homeRuns} / {awayData.awayWicketsLost} */}
@@ -631,37 +646,37 @@ const ScoringPage = ({ searchList, match }) => {
                                         </tbody>
                                     </Table>
                                     <hr className="solid"></hr>
-                                    {currInnings !== 1 ? (
-                                        currOver <
+                                    {currInnings.current !== 1 ? (
+                                        currOver.current <
                                         homeData.homeBowling.length ? (
                                             <RenderOver
                                                 balls={homeData.homeBowling[
-                                                    currOver
+                                                    currOver.current
                                                 ].split(" ")}
                                                 over={"Current Over"}
-                                                overnumber={currOver}
+                                                overnumber={currOver.current}
                                             />
                                         ) : (
                                             <RenderOver
                                                 balls={[]}
                                                 over={"Current Over"}
-                                                overnumber={currOver}
+                                                overnumber={currOver.current}
                                             />
                                         )
-                                    ) : currOver <
+                                    ) : currOver.current <
                                       awayData.awayBowling.length ? (
                                         <RenderOver
                                             balls={awayData.awayBowling[
-                                                currOver
+                                                currOver.current
                                             ].split(" ")}
                                             over={"Current Over"}
-                                            overnumber={currOver}
+                                            overnumber={currOver.current}
                                         />
                                     ) : (
                                         <RenderOver
                                             balls={[]}
                                             over={"Current Over"}
-                                            overnumber={currOver}
+                                            overnumber={currOver.current}
                                         />
                                     )}
                                     <hr className="solid"></hr>
@@ -812,7 +827,7 @@ const ScoringPage = ({ searchList, match }) => {
                                                     End Over
                                                 </Button>
                                                 {/* {callOverEnd ? <ModalOver onChange={updateBowler} bowlers={bowlers}/> : <input type="hidden"></input>} */}
-                                                {currInnings === 1 ? (
+                                                {currInnings.current === 1 ? (
                                                     <Button
                                                         type="submit"
                                                         className="submit-buttons"
@@ -844,7 +859,7 @@ const ScoringPage = ({ searchList, match }) => {
                                 </Container>
 
                                 <Container className="col-border m-3">
-                                    {currInnings !== 1
+                                    {currInnings.current !== 1
                                         ? homeData.homeBowling.map(
                                               (over, index) => (
                                                   <RenderOver
