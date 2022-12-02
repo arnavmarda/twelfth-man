@@ -17,7 +17,9 @@ const tournamentSchema = new Schema({
         type: Number,
         required: true,
     },
-
+    fixtures: {
+        type: [String],
+    },
 });
 
 module.exports = Tournament = mongoose.model("Tournament", tournamentSchema);

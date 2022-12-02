@@ -17,6 +17,7 @@ router.post("/ballUpdate", (req, res) => {
         whoIsBatting,
         currentOver,
         ballSymbol,
+        isExtra
     } = req.body;
 
     whoIsBatting = whoIsBatting.toLowerCase();
@@ -63,11 +64,15 @@ router.post("/ballUpdate", (req, res) => {
             {
                 $inc: {
                     "homeBatsmenRuns.battingIDX": runsMade,
+                    "homeBatsmenBallsFaced.battingIDX": 1,
                     "awayBowlerWickets.bowlingIDX": wicketsTaken,
+                    "awayBowlerBallsBowled.bowlingIDX": 1,
+                    "awayBowlerRunsGiven.bowlingIDX": runsMade,
+                    "awayBowlerExtras.bowlingIDX": (isExtra ? 1 : 0)
                 },
                 $set: {
                     "awayBowling.overToUpdateIDX": {
-                        $concat: ["$awayBowling.overToUpdateIDX", ballSymbol],
+                        $concat: ["$awayBowling.overToUpdateIDX", ballSymbol.toString()],
                     },
                 },
             }
@@ -78,7 +83,11 @@ router.post("/ballUpdate", (req, res) => {
             {
                 $inc: {
                     "awayBatsmenRuns.battingIDX": runsMade,
+                    "awayBatsmenBallsFaced.battingIDX": 1,
                     "homeBowlerWickets.bowlingIDX": wicketsTaken,
+                    "homeBowlerBallsBowled.bowlingIDX": 1,
+                    "homeBowlerRunsGiven.bowlingIDX": runsMade,
+                    "homeBowlerExtras.bowlingIDX": (isExtra ? 1 : 0)
                 },
                 $set: {
                     "homeBowling.overToUpdateIDX": {

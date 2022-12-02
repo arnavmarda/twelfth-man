@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const requireLogin = require("../middleware/requireLogin.js");
-
+const { generateRandomFixture } = require("../utilities/fixture-generator.js");
 const Team = mongoose.model("Team");
 const Match = mongoose.model("Match");
 const Tournament = mongoose.model("Tournament");
@@ -49,10 +49,24 @@ router.post("/tournament/create", requireLogin, (req, res) => {
             });
         }
 
+        const league = generateRandomFixture(teams);
+
+        const fixturesArray = [];
+
+        for (let i = 0; i < league.length; i++) {
+            for (let j = 0; j < league[i].value.length; j++) {
+
+                fixturesArray.push(league[i].value[j].teamA)
+                fixturesArray.push(league[i].value[j].teamB)
+            }
+        }
+
         const newTournament = new Tournament({
             name: name,
             teams: teams,
             numTeams: numTeams,
+            standings: teams,
+            fixtures: fixturesArray,
         });
 
         newTournament
@@ -65,7 +79,7 @@ router.post("/tournament/create", requireLogin, (req, res) => {
 /* 
     Get all tournaments
 */
-router.get("/tournamentList", (req, res) => {
+router.post("/tournamentList", (req, res) => {
     Tournament.find({}, (err, tournaments) => {
         let tournamentsList = [];
 
@@ -81,6 +95,48 @@ router.get("/tournamentList", (req, res) => {
         res.status(200).json(tournamentsList);
     }).clone().catch((err) => console.log(err));
 });
+
+/* 
+    Get info for a tournament
+*/
+router.post("/getInfoForTournament", (req, res) => {
+    const { id } = req.body;
+
+
+    Tournament.findOne({ _id: id })
+        .then((foundTournament) => {
+            if (!foundTournament) {
+                return res.status(422).json({
+                    error: "No tournament with this name",
+                });
+            }
+
+
+            let fixtureList = [];
+
+            for(i = 0; i < foundTournament.fixtures.length; i+=2){
+                fixtureList.push({
+                    home: foundTournament.fixtures[i],
+                    away: foundTournament.fixtures[i+1],
+                })
+            };
+            
+            const fixtures = generateRandomFixture(foundTournament.teams);
+
+            const arrayOfAllInfo = {
+                name: foundTournament.name,
+                teams: foundTournament.teams,
+                numTeams: foundTournament.numTeams,
+                fixtures: fixtureList,
+            };
+            res.status(200).json(arrayOfAllInfo);
+        })
+        .catch((err) => console.log(err));
+});
+
+
+
+
 
 /*
     Delete a tournament
