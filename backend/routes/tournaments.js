@@ -2,7 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 const requireLogin = require("../middleware/requireLogin.js");
-
+const { generateRandomFixture } = require("../utilities/fixture-generator.js");
 const Team = mongoose.model("Team");
 const Match = mongoose.model("Match");
 const Tournament = mongoose.model("Tournament");
@@ -49,11 +49,24 @@ router.post("/tournament/create", requireLogin, (req, res) => {
             });
         }
 
+        const league = generateRandomFixture(teams);
+
+        const fixturesArray = [];
+
+        for (let i = 0; i < league.length; i++) {
+            for (let j = 0; j < league[i].value.length; j++) {
+
+                fixturesArray.push(league[i].value[j].teamA)
+                fixturesArray.push(league[i].value[j].teamB)
+            }
+        }
+
         const newTournament = new Tournament({
             name: name,
             teams: teams,
             numTeams: numTeams,
             standings: teams,
+            fixtures: fixturesArray,
         });
 
         newTournament
@@ -97,11 +110,15 @@ router.post("/getInfoForTournament", (req, res) => {
                     error: "No tournament with this name",
                 });
             }
+
+            const fixtures = generateRandomFixture(foundTournament.teams);
+
             const arrayOfAllInfo = {
                 name: foundTournament.name,
                 teams: foundTournament.teams,
                 numTeams: foundTournament.numTeams,
                 standings: foundTournament.standings,
+                fixtures: fixtures,
             };
             res.status(200).json(arrayOfAllInfo);
         })

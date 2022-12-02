@@ -20,8 +20,9 @@ const tournamentSchema = new Schema({
     standings: {
         type: [String],
     },
-
-
+    fixtures: {
+        type: [String],
+    },
 });
 
 module.exports = Tournament = mongoose.model("Tournament", tournamentSchema);
