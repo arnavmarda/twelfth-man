@@ -323,8 +323,23 @@ const ScoringPage = ({searchList, match}) => {
             })
             setBatsmen(allBatsmen);
             setBowlers(data.awayPlayers);
+
+            
+
+
+
         })
     }, []);
+
+    function swapStrikerNonStriker(){
+        let temp = {
+            name: nonStriker.name,
+            runs: nonStriker.runs,
+            balls: nonStriker.balls,
+        }
+        setNonStriker(striker);
+        setStriker(temp);
+    };
 
     React.useEffect(() => {
         getMatchInfo();
