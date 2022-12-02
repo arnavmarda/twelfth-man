@@ -32,7 +32,7 @@ const matchSchema = new Schema({
     },
 
     homeBowlerBallsBowled: {
-        type: [Number],
+        type: [String],
     },
 
     homeBowlerWickets: {
@@ -65,7 +65,7 @@ const matchSchema = new Schema({
     },
 
     awayBowlerBallsBowled: {
-        type: [Number],
+        type: [String],
     },
 
     awayBowlerWickets: {
@@ -84,6 +84,7 @@ const matchSchema = new Schema({
         type: Number,
         default: 0,
     },
+    
     homeBowling: [String],
     awayBowling: [String],
 
@@ -93,7 +94,6 @@ const matchSchema = new Schema({
     },
 
     winner: String,
-
     numOvers: Number,
 });
 

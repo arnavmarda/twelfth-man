@@ -64,10 +64,12 @@ router.post("/match/create", (req, res) => {
         numOvers: numOvers,
         homePlayers: home.roster,
         awayPlayers: away.roster,
-        homeBatsmenRuns: Array.apply(0, Array(11)),
-        awayBatsmenRuns: Array.apply(0, Array(11)),
-        homeBowlerWickets: Array.apply(0, Array(11)),
-        awayBowlerWickets: Array.apply(0, Array(11)),
+        homeBatsmenRuns: new Array(11).fill(0),
+        awayBatsmenRuns: new Array(11).fill(0),
+        homeBowlerWickets: new Array(11).fill(0),
+        awayBowlerWickets: new Array(11).fill(0),
+        homeBowling: new Array(numOvers).fill(""),
+        awayBowling: new Array(numOvers).fill(""),
     });
 
     newMatch
