@@ -339,11 +339,19 @@ const ScoringPage = ({searchList, match}) => {
     const updateBall = (value) => {
         setCurrentBall(value);
         if (value === "W") {
+            const newBatsmen = batsmen.map((batsman, index) => {
+                if(batsman !== striker.name){
+                    return batsman;
+                }
+            })
+            setBatsmen(newBatsmen);
             setRunsToSend(0);
             setWicketsToSend(1);
+            setCallWicket(true);
         } else {
             setRunsToSend(parseInt(value, 10));
             setWicketsToSend(0);
+            setCallWicket(false);
         }
         setBallSymbol(value);
     }
@@ -359,11 +367,32 @@ const ScoringPage = ({searchList, match}) => {
     }
 
     const handleSave = (event) => {
-        // if (currentBall.includes("Wide")){
-        //     setCallWicket(true);
-        // }
+
         sendBallUpdate(runsToSend, wicketsToSend, ballSymbol, isItExtra);
 
+    }
+
+    const updateBowler = (newBowler) => {
+        const idx = bowlers.indexOf(newBowler);
+        if(currInnings === 1){
+            const temp = {
+                name: awayData.player[idx],
+                overs: awayData.awayBowlerBallsBowled[idx],
+                runs: awayData.awayBowlerRunsGiven[idx],
+                wickets: awayData.awayBowlerWickets[idx],
+                extras: awayData.awayBowlerExtras[idx],
+            }
+            setBowler(temp);
+        } else {
+            const temp = {
+                name: homeData.player[idx],
+                overs: homeData.homeBowlerBallsBowled[idx],
+                runs: homeData.homeBowlerRunsGiven[idx],
+                wickets: homeData.homeBowlerWickets[idx],
+                extras: homeData.homeBowlerExtras[idx],
+            }
+            setBowler(temp);
+        }
     }
 
     const sendBallUpdate = (runsToSend, wicketsToSend, symbolToSend, isItExtra) => {
@@ -511,7 +540,7 @@ const ScoringPage = ({searchList, match}) => {
                                                 <Button type="submit" className="submit-buttons" variant="primary" onClick={handleSave}>Save</Button>
                                                 {callWicket ? <ModalWicket /> : <input type="hidden"></input>}
                                                 <Button type="submit" className="submit-buttons" onClick={handleEndOver} variant="primary">End Over</Button>
-                                                {callOverEnd ? <ModalOver /> : <input type="hidden"></input>}
+                                                {callOverEnd ? <ModalOver onChange={updateBowler} bowlers={bowlers}/> : <input type="hidden"></input>}
                                                 {currInnings === 1 ? (
                                                     <Button type="submit" className="submit-buttons" variant="primary">End Innings</Button>
                                                 ) : (

@@ -2,15 +2,24 @@ import React, { useState } from "react";
 import { Modal } from 'react-bootstrap';
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
+import { DropdownRadio } from "./DropdownRadio";
 
 
 export const ModalOver = (props) => {
 
     const [isShown, setIsShown] = useState(true);
+    const [isSelected, setIsSelected] = useState("");
+
+    const handleChange = (bowler) => {
+        setIsSelected(bowler);
+        props.onChange(bowler);
+    }
 
     const closeModal = () => {
         setIsShown(false);
     }
+
+    const bowlersList = props.bowlers.map((bowler) => ({value: bowler, label: bowler}))
 
     return (
         <Modal autoFocus centered show={isShown} onExit={closeModal} onExited={closeModal}>
@@ -20,16 +29,12 @@ export const ModalOver = (props) => {
 
             <Modal.Body>
                 <Form> 
-                    <Form.Group className="mb-3" controlId="chooseBatsmanOut">
-                        <Form.Select required aria-label="Next Bowler" className="mb-2">
-                            <option>Next Bowler</option>
-                            <option value="Bowler 1">Bowler 1</option>
-                            <option value="Bowler 2">Bowler 2</option>
-                            <option value="Bowler 3">Bowler 3</option>
-                            <option value="Bowler 4">Bowler 4</option>
-                            <option value="Bowler 5">Bowler 5</option>
-                        </Form.Select>
-                    </Form.Group>
+                    <DropdownRadio 
+                    options={bowlersList} 
+                    selectedOption={isSelected} 
+                    onChange={handleChange} 
+                    placeholder="Select next bowler"
+                    />
                 </Form>
             </Modal.Body>
             <Modal.Footer>
