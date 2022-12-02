@@ -111,14 +111,23 @@ router.post("/getInfoForTournament", (req, res) => {
                 });
             }
 
+
+            let fixtureList = [];
+
+            for(i = 0; i < foundTournament.fixtures.length; i+=2){
+                fixtureList.push({
+                    home: foundTournament.fixtures[i],
+                    away: foundTournament.fixtures[i+1],
+                })
+            };
+            
             const fixtures = generateRandomFixture(foundTournament.teams);
 
             const arrayOfAllInfo = {
                 name: foundTournament.name,
                 teams: foundTournament.teams,
                 numTeams: foundTournament.numTeams,
-                standings: foundTournament.standings,
-                fixtures: fixtures,
+                fixtures: fixtureList,
             };
             res.status(200).json(arrayOfAllInfo);
         })

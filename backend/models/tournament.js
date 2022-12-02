@@ -17,9 +17,6 @@ const tournamentSchema = new Schema({
         type: Number,
         required: true,
     },
-    standings: {
-        type: [String],
-    },
     fixtures: {
         type: [String],
     },
