@@ -131,10 +131,10 @@ router.post("/endMatch", (req, res) => {
                 error: "No match with this id",
             });
         }
-        matchStatus = foundMatch.isMatchOver;
-        matchWinner = foundMatch.winner;
-        matchStatus = true;
-        matchWinner = winner;
+        isMatchOver = foundMatch.isMatchOver;
+        winner = foundMatch.winner;
+        isMatchOver = true;
+        winner = winner;
         
         foundMatch.save();
     })

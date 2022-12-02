@@ -36,7 +36,6 @@ export function RenderOver(props) {
     const over = props.balls;
     let balls = [];
     if(over.length !== 1){
-        console.log(props)
         balls = over.map((ball, index) => {
             if (index > 0) {
                 return <th><RenderButton ball={ball}/></th>

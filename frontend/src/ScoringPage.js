@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 const Styles = styled.div`
     .bg {
-        background-color: #2774AE;
+        background-color: #2774ae;
         background-size: cover;
         opacity: 1;
     }
@@ -27,17 +27,17 @@ const Styles = styled.div`
     .col-border {
         border-style: solid;
         border-width: thick;
-        border-color: #003B5C;
+        border-color: #003b5c;
     }
 
     .thead {
-        background-color: #FFB81C;
+        background-color: #ffb81c;
         border-color: black;
         border-width: thick;
     }
 
     .tbody {
-        background-color: #FFD100;
+        background-color: #ffd100;
         border-color: black;
         border-width: normal;
     }
@@ -49,10 +49,10 @@ const Styles = styled.div`
     }
 
     .headers {
-        background-color: #FFB81C;
+        background-color: #ffb81c;
         border-style: solid;
         border-width: thick;
-        border-color: #003B5C;
+        border-color: #003b5c;
         color: black;
         font-weight: bold;
     }
@@ -83,7 +83,8 @@ const Styles = styled.div`
         background-color: purple;
     }
 
-    .four, .five {
+    .four,
+    .five {
         background-color: green;
     }
 
@@ -117,7 +118,7 @@ const Styles = styled.div`
     }
 
     .tr-no-border {
-        border-color: #FFD100 !important;
+        border-color: #ffd100 !important;
     }
 
     .btn {
@@ -169,13 +170,13 @@ const Styles = styled.div`
 
     @keyframes glowing {
         0% {
-          background-color: #2ba805;
+            background-color: #2ba805;
         }
         50% {
-          background-color: black;
+            background-color: black;
         }
         100% {
-          background-color: #2ba805;
+            background-color: #2ba805;
         }
     }
 
@@ -193,14 +194,16 @@ const Styles = styled.div`
     }
 `;
 
-const ScoringPage = ({searchList, match}) => {
+const ScoringPage = ({ searchList, match }) => {
     const navigate = useNavigate();
 
     const [currentBall, setCurrentBall] = React.useState("");
+    const [numBalls, setNumBalls] = React.useState(0);
     const [callOverEnd, setCallOverEnd] = React.useState(false);
     const [callWicket, setCallWicket] = React.useState(false);
-    const [firstRender, setFirstRender] = React.useState(true);
+    let firstRender = true;
     const [winner, setWinner] = React.useState("");
+    const [currOver, setCurrOver] = React.useState(0);
     const [runsToSend, setRunsToSend] = React.useState(0);
     const [wicketsToSend, setWicketsToSend] = React.useState(0);
     const [ballSymbol, setBallSymbol] = React.useState("");
@@ -217,7 +220,7 @@ const ScoringPage = ({searchList, match}) => {
         homeBowlerBallsBowled: [],
         homeBowlerWickets: [],
         homeBowlerExtras: [],
-        homeBowling: [""],
+        homeBowling: Array(currOver).fill(""),
         battingFirst: true,
     });
     const [awayData, setAwayData] = React.useState({
@@ -231,10 +234,9 @@ const ScoringPage = ({searchList, match}) => {
         awayBowlerBallsBowled: [],
         awayBowlerWickets: [],
         awayBowlerExtras: [],
-        awayBowling: [""],
+        awayBowling: Array(currOver).fill(""),
         battingFirst: false,
-    })
-    const [currInnings, setCurrInnings] = React.useState(1);
+    });
     const [striker, setStriker] = React.useState({
         name: "",
         runs: 0,
@@ -251,11 +253,10 @@ const ScoringPage = ({searchList, match}) => {
         runs: 0,
         wickets: 0,
         extras: 0,
-    })
+    });
     const [batsmen, setBatsmen] = React.useState([]);
     const [bowlers, setBowlers] = React.useState([]);
-    const [currOver, setCurrOver] = React.useState(0);
-
+    const [currInnings, setCurrInnings] = React.useState(1);
     const getMatchInfo = React.useCallback(() => {
         fetch("http://localhost:9000/match/getInfo", {
             method: "POST",
@@ -264,104 +265,147 @@ const ScoringPage = ({searchList, match}) => {
             },
             body: JSON.stringify({
                 id: match,
-            }) 
+            }),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log("DATA:");
-            console.log(data);
-            setHomeData({
-                home: data.home,
-                homeRuns: data.homeRuns,
-                homeWicketsLost: data.homeWicketsLost,
-                winner: data.winner,
-                homePlayers: data.homePlayers,
-                homeBatsmenRuns: data.homeBatsmenRuns,
-                homeBatsmenBallsFaced: data.homeBatsmenBallsFaced,
-                homeBowlerRunsGiven: data.homeBowlerRunsGiven,
-                homeBowlerBallsBowled: data.homeBowlerBallsBowled,
-                homeBowlerWickets: data.homeBowlerWickets,
-                homeBowlerExtras: data.homeBowlerExtras,
-                homeBowling: data.homeBowling,
-            });
-            setAwayData({
-                away: data.away,
-                awayRuns: data.awayRuns,
-                awayWicketsLost: data.awayWicketsLost,
-                awayPlayers: data.awayPlayers,
-                awayBatsmenRuns: data.awayBatsmenRuns,
-                awayBatsmenBallsFaced: data.awayBatsmenBallsFaced,
-                awayBowlerRunsGiven: data.awayBowlerRunsGiven,
-                awayBowlerBallsBowled: data.awayBowlerBallsBowled,
-                awayBowlerWickets: data.awayBowlerWickets,
-                awayBowlerExtras: data.awayBowlerExtras,
-                awayBowling: data.awayBowling,
-            });
-            if(firstRender){
-                setStriker({
-                    ...striker,
-                    name: data.homePlayers[0],
-                    runs: data.homeBatsmenRuns[0],
-                    balls: data.homeBatsmenBallsFaced[0],
+            .then((response) => response.json())
+            .then((data) => {
+                setHomeData({
+                    home: data.home,
+                    homeRuns: data.homeRuns,
+                    homeWicketsLost: data.homeWicketsLost,
+                    winner: data.winner,
+                    homePlayers: data.homePlayers,
+                    homeBatsmenRuns: data.homeBatsmenRuns,
+                    homeBatsmenBallsFaced: data.homeBatsmenBallsFaced,
+                    homeBowlerRunsGiven: data.homeBowlerRunsGiven,
+                    homeBowlerBallsBowled: data.homeBowlerBallsBowled,
+                    homeBowlerWickets: data.homeBowlerWickets,
+                    homeBowlerExtras: data.homeBowlerExtras,
+                    homeBowling: data.homeBowling,
                 });
-                setNonStriker({
-                    ...nonStriker,
-                    name: data.homePlayers[1],
-                    runs: data.homeBatsmenRuns[1],
-                    balls: data.homeBatsmenBallsFaced[1],
+                setAwayData({
+                    away: data.away,
+                    awayRuns: data.awayRuns,
+                    awayWicketsLost: data.awayWicketsLost,
+                    awayPlayers: data.awayPlayers,
+                    awayBatsmenRuns: data.awayBatsmenRuns,
+                    awayBatsmenBallsFaced: data.awayBatsmenBallsFaced,
+                    awayBowlerRunsGiven: data.awayBowlerRunsGiven,
+                    awayBowlerBallsBowled: data.awayBowlerBallsBowled,
+                    awayBowlerWickets: data.awayBowlerWickets,
+                    awayBowlerExtras: data.awayBowlerExtras,
+                    awayBowling: data.awayBowling,
                 });
-                setBowler({
-                    ...bowler, 
-                    name: data.awayPlayers[0],
-                    overs: data.awayBowlerBallsBowled[0],
-                    runs: data.awayBowlerRunsGiven[0],
-                    wickets: data.awayBowlerWickets[0],
-                    extras: data.awayBowlerExtras[0]
-                })
-                let allBatsmen = data.homePlayers.map((player, index) => {
-                    if(index < 2){
-                    } else{
-                        return player;
-                    }
-                })
-                setBatsmen(allBatsmen);
-                setBowlers(data.awayPlayers);
-                setFirstRender(false);
-            }
-        })
+                if (firstRender) {
+                    console.log(firstRender);
+                    setStriker({
+                        ...striker,
+                        name: data.homePlayers[0],
+                        runs: data.homeBatsmenRuns[0],
+                        balls: data.homeBatsmenBallsFaced[0],
+                    });
+                    setNonStriker({
+                        ...nonStriker,
+                        name: data.homePlayers[1],
+                        runs: data.homeBatsmenRuns[1],
+                        balls: data.homeBatsmenBallsFaced[1],
+                    });
+                    setBowler({
+                        ...bowler,
+                        name: data.awayPlayers[0],
+                        overs: data.awayBowlerBallsBowled[0],
+                        runs: data.awayBowlerRunsGiven[0],
+                        wickets: data.awayBowlerWickets[0],
+                        extras: data.awayBowlerExtras[0],
+                    });
+                    let allBatsmen = data.homePlayers.map((player, index) => {
+                        if (index < 2) {
+                        } else {
+                            return player;
+                        }
+                    });
+                    allBatsmen = allBatsmen.filter((batsman)=>(batsman !== undefined))
+                    setBatsmen(allBatsmen);
+                    setBowlers(data.awayPlayers);
+                    firstRender = false;
+                }
+            });
     }, []);
 
-    function swapStrikerNonStriker(){
-        let temp = {
+    function swapStrikerNonStriker() {
+        const temp = {
             name: nonStriker.name,
             runs: nonStriker.runs,
             balls: nonStriker.balls,
-        }
+        };
         setNonStriker(striker);
         setStriker(temp);
-    };
+    }
 
     React.useEffect(() => {
         getMatchInfo();
-        console.log("called useEffect");
-        console.log(awayData.awayBowling[currOver].split(" "));
     });
+
+    const updateBowler = () => {
+        const idx =
+            bowlers.indexOf(bowler.name) === bowlers.length - 1
+                ? 0
+                : bowlers.indexOf(bowler.name) + 1;
+        if (currInnings === 1) {
+            const temp = {
+                name: awayData.awayPlayers[idx],
+                overs: awayData.awayBowlerBallsBowled[idx],
+                runs: awayData.awayBowlerRunsGiven[idx],
+                wickets: awayData.awayBowlerWickets[idx],
+                extras: awayData.awayBowlerExtras[idx],
+            };
+            setBowler(temp);
+        } else {
+            const temp = {
+                name: homeData.homePlayers[idx],
+                overs: homeData.homeBowlerBallsBowled[idx],
+                runs: homeData.homeBowlerRunsGiven[idx],
+                wickets: homeData.homeBowlerWickets[idx],
+                extras: homeData.homeBowlerExtras[idx],
+            };
+            setBowler(temp);
+        }
+    };
+
+    const updateBatsmen = () => {
+        if (currInnings === 1) {
+            const idx = homeData.homePlayers.indexOf(batsmen[0]);
+            const temp = {
+                name: homeData.homePlayers[idx],
+                balls: homeData.homeBatsmenBallsFaced[idx],
+                runs: homeData.homeBatsmenRuns[idx],
+            };
+            setStriker(temp);
+        } else {
+            const idx = awayData.awayPlayers.indexOf(batsmen[0]);
+            const temp = {
+                name: awayData.awayPlayers[idx],
+                balls: awayData.awayBatsmenBallsFaced[idx],
+                runs: awayData.awayBatsmenRuns[idx],
+            };
+            setStriker(temp);
+        }
+    };
 
     const handleEndOver = (event) => {
         swapStrikerNonStriker();
         setCurrOver(currOver + 1);
         setCallOverEnd(true);
-    }
+        updateBowler();
+    };
 
     const updateBall = (value) => {
         setCurrentBall(value);
         if (value === "W") {
-            const newBatsmen = batsmen.map((batsman) => {
-                if(batsman !== striker.name){
-                    return batsman;
-                }
-            })
+            const newBatsmen = batsmen.filter((batsman) => (batsman !== undefined && batsman !== striker.name));
             setBatsmen(newBatsmen);
+            console.log(batsmen);
+            updateBatsmen();
             setRunsToSend(0);
             setWicketsToSend(1);
             setCallWicket(true);
@@ -371,74 +415,31 @@ const ScoringPage = ({searchList, match}) => {
             setCallWicket(false);
         }
         setBallSymbol(value);
-    }
+    };
 
     const updateExtras = (value) => {
-        setCurrentBall(currentBall+value);
+        setCurrentBall(currentBall + value);
         if (value === "") {
             setIsItExtra(false);
         } else {
             setIsItExtra(true);
             setBallSymbol(ballSymbol + value);
         }
-    }
+    };
 
     const handleSave = (event) => {
-
-        sendBallUpdate(runsToSend, wicketsToSend, ballSymbol, isItExtra);
-        if((!isItExtra && runsToSend % 2 !== 0) || (isItExtra && runsToSend % 2 === 0)){
+        if (
+            (!isItExtra && runsToSend % 2 !== 0) ||
+            (isItExtra && runsToSend % 2 === 0)
+        ) {
             swapStrikerNonStriker();
         }
+        sendBallUpdate(runsToSend, wicketsToSend, ballSymbol, isItExtra);
+    };
 
-    }
-
-    const updateBowler = (newBowler) => {
-        const idx = bowlers.indexOf(newBowler);
-        if(currInnings === 1){
-            const temp = {
-                name: awayData.awayPlayers[idx],
-                overs: awayData.awayBowlerBallsBowled[idx],
-                runs: awayData.awayBowlerRunsGiven[idx],
-                wickets: awayData.awayBowlerWickets[idx],
-                extras: awayData.awayBowlerExtras[idx],
-            }
-            setBowler(temp);
-        } else {
-            const temp = {
-                name: homeData.homePlayers[idx],
-                overs: homeData.homeBowlerBallsBowled[idx],
-                runs: homeData.homeBowlerRunsGiven[idx],
-                wickets: homeData.homeBowlerWickets[idx],
-                extras: homeData.homeBowlerExtras[idx],
-            }
-            setBowler(temp);
-        }
-    }
-    
-    const updateBatsmen = (newBatsman) => {
-        
-        if(currInnings === 1){
-            const idx = homeData.homePlayers.indexOf(newBatsman);
-            const temp = {
-                name: homeData.homePlayers[idx],
-                balls: homeData.homeBatsmenBallsFaced[idx],
-                runs: homeData.homeBatsmenRuns[idx],
-            }
-            setStriker(temp);
-        } else {
-            const idx = awayData.awayPlayers.indexOf(newBatsman);
-            const temp = {
-                name: awayData.awayPlayers[idx],
-                balls: awayData.awayBatsmenBallsFaced[idx],
-                runs: awayData.awayBatsmenRuns[idx],
-            }
-            setStriker(temp);
-        }
-    }
-
-    const handleEndInnings = (event) => {
-        setCurrInnings(currInnings+1);
-
+    const handleEndInnings = () => {
+        setCurrInnings(currInnings + 1);
+        setCurrOver(0);
         setStriker({
             ...striker,
             name: awayData.awayPlayers[0],
@@ -452,25 +453,26 @@ const ScoringPage = ({searchList, match}) => {
             balls: awayData.awayBatsmenBallsFaced[1],
         });
         setBowler({
-            ...bowler, 
+            ...bowler,
             name: homeData.homePlayers[0],
             overs: homeData.homeBowlerBallsBowled[0],
             runs: homeData.homeBowlerRunsGiven[0],
             wickets: homeData.homeBowlerWickets[0],
-            extras: homeData.homeBowlerExtras[0]
-        })
-        const allBatsmen = awayData.awayPlayers.map((player, index) => {
-            if(index < 2){
-            } else{
+            extras: homeData.homeBowlerExtras[0],
+        });
+        let allBatsmen = awayData.awayPlayers.map((player, index) => {
+            if (index < 2) {
+            } else {
                 return player;
             }
-        })
+        });
+        allBatsmen = allBatsmen.filter((batsman)=>(batsman !== undefined))
         setBatsmen(allBatsmen);
         setBowlers(homeData.homePlayers);
-    }
+    };
 
     const handleEndMatch = (event) => {
-        if(homeData.homeRuns > awayData.awayRuns){
+        if (homeData.homeRuns > awayData.awayRuns) {
             setWinner(homeData.home);
         } else {
             setWinner(awayData.away);
@@ -483,17 +485,22 @@ const ScoringPage = ({searchList, match}) => {
             },
             body: JSON.stringify({
                 id: match,
-                winner: winner
-            })
+                winner: winner,
+            }),
         })
-        .then(res => res.json())
-        .then(data => console.log(data))
-        .catch(err => console.log(err));
+            .then((res) => res.json())
+            .then((data) => console.log(data))
+            .catch((err) => console.log(err));
 
         navigate(`/match-${match}`);
-    }
+    };
 
-    const sendBallUpdate = (runsToSend, wicketsToSend, symbolToSend, isItExtra) => {
+    const sendBallUpdate = (
+        runsToSend,
+        wicketsToSend,
+        symbolToSend,
+        isItExtra
+    ) => {
         fetch("http://localhost:9000/ballUpdate", {
             method: "POST",
             headers: {
@@ -509,27 +516,46 @@ const ScoringPage = ({searchList, match}) => {
                 currentOver: currOver,
                 ballSymbol: symbolToSend,
                 isExtra: isItExtra,
-            }) 
-        }).then((response) => response.json())
-        .then((data) => {
-            console.log("Data from ball update (if any): ");
-            console.log(data);
+            }),
         })
-        .catch((err) => console.log(err));
-    }
+            .then((response) => response.json())
+            .then((data) => {})
+            .catch((err) => console.log(err));
+    };
 
     return (
         <Styles>
             <Layout>
                 {/* <ModalScoring home={homeData.home} away={awayData.away} setIsBattingFirst={setIsBattingFirst}/> */}
-                <Jumbotron searchList={searchList} home={homeData.home} away={awayData.away}/>
+                <Jumbotron
+                    searchList={searchList}
+                    home={homeData.home}
+                    away={awayData.away}
+                />
                 <Container fluid className="bg text pb-5 pt-5">
                     <Container fluid className="headers mt-3 mb-0 header-main">
                         <p className="blinking-live-icon"></p>
                         {currInnings === 1 ? (
-                            <h fluid className="vertical-align-middle"> INNINGS {currInnings} - {homeData.home}</h>
+                            <React.Fragment>
+                                <h fluid className="vertical-align-middle">
+                                    {" "}
+                                    INNINGS {currInnings} - {homeData.home}
+                                <br></br>
+                                    {" "}
+                                    {/* {homeData.awayRuns} / {homeData.homeWicketsLost} */}
+                                 </h>
+                            </React.Fragment>
+                            
                         ) : (
-                            <h fluid className="vertical-align-middle"> INNINGS {currInnings} - {awayData.away}</h>
+                            <React.Fragment>
+                                <h fluid className="vertical-align-middle">
+                                    {" "}
+                                    INNINGS {currInnings} - {awayData.away}
+                                <br></br>
+                                    {" "}
+                                    {/* {awayData.homeRuns} / {awayData.awayWicketsLost} */}
+                                 </h>
+                            </React.Fragment>
                         )}
                     </Container>
                     <Container className="pt-5 pb-1">
@@ -540,7 +566,7 @@ const ScoringPage = ({searchList, match}) => {
                                 </Container>
 
                                 <Container className="col-border m-3">
-                                    <Table striped hover className="mt-3"> 
+                                    <Table striped hover className="mt-3">
                                         <thead className="thead w-100">
                                             <tr>
                                                 <th>At the Crease</th>
@@ -559,20 +585,28 @@ const ScoringPage = ({searchList, match}) => {
                                         </thead>
                                         <tbody className="tbody">
                                             <tr>
-                                                    <th><p className="blinking-live-icon-2 me-3" /></th>
-                                                    <th>{striker.name}</th>
-                                                    <th>{striker.runs}</th>
-                                                    <th>{striker.balls}</th>
-                                                    <th>{striker.runs / striker.balls}</th>
+                                                <th>
+                                                    <p className="blinking-live-icon-2 me-3" />
+                                                </th>
+                                                <th>{striker.name}</th>
+                                                <th>{striker.runs}</th>
+                                                <th>{striker.balls}</th>
+                                                <th>
+                                                    {100*striker.runs /
+                                                        striker.balls}
+                                                </th>
                                             </tr>
                                         </tbody>
                                         <tbody className="tbody">
                                             <tr>
-                                                    <th></th>
-                                                    <th>{nonStriker.name}</th>
-                                                    <th>{nonStriker.runs}</th>
-                                                    <th>{nonStriker.balls}</th>
-                                                    <th>{nonStriker.runs / nonStriker.balls}</th>
+                                                <th></th>
+                                                <th>{nonStriker.name}</th>
+                                                <th>{nonStriker.runs}</th>
+                                                <th>{nonStriker.balls}</th>
+                                                <th>
+                                                    {100*nonStriker.runs /
+                                                        nonStriker.balls}
+                                                </th>
                                             </tr>
                                         </tbody>
                                     </Table>
@@ -597,24 +631,116 @@ const ScoringPage = ({searchList, match}) => {
                                         </tbody>
                                     </Table>
                                     <hr className="solid"></hr>
-                                    {(currInnings !== 1) ? (
-                                        <RenderOver balls={homeData.homeBowling[currOver].split(" ")} over={'Current Over'} overnumber={currOver} />
+                                    {currInnings !== 1 ? (
+                                        currOver <
+                                        homeData.homeBowling.length ? (
+                                            <RenderOver
+                                                balls={homeData.homeBowling[
+                                                    currOver
+                                                ].split(" ")}
+                                                over={"Current Over"}
+                                                overnumber={currOver}
+                                            />
+                                        ) : (
+                                            <RenderOver
+                                                balls={[]}
+                                                over={"Current Over"}
+                                                overnumber={currOver}
+                                            />
+                                        )
+                                    ) : currOver <
+                                      awayData.awayBowling.length ? (
+                                        <RenderOver
+                                            balls={awayData.awayBowling[
+                                                currOver
+                                            ].split(" ")}
+                                            over={"Current Over"}
+                                            overnumber={currOver}
+                                        />
                                     ) : (
-                                        <RenderOver balls={awayData.awayBowling[currOver].split(" ")} over={'Current Over'} overnumber={currOver} />
+                                        <RenderOver
+                                            balls={[]}
+                                            over={"Current Over"}
+                                            overnumber={currOver}
+                                        />
                                     )}
                                     <hr className="solid"></hr>
                                     <Table className="mb-0 mt-3">
                                         <tbody className="tbody">
                                             <tr>
-                                                <ToggleButtonGroup type="radio" name="runs" id="runs" defaultValue={""} onChange={updateBall}> {/* sendBallUpdate(runsToSend, wicketsToSend, symbolToSend, isItExtra) */}
-                                                    <ToggleButton value={"0"} id="tbg-radio-1" className="rounded-circle dot" name="runs">.</ToggleButton>
-                                                    <ToggleButton value={"1"} id="tbg-radio-2" className="rounded-circle one" name="runs">1</ToggleButton>
-                                                    <ToggleButton value={"2"} id="tbg-radio-3" className="rounded-circle one" name="runs">2</ToggleButton>
-                                                    <ToggleButton value={"3"} id="tbg-radio-4" className="rounded-circle one" name="runs">3</ToggleButton>
-                                                    <ToggleButton value={"4"} id="tbg-radio-5" className="rounded-circle four" name="runs">4</ToggleButton>
-                                                    <ToggleButton value={"5"} id="tbg-radio-6" className="rounded-circle four" name="runs">5</ToggleButton>
-                                                    <ToggleButton value={"6"} id="tbg-radio-7" className="rounded-circle six" name="runs">6</ToggleButton>
-                                                    <ToggleButton value={"W"} id="tbg-radio-8" className="rounded-circle wicket" name="runs">W</ToggleButton>
+                                                <ToggleButtonGroup
+                                                    type="radio"
+                                                    name="runs"
+                                                    id="runs"
+                                                    defaultValue={""}
+                                                    onChange={updateBall}
+                                                >
+                                                    {" "}
+                                                    {/* sendBallUpdate(runsToSend, wicketsToSend, symbolToSend, isItExtra) */}
+                                                    <ToggleButton
+                                                        value={"0"}
+                                                        id="tbg-radio-1"
+                                                        className="rounded-circle dot"
+                                                        name="runs"
+                                                    >
+                                                        .
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"1"}
+                                                        id="tbg-radio-2"
+                                                        className="rounded-circle one"
+                                                        name="runs"
+                                                    >
+                                                        1
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"2"}
+                                                        id="tbg-radio-3"
+                                                        className="rounded-circle one"
+                                                        name="runs"
+                                                    >
+                                                        2
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"3"}
+                                                        id="tbg-radio-4"
+                                                        className="rounded-circle one"
+                                                        name="runs"
+                                                    >
+                                                        3
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"4"}
+                                                        id="tbg-radio-5"
+                                                        className="rounded-circle four"
+                                                        name="runs"
+                                                    >
+                                                        4
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"5"}
+                                                        id="tbg-radio-6"
+                                                        className="rounded-circle four"
+                                                        name="runs"
+                                                    >
+                                                        5
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"6"}
+                                                        id="tbg-radio-7"
+                                                        className="rounded-circle six"
+                                                        name="runs"
+                                                    >
+                                                        6
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"W"}
+                                                        id="tbg-radio-8"
+                                                        className="rounded-circle wicket"
+                                                        name="runs"
+                                                    >
+                                                        W
+                                                    </ToggleButton>
                                                 </ToggleButtonGroup>
                                             </tr>
                                         </tbody>
@@ -622,11 +748,45 @@ const ScoringPage = ({searchList, match}) => {
                                     <Table className="mt-0 mb-0">
                                         <tbody className="tbody">
                                             <tr>
-                                                <ToggleButtonGroup type="radio" name="extras" id="extras" defaultValue={""} onChange={updateExtras}>
-                                                    <ToggleButton value={""} id="extras-radio-4" className="rounded-circle extras" name="extras">N/A</ToggleButton>
-                                                    <ToggleButton value={"Wide"} id="extras-radio-3" className="rounded-circle extras" name="extras">Wide</ToggleButton>
-                                                    <ToggleButton value={"B"} id="extras-radio-2" className="rounded-circle extras" name="extras">B</ToggleButton>
-                                                    <ToggleButton value={"NB"} id="extras-radio-1" className="rounded-circle extras" name="extras">NB</ToggleButton>
+                                                <ToggleButtonGroup
+                                                    type="radio"
+                                                    name="extras"
+                                                    id="extras"
+                                                    defaultValue={""}
+                                                    onChange={updateExtras}
+                                                >
+                                                    <ToggleButton
+                                                        value={""}
+                                                        id="extras-radio-4"
+                                                        className="rounded-circle extras"
+                                                        name="extras"
+                                                    >
+                                                        N/A
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"Wide"}
+                                                        id="extras-radio-3"
+                                                        className="rounded-circle extras"
+                                                        name="extras"
+                                                    >
+                                                        Wide
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"B"}
+                                                        id="extras-radio-2"
+                                                        className="rounded-circle extras"
+                                                        name="extras"
+                                                    >
+                                                        B
+                                                    </ToggleButton>
+                                                    <ToggleButton
+                                                        value={"NB"}
+                                                        id="extras-radio-1"
+                                                        className="rounded-circle extras"
+                                                        name="extras"
+                                                    >
+                                                        NB
+                                                    </ToggleButton>
                                                 </ToggleButtonGroup>
                                             </tr>
                                         </tbody>
@@ -634,14 +794,44 @@ const ScoringPage = ({searchList, match}) => {
                                     <Table className="mt-0 mb-3">
                                         <tbody className="tbody">
                                             <tr>
-                                                <Button type="submit" className="submit-buttons" variant="primary" onClick={handleSave}>Save</Button>
-                                                {callWicket ? <ModalWicket onChange={updateBatsmen} batsmen={batsmen}/> : <input type="hidden"></input>}
-                                                <Button type="submit" className="submit-buttons" onClick={handleEndOver} variant="primary">End Over</Button>
-                                                {callOverEnd ? <ModalOver onChange={updateBowler} bowlers={bowlers}/> : <input type="hidden"></input>}
+                                                <Button
+                                                    type="submit"
+                                                    className="submit-buttons"
+                                                    variant="primary"
+                                                    onClick={handleSave}
+                                                >
+                                                    Save
+                                                </Button>
+                                                {/* {callWicket ? <ModalWicket onChange={updateBatsmen} batsmen={batsmen}/> : <input type="hidden"></input>} */}
+                                                <Button
+                                                    type="submit"
+                                                    className="submit-buttons"
+                                                    onClick={handleEndOver}
+                                                    variant="primary"
+                                                >
+                                                    End Over
+                                                </Button>
+                                                {/* {callOverEnd ? <ModalOver onChange={updateBowler} bowlers={bowlers}/> : <input type="hidden"></input>} */}
                                                 {currInnings === 1 ? (
-                                                    <Button type="submit" className="submit-buttons" onClick={handleEndInnings} variant="primary">End Innings</Button>
+                                                    <Button
+                                                        type="submit"
+                                                        className="submit-buttons"
+                                                        onClick={
+                                                            handleEndInnings
+                                                        }
+                                                        variant="primary"
+                                                    >
+                                                        End Innings
+                                                    </Button>
                                                 ) : (
-                                                    <Button type="submit" className="submit-buttons" onClick={handleEndMatch} variant="primary">End Match</Button>
+                                                    <Button
+                                                        type="submit"
+                                                        className="submit-buttons"
+                                                        onClick={handleEndMatch}
+                                                        variant="primary"
+                                                    >
+                                                        End Match
+                                                    </Button>
                                                 )}
                                             </tr>
                                         </tbody>
@@ -652,17 +842,27 @@ const ScoringPage = ({searchList, match}) => {
                                 <Container fluid className="headers m-3">
                                     <h fluid>OVER BY OVER</h>
                                 </Container>
-                                
+
                                 <Container className="col-border m-3">
-                                { currInnings !== 1 ? (
-                                    homeData.homeBowling.map((over, index) => (
-                                        <RenderOver balls={over.split(" ")} over={`Over ${index}`} overnumber={index} />
-                                    ))
-                                ) : (
-                                    awayData.awayBowling.map((over, index) => (
-                                        <RenderOver balls={over.split(" ")} over={`Over ${index}`} overnumber={index} />
-                                    ))
-                                )}
+                                    {currInnings !== 1
+                                        ? homeData.homeBowling.map(
+                                              (over, index) => (
+                                                  <RenderOver
+                                                      balls={over.split(" ")}
+                                                      over={`Over ${index}`}
+                                                      overnumber={index}
+                                                  />
+                                              )
+                                          )
+                                        : awayData.awayBowling.map(
+                                              (over, index) => (
+                                                  <RenderOver
+                                                      balls={over.split(" ")}
+                                                      over={`Over ${index}`}
+                                                      overnumber={index}
+                                                  />
+                                              )
+                                          )}
                                 </Container>
                             </Col>
                         </Row>
@@ -671,7 +871,7 @@ const ScoringPage = ({searchList, match}) => {
                 <Footer />
             </Layout>
         </Styles>
-    )
-}
+    );
+};
 
 export default ScoringPage;
