@@ -26,6 +26,7 @@ router.post("/match/getInfo", (req, res) => {
 */
 router.post("/match/create", (req, res) => {
     const { home, away, numOvers } = req.body;
+
     if (!home || !away) {
         return res.status(422).json({
             error: "Missing required parameter",
@@ -38,44 +39,51 @@ router.post("/match/create", (req, res) => {
         });
     }
 
-    Team.findOne({ name: home })
-        .then((team) => {
-            if (!team) {
-                return res.status(400).json({
-                    error: "No team found with name " + home,
-                });
-            }
-        })
-        .catch((err) => console.log(err));
+    Team.findOne({ name: home }, (err, resHome) => {
+        if (err) {
+            console.log(err);
+        } else {
+            Team.findOne({ name: away }, (err, resAway) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    console.log("HOME: ", resHome.roster);
+                    console.log("AWAY: ", resAway.roster);
 
-    Team.findOne({ name: away })
-        .then((team) => {
-            if (!team) {
-                return res.status(400).json({
-                    error: "No team found with name " + away,
-                });
-            }
-        })
-        .catch((err) => console.log(err));
+                    const newMatch = new Match({
+                        home: home,
+                        away: away,
+                        numOvers: numOvers,
+                        homeRuns: 0,
+                        homePlayers: resHome.roster,
+                        homeBatsmenRuns: new Array(11).fill(0),
+                        homeBatsmenBallsFaced: new Array(11).fill(0),
+                        homeBowlerRunsGiven: new Array(11).fill(0),
+                        homeBowlerBallsBowled: new Array(11).fill(0),
+                        homeBowlerWickets: new Array(11).fill(0),
+                        homeBowlerExtras: new Array(11).fill(0),
+                        homeBowling: new Array(numOvers).fill(""),
+                        homeWicketsLost: 0,
+                        awayRuns: 0,
+                        awayPlayers: resAway.roster,
+                        awayBatsmenRuns: new Array(11).fill(0),
+                        awayBatsmenBallsFaced: new Array(11).fill(0),
+                        awayBowlerRunsGiven: new Array(11).fill(0),
+                        awayBowlerBallsBowled: new Array(11).fill(0),
+                        awayBowlerWickets: new Array(11).fill(0),
+                        awayBowlerExtras: new Array(11).fill(0),
+                        awayBowling: new Array(numOvers).fill(""),
+                        awayWicketsLost: 0,
+                    });
 
-    const newMatch = new Match({
-        home: home,
-        away: away,
-        numOvers: numOvers,
-        homePlayers: home.roster,
-        awayPlayers: away.roster,
-        homeBatsmenRuns: new Array(11).fill(0),
-        awayBatsmenRuns: new Array(11).fill(0),
-        homeBowlerWickets: new Array(11).fill(0),
-        awayBowlerWickets: new Array(11).fill(0),
-        homeBowling: new Array(numOvers).fill(""),
-        awayBowling: new Array(numOvers).fill(""),
+                    newMatch
+                        .save()
+                        .then((match) => res.json(match))
+                        .catch((err) => console.log(err));
+                }
+            });
+        }
     });
-
-    newMatch
-        .save()
-        .then((match) => res.json(match))
-        .catch((err) => console.log(err));
 });
 
 /*
@@ -105,7 +113,9 @@ router.get("/matchList", (req, res) => {
         });
 
         res.status(200).json(matchesList);
-    }).clone().catch((err) => console.log(err));
+    })
+        .clone()
+        .catch((err) => console.log(err));
 });
 
 // update runs
