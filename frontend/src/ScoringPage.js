@@ -193,6 +193,7 @@ const Styles = styled.div`
 `;
 
 const ScoringPage = ({searchList, match}) => {
+    console.log("Match ID: " + match);
 
     const [currentBall, setCurrentBall] = React.useState("");
     const [callOverEnd, setCallOverEnd] = React.useState(false);
@@ -292,7 +293,6 @@ const ScoringPage = ({searchList, match}) => {
                 awayBowlerExtras: data.awayBowlerExtras,
                 awayBowling: data.awayBowling,
             });
-            console.log(data);
             setIsMatchOver(data.isMatchOver);
             setIsBattingFirst(data.home);
             setStriker({
@@ -336,18 +336,64 @@ const ScoringPage = ({searchList, match}) => {
 
     const updateBall = (value) => {
         setCurrentBall(value);
+        if (value === "W") {
+            setRunsToSend(0);
+            setWicketsToSend(1);
+        } else {
+            setRunsToSend(parseInt(value, 10));
+            setWicketsToSend(0);
+        }
+        setBallSymbol(value);
     }
 
     const updateExtras = (value) => {
-       setCurrentBall(currentBall+value);
+        setCurrentBall(currentBall+value);
+        if (value === "") {
+            setIsItExtra(false);
+        } else {
+            setIsItExtra(true);
+            setBallSymbol(ballSymbol + value);
+        }
     }
 
     const handleSave = (event) => {
-        if(currentBall.includes("W")){
-            setCallWicket(true);
-        }
+        // if (currentBall.includes("Wide")){
+        //     setCallWicket(true);
+        // }
+        sendBallUpdate(runsToSend, wicketsToSend, ballSymbol, isItExtra);
+
     }
-    console.log("Home: ", homeData);
+
+    const sendBallUpdate = (runsToSend, wicketsToSend, symbolToSend, isItExtra) => {
+        fetch("http://localhost:9000/ballUpdate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                matchID: match,
+                batsman: striker,
+                bowler: bowler,
+                runsMade: runsToSend,
+                wicketsTaken: wicketsToSend,
+                inningsNo: currInnings,
+                currentOver: currOver,
+                ballSymbol: symbolToSend,
+                isExtra: isItExtra,
+            }) 
+        }).then((response) => response.json())
+        .then((data) => {
+            console.log("Data from ball update (if any): ");
+            console.log(data);
+        })
+        .catch((err) => console.log(err));
+    }
+
+    const [runsToSend, setRunsToSend] = React.useState(0);
+    const [wicketsToSend, setWicketsToSend] = React.useState(0);
+    const [ballSymbol, setBallSymbol] = React.useState("");
+    const [isItExtra, setIsItExtra] = React.useState(false);
+
     return (
         <Styles>
             <Layout>
@@ -432,7 +478,7 @@ const ScoringPage = ({searchList, match}) => {
                                     <Table className="mb-0 mt-3">
                                         <tbody className="tbody">
                                             <tr>
-                                                <ToggleButtonGroup type="radio" name="runs" id="runs" defaultValue={""} onChange={updateBall}>
+                                                <ToggleButtonGroup type="radio" name="runs" id="runs" defaultValue={""} onChange={updateBall}> {/* sendBallUpdate(runsToSend, wicketsToSend, symbolToSend, isItExtra) */}
                                                     <ToggleButton value={"0"} id="tbg-radio-1" className="rounded-circle dot" name="runs">.</ToggleButton>
                                                     <ToggleButton value={"1"} id="tbg-radio-2" className="rounded-circle one" name="runs">1</ToggleButton>
                                                     <ToggleButton value={"2"} id="tbg-radio-3" className="rounded-circle one" name="runs">2</ToggleButton>
@@ -450,7 +496,7 @@ const ScoringPage = ({searchList, match}) => {
                                             <tr>
                                                 <ToggleButtonGroup type="radio" name="extras" id="extras" defaultValue={""} onChange={updateExtras}>
                                                     <ToggleButton value={""} id="extras-radio-4" className="rounded-circle extras" name="extras">N/A</ToggleButton>
-                                                    <ToggleButton value={"Wd"} id="extras-radio-3" className="rounded-circle extras" name="extras">Wd</ToggleButton>
+                                                    <ToggleButton value={"Wide"} id="extras-radio-3" className="rounded-circle extras" name="extras">Wide</ToggleButton>
                                                     <ToggleButton value={"B"} id="extras-radio-2" className="rounded-circle extras" name="extras">B</ToggleButton>
                                                     <ToggleButton value={"NB"} id="extras-radio-1" className="rounded-circle extras" name="extras">NB</ToggleButton>
                                                 </ToggleButtonGroup>
