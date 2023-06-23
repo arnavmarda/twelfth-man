@@ -35,8 +35,7 @@ npm install
 3. Change directory to the backend:
 
 ```bash
-cd ..
-cd backend
+cd ../backend
 ```
 
 4. Install required packages:
